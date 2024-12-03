@@ -2,11 +2,8 @@
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import Checkbox from '@/Components/Checkbox.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import Input from '@/Components/Customs/Input.vue';
+import { Button } from 'primevue';
 
 defineProps({
     canResetPassword: Boolean,
@@ -30,6 +27,7 @@ const submit = () => {
 </script>
 
 <template>
+
     <Head title="Log in" />
 
     <AuthenticationCard>
@@ -43,35 +41,18 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-                <InputError class="mt-2" :message="form.errors.email" />
+                <Input type="email" label="Email" v-model="form.email" :error-message="form.errors.emaial" />
+
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="current-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
+                <Input type="password" label="Contraseña" v-model="form.password"
+                    :error-message="form.errors.password"></Input>
             </div>
 
             <div class="flex flex-row justify-between mt-4">
                 <label class="flex items-center">
-                    <Checkbox v-model:checked="form.remember" name="remember" />
+                    <Input type="checkbox"></Input>
                     <span class="ml-2 text-sm text-gray-600">Remember me</span>
                 </label>
                 <!-- <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm font-medium text-indigo-500 hover:text-indigo-500 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -80,9 +61,9 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-center mt-10">
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <Button :loading="form.processing" type="submit">
                     Log in
-                </PrimaryButton>
+                </Button>
             </div>
         </form>
     </AuthenticationCard>

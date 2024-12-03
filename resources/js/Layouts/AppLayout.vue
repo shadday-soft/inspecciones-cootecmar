@@ -25,6 +25,7 @@ import {
     XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+import CreateRequets from '@/Components/CreateRequets.vue';
 
 
 defineProps({
@@ -216,8 +217,9 @@ const mobileMenuOpen = ref(false)
                     </main>
 
                     <!-- Secondary column (hidden on smaller screens) -->
-                    <aside class="hidden w-96 overflow-y-auto border-l border-gray-200 bg-gray-200 lg:block rounded-md">
+                    <aside class="hidden w-96 overflow-y-auto border-2 border-gray-300 shadow-lg  lg:block rounded-md">
                         <!-- Your content -->
+                        <CreateRequets />
                     </aside>
                 </div>
             </div>
