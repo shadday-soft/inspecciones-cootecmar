@@ -48,16 +48,16 @@ const logout = () => {
 
 
 const sidebarNavigation = [
-    { name: 'Inicio', href: '#', icon: HomeIcon, current: true },
-    { name: 'Equipos', href: '#', icon: Squares2X2Icon, current: false },
-    { name: 'Inspecciones', href: '#', icon: PhotoIcon, current: false },
-    { name: 'Personal', href: '#', icon: UserGroupIcon, current: false },
-    // { name: '', href: '#', icon: RectangleStackIcon, current: false },
-    { name: 'Ajustes', href: '#', icon: CogIcon, current: false },
+    { name: 'Inicio', href: 'dashboard', icon: HomeIcon, current: route().current('dashboard') },
+    { name: 'Equipos', href: 'tools.index', icon: Squares2X2Icon, current: route().current('tools.*') },
+    { name: 'Inspecciones', href: 'dashboard', icon: PhotoIcon, current: false },
+    { name: 'Personal', href: 'dashboard', icon: UserGroupIcon, current: false },
+    // { name: '', href: 'dashboard', icon: RectangleStackIcon, current: false },
+    { name: 'Ajustes', href: 'dashboard', icon: CogIcon, current: false },
 ]
 const userNavigation = [
-    { name: 'Your Profile', href: '#', action: () => console.log('Your Profile') },
-    { name: 'Sign out', href: '#', action: logout },
+    { name: 'Your Profile', action: () => console.log('Your Profile') },
+    { name: 'Sign out', action: logout },
 ]
 
 const mobileMenuOpen = ref(false)
@@ -78,14 +78,14 @@ const mobileMenuOpen = ref(false)
                             alt="Your Company" />
                     </div>
                     <div class="mt-6 w-full flex-1 space-y-1 px-2">
-                        <a v-for="item in sidebarNavigation" :key="item.name" :href="item.href"
+                        <Link v-for="item in sidebarNavigation" :key="item.name" :href="route(item.href)"
                             :class="[item.current ? 'bg-white text-primary shadow-sm shadow-white' : 'text-indigo-100 hover:bg-indigo-800 hover:text-white', 'group flex w-full flex-col items-center rounded-md p-3 text-xs font-medium']"
                             :aria-current="item.current ? 'page' : undefined">
-                            <component :is="item.icon"
-                                :class="[item.current ? 'text-primary' : 'text-indigo-300 group-hover:text-white', 'size-6']"
-                                aria-hidden="true" />
-                            <span class="mt-2">{{ item.name }}</span>
-                        </a>
+                        <component :is="item.icon"
+                            :class="[item.current ? 'text-primary' : 'text-indigo-300 group-hover:text-white', 'size-6']"
+                            aria-hidden="true" />
+                        <span class="mt-2">{{ item.name }}</span>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -156,8 +156,8 @@ const mobileMenuOpen = ref(false)
                             <span class="sr-only">Open sidebar</span>
                             <Bars3BottomLeftIcon class="size-6" aria-hidden="true" />
                         </button>
-                        <div class="flex flex-1 justify-end px-4 sm:px-6">
-
+                        <div class="flex flex-1 justify-between px-4 sm:px-6 items-center">
+                            <div class="text-xl font-bold text-primary">{{ title }}</div>
                             <div class="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
                                 <!-- Profile dropdown -->
                                 <Menu as="div" class="relative shrink-0">
@@ -205,8 +205,13 @@ const mobileMenuOpen = ref(false)
                         <!-- Primary column -->
                         <section aria-labelledby="primary-heading"
                             class="flex h-full min-w-0 flex-1 flex-col lg:order-last">
-                            <h1 id="primary-heading" class="sr-only">Photos</h1>
-                            <!-- Your content -->
+                            <div class="py-12">
+                                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                                        <slot />
+                                    </div>
+                                </div>
+                            </div>
                         </section>
                     </main>
 

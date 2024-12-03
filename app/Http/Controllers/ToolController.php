@@ -6,6 +6,7 @@ use App\Models\Tool;
 use Exception;
 use App\Http\Requests\StoreToolRequest;
 use App\Http\Requests\UpdateToolRequest;
+use Inertia\Inertia;
 
 class ToolController extends Controller
 {
@@ -14,7 +15,8 @@ class ToolController extends Controller
      */
     public function index()
     {
-        //
+        $tools = Tool::all();
+        return Inertia::render('Tools/Index', ['tools' => $tools]);
     }
 
     /**

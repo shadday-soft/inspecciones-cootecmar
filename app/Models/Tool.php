@@ -11,7 +11,6 @@ class Tool extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use SoftDeletes;
 
     protected $guarded = [];
 }
