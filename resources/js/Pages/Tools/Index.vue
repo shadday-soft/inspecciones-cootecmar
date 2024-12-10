@@ -1,6 +1,7 @@
 <template>
     <AppLayout title="Equipos">
-        <Datatable :add :data="[]" :columnas></Datatable>
+        <Datatable :add :data=[] :columnas=columns title="Listado de equipos"></Datatable>
+
     </AppLayout>
     <Modal v-model="visible" title="Añadir Equipo" close-on-escape>
         <Input label="Nombre" placeholder="Escriba el nombre del Equipo"></Input>
@@ -22,15 +23,30 @@ const add = {
         visible.value = true;
     }
 }
-
 const columns = [
-    { label: 'Nombre', field: 'name' },
-    { label: 'Marca', field: 'brand' },
-    { label: 'Modelo', field: 'model' },
-    { label: 'Serie', field: 'serial' },
-    { label: 'Estado', field: 'status' },
-    { label: 'Acciones', field: 'actions' },
-
+    {
+        field: 'name',
+        header: 'Nombre',
+    },
+    {
+        field: 'cant',
+        header: 'Cantidad',
+    },
+    {
+        field: 'description',
+        header: 'Descripción',
+    },
+    {
+        field: 'type',
+        header: 'Tipo',
+    },
+    {
+        field: 'status',
+        header: 'Estado',
+    },
+    {
+        field: 'file',
+        header: 'Foto',
+    },
 ]
-
 </script>

@@ -27,7 +27,7 @@ class StoreToolRequest extends FormRequest
             'cant' => ['required', 'numeric'],
             'type' => ['required', 'string', 'max:255'],
             'status' => ['required', 'string', 'max:255'],
-            'file' => ['required', 'string', 'max:255', 'file'],
+            'file' => ['required', 'file'],
 
         ];
     }

@@ -4,8 +4,6 @@ import { onMounted, ref } from 'vue';
 import { useCommonUtilities } from '@/composable/useCommonUtilities';
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-
-import Input from './Input.vue';
 import { Link } from '@inertiajs/vue3';
 
 const { byteSizeFormatter, currencyFormat, formatTime, truncateString } = useCommonUtilities()
@@ -372,7 +370,7 @@ const mensaje = 'Funcion en desuso, se recomienda no usar el event dentro de but
                     </div>
                     <p v-else class="">
                         {{ col.format ? col.format(truncateString(data[col.field] + ' ',
-                        80)) : truncateString(data[col.field] + ' ', 80) }}
+                            80)) : truncateString(data[col.field] + ' ', 80) }}
                         <!-- {{ truncateString(data[col.field], 80) }} -->
                     </p>
                 </template>
