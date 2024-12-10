@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('inspections', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            // $table->string('code');
             $table->string('solicitante');
             $table->strinig('gerencia');
             $table->date('fecha');
