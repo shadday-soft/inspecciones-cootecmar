@@ -4,8 +4,6 @@ import { onMounted, ref } from 'vue';
 import { useCommonUtilities } from '@/composable/useCommonUtilities';
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-import Modal from '../Modal.vue';
-import Input from './Input.vue';
 import { Link } from '@inertiajs/vue3';
 
 const { byteSizeFormatter, currencyFormat, formatTime, truncateString } = useCommonUtilities()
