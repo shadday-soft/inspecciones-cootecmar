@@ -34,11 +34,11 @@ class ToolController extends Controller
     {
         $validateData = $request->validated();
 
-        try {
-            Tool::create($validateData);
-        } catch (Exception $e) {
-            return back()->withErrors('message', 'Ocurrio un Error Al Crear : ' . $e);
-        }
+        // try {
+        Tool::create($validateData);
+        // } catch (Exception $e) {
+        //     return back()->withErrors('message', 'Ocurrio un Error Al Crear : ' . $e);
+        // }
     }
 
     /**
@@ -62,10 +62,7 @@ class ToolController extends Controller
      */
     public function update(UpdateToolRequest $request, Tool $tool)
     {
-        $validateData = $request->validate([
-            //
-        ]);
-
+        $validateData = $request->validated();
         try {
             $tool->update($validateData);
         } catch (Exception $e) {

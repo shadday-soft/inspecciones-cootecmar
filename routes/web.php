@@ -31,3 +31,13 @@ Route::middleware([
 
     Route::resource('tools', ToolController::class);
 });
+
+/*
+    tools.index
+    Create
+    Store
+    Show
+    Edit
+    Update
+    Destroy
+*/

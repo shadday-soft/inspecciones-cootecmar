@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreToolRequest extends FormRequest
+class UpdateInspectionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,13 +22,7 @@ class StoreToolRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:tools,name'],
-            'description' => ['required', 'string', 'max:255'],
-            'cant' => ['required', 'numeric'],
-            'type' => ['required', 'string', 'max:255'],
-            'status' => ['required', 'string', 'max:255'],
-            'file' => ['nullable', 'file'],
-
+            //
         ];
     }
 }

@@ -11,7 +11,7 @@ class UpdateToolRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class UpdateToolRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255', 'unique:tools,name,' . $this->tool->id],
+            'description' => ['required', 'string', 'max:255'],
+            'cant' => ['required', 'numeric'],
+            'type' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'string', 'max:255'],
+            'file' => ['nullable', 'file'],
         ];
     }
 }

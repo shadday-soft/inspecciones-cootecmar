@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tools', function (Blueprint $table) {
+        Schema::create('inspections', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->string('cant');
-            $table->string('description')->nullable();
-            $table->string('type');
-            $table->string('status');
-            $table->string('file')->nullable();
+            $table->string('solicitante');
+            $table->strinig('gerencia');
+            $table->date('fecha');
+            $table->string('tipo');
+            $table->string('grafo');
+            $table->string('supervisor');
+            $table->integer('prioridad'); // 1, 2, 3, 4 , 5
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tools');
+        Schema::dropIfExists('inspections');
     }
 };
