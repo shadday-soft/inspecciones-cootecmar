@@ -65,6 +65,6 @@ const submit = () => {
                     Log in
                 </Button>
             </div>
-        </form>
+        </form> 
     </AuthenticationCard>
 </template>
