@@ -15,12 +15,13 @@ return new class extends Migration
             $table->uuid('id')->primary();
             // $table->string('code');
             $table->string('solicitante');
-            $table->strinig('gerencia');
+            $table->string('gerencia');
             $table->date('fecha');
             $table->string('tipo');
             $table->string('grafo');
             $table->string('supervisor');
             $table->integer('prioridad'); // 1, 2, 3, 4 , 5
+            $table->text('descripcion');
             $table->timestamps();
         });
     }

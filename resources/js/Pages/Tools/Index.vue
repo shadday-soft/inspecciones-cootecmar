@@ -13,8 +13,8 @@
             placeholder="Escriba una descripción"></Input>
         <template #footer>
             <div class="flex gap-x-2">
-                <Button label="Cancelar" severity="danger" icon="fa-solid fa-xmark"></Button>
-                <Button label="Guardar" severity="success" icon="fa-solid fa-save" @click="save()"></Button>
+                <Button label="Cancelar" severity="danger" icon="fa-solid fa-xmark" @click="visible=false"></Button>
+                <Button label="Guardar" severity="success" icon="fa-solid fa-save" @click="save()" :loading="form.processing"></Button>
             </div>
         </template>
     </Modal>

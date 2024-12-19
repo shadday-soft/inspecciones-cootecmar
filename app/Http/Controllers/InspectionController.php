@@ -6,6 +6,7 @@ use App\Models\Inspection;
 use Exception;
 use App\Http\Requests\StoreInspectionRequest;
 use App\Http\Requests\UpdateInspectionRequest;
+use Inertia\Inertia;
 
 class InspectionController extends Controller
 {
@@ -14,7 +15,8 @@ class InspectionController extends Controller
      */
     public function index()
     {
-        //
+        $inspections = Inspection::all();
+        return Inertia::render('Inspections/index', ['inspections' => $inspections]);
     }
 
     /**
@@ -60,9 +62,7 @@ class InspectionController extends Controller
      */
     public function update(UpdateInspectionRequest $request, Inspection $inspection)
     {
-        $validateData = $request->validate([
-            //
-        ]);
+        $validateData = $request->validated();
 
         try{
             $inspection->update($validateData);

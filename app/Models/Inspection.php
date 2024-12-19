@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class Inspection extends Model implements Auditable
+class Inspection extends Model
 {
     use HasFactory;
     use HasUuids;
-    use \OwenIt\Auditing\Auditable;
 
     protected $guarded = [];
 }

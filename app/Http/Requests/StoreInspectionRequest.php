@@ -11,7 +11,7 @@ class StoreInspectionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class StoreInspectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'solicitante' => ['required', 'string', 'max:255'],
+            'gerencia' => ['required'],
+            'fecha' => ['required','date'],
+            'tipo' => ['required'],
+            'grafo' => ['required'],
+            'supervisor' => ['required', 'string', 'max:255'],
+            'prioridad' => ['required'],
+            'descripcion' => ['required']
         ];
     }
 }

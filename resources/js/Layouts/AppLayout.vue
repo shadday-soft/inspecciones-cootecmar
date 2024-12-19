@@ -51,7 +51,7 @@ const logout = () => {
 const sidebarNavigation = [
     { name: 'Inicio', href: 'dashboard', icon: HomeIcon, current: route().current('dashboard') },
     { name: 'Equipos', href: 'tools.index', icon: Squares2X2Icon, current: route().current('tools.*') },
-    { name: 'Inspecciones', href: 'dashboard', icon: PhotoIcon, current: false },
+    { name: 'Inspecciones', href: 'inspections.index', icon: PhotoIcon, current: route().current('inspections.*') },
     { name: 'Personal', href: 'dashboard', icon: UserGroupIcon, current: false },
     // { name: '', href: 'dashboard', icon: RectangleStackIcon, current: false },
     { name: 'Ajustes', href: 'dashboard', icon: CogIcon, current: false },
@@ -216,11 +216,7 @@ const mobileMenuOpen = ref(false)
                         </section>
                     </main>
 
-                    <!-- Secondary column (hidden on smaller screens) -->
-                    <aside class="hidden w-96 overflow-y-auto border-2 border-gray-300 shadow-lg  lg:block rounded-md">
-                        <!-- Your content -->
-                        <CreateRequets />
-                    </aside>
+                   
                 </div>
             </div>
         </div>

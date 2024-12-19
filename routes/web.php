@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ToolController;
+use App\Http\Controllers\InspectionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,6 +31,8 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('tools', ToolController::class);
+
+    Route::resource('inspections', InspectionController::class);
 });
 
 /*
