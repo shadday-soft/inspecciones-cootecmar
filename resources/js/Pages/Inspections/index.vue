@@ -52,6 +52,7 @@ import Input from '@/Components/Customs/Input.vue';
 import Modal from '@/Components/Customs/Modal.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import Swal from 'sweetalert2';
 
 const visible = ref(false);
 
@@ -141,11 +142,34 @@ const actions = [
     },
     {
         action: (data) => {
-            form.delete(route('inspections.destroy', data.id), {
-                onSuccess: () => {
-                    form.reset();
-                }
-            });
+            let timerInterval;
+            Swal.fire({
+                    title: "Quieres eliminar el registro?",
+                    text: "No podrás recuperar esta información!",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: "Sí, eliminar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Eliminado!",
+                            text: "El registro ha sido eliminado.",
+                            icon: "success",
+                            timer: 2500,
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            }
+                        });
+                        form.delete(route('inspections.destroy', data.id), {
+                            onSuccess: () => {
+                                form.reset();
+                            }
+                        });
+                        }
+                })
         },
         severity: 'danger',
         icon: 'fa-solid fa-trash text-sm',
@@ -153,12 +177,21 @@ const actions = [
 ]
 
 const save = () => {
-
     if (form.id) {
         form.put(route('inspections.update', form.id), {
             onSuccess: () => {
                 visible.value = false;
                 form.reset();
+                let timerInterval;
+                Swal.fire({
+                    title: "Editado",
+                    text: "El registro ha sido editado!",
+                    icon: "success",
+                    timer: 2500,
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                });
             }
         });
         return;
@@ -166,6 +199,17 @@ const save = () => {
     form.post(route('inspections.store'), {
         onSuccess: () => {
             visible.value = false;
+            form.reset();
+            let timerInterval;
+            Swal.fire({
+                title: "Guardado",
+                text: "El registro ha sido guardado!",
+                icon: "success",
+                timer: 2500,
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            });
         }
     });
 }
