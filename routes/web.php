@@ -29,10 +29,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
-
     Route::resource('tools', ToolController::class);
-
     Route::resource('inspections', InspectionController::class);
+    Route::post('inspectionAssing/{inspection}', [InspectionController::class, 'assing'])->name('inspection.assing');
 });
 
 /*

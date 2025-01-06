@@ -51,9 +51,9 @@ const logout = () => {
 const sidebarNavigation = [
     { name: 'Inicio', href: 'dashboard', icon: HomeIcon, current: route().current('dashboard') },
     { name: 'Equipos', href: 'tools.index', icon: Squares2X2Icon, current: route().current('tools.*') },
-    { name: 'Inspecciones', href: 'inspections.index', icon: PhotoIcon, current: route().current('inspections.*') },
+    { name: 'Solicitud de Inspecciones', href: 'inspections.index', icon: PhotoIcon, current: route().current('inspections.*') },
     { name: 'Personal', href: 'dashboard', icon: UserGroupIcon, current: false },
-    // { name: '', href: 'dashboard', icon: RectangleStackIcon, current: false },
+    { name: 'Mis tareas', href: 'dashboard', icon: RectangleStackIcon, current: false },
     { name: 'Ajustes', href: 'dashboard', icon: CogIcon, current: false },
 ]
 const userNavigation = [
@@ -85,7 +85,7 @@ const mobileMenuOpen = ref(false)
                         <component :is="item.icon"
                             :class="[item.current ? 'text-primary' : 'text-indigo-300 group-hover:text-white', 'size-6']"
                             aria-hidden="true" />
-                        <span class="mt-2">{{ item.name }}</span>
+                        <span class="mt-2 text-center">{{ item.name }}</span>
                         </Link>
                     </div>
                 </div>
@@ -167,8 +167,7 @@ const mobileMenuOpen = ref(false)
                                             class="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                             <span class="sr-only">Open user menu</span>
                                             <img class="size-8 rounded-full"
-                                                src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80"
-                                                alt="" />
+                                                :src="$page.props.auth.user.profile_photo_url" alt="" />
                                         </MenuButton>
                                     </div>
                                     <transition enter-active-class="transition ease-out duration-100"
@@ -207,8 +206,9 @@ const mobileMenuOpen = ref(false)
                         <section aria-labelledby="primary-heading"
                             class="flex h-full min-w-0 flex-1 flex-col lg:order-last">
                             <div class="py-4">
-                                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                                <div class="sm:px-6 lg:px-8">
+                                    <div
+                                        class="bg-white overflow-hidden shadow-xl sm:rounded-lganimate-fadeinup animate-once">
                                         <slot />
                                     </div>
                                 </div>
@@ -216,7 +216,7 @@ const mobileMenuOpen = ref(false)
                         </section>
                     </main>
 
-                   
+
                 </div>
             </div>
         </div>

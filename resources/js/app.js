@@ -42,10 +42,10 @@ const Noir = definePreset(Aura, {
         colorScheme: {
             light: {
                 primary: {
-                    color: "{zinc.950}",
-                    inverseColor: "#ffffff",
-                    hoverColor: "{zinc.900}",
-                    activeColor: "{zinc.800}",
+                    color: "#2E3092",
+                    inverseColor: "#2E3092",
+                    hoverColor: "#2E3098",
+                    activeColor: "#2E3099",
                 },
                 danger: {
                     color: "#FF0000",

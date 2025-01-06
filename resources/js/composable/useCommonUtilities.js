@@ -357,7 +357,7 @@ export function useCommonUtilities() {
      * first `maxLength` characters followed by "...". If the `string` is equal to or shorter than
      * `maxLength`, it will return the original `string` unchanged.
      */
-    const truncateString = (string, maxLength) => {
+    const truncateString = (string, maxLength = 20) => {
         let truncatedString =
             string.length > maxLength
                 ? string.substring(0, maxLength) + "..."

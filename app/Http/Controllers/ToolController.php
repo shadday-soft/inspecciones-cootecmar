@@ -16,6 +16,9 @@ class ToolController extends Controller
     public function index()
     {
         $tools = Tool::all();
+        if (request()->wantsJson()) {
+            return response()->json($tools);
+        }
         return Inertia::render('Tools/Index', ['tools' => $tools]);
     }
 

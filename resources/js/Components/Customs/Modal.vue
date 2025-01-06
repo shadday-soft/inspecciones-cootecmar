@@ -53,7 +53,7 @@ const visible = defineModel()
     <Dialog pt:mask:class="backdrop-blur-sm" v-model:visible="visible" :maximizable="maximizable" :modal :closable
         :closeOnEscape :autoZIndex :baseZIndex :style="{ width: props.width }"
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" :pt="{
-            header: { class: 'bg-black !h-10 rounded-t-lg -m-1' },
+            header: { class: 'bg-primary !h-10 rounded-t-lg -m-1' },
             headerActions: { class: '!text-white !p-0' },
             content: { class: '!pb-0 !pt-2' },
             footer: { class: '!p-2 !h-min !items-end !flex !justify-end' }

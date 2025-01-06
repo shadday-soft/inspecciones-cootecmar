@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('inspections', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            // $table->string('code');
+            $table->foreignId('user_id')->nullable()->constrained();
+            $table->unsignedBigInteger('ayudante_id')->nullable();
+            $table->foreign('ayudante_id')->references('id')->on('users');
             $table->string('solicitante');
+            $table->integer('consecutive');
             $table->string('gerencia');
             $table->date('fecha');
             $table->string('tipo');

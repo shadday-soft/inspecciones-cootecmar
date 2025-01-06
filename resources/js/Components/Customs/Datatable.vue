@@ -366,8 +366,9 @@ const mensaje = 'Funcion en desuso, se recomienda no usar el event dentro de but
                     <span v-else-if="col.type == 'boolean'" class="flex items-center justify-center">
                         <InputSwitch v-model="data[col.field]" :disabled="true" />
                     </span>
-                    <div v-else-if="col.type == 'html'" class="" v-html="truncateString(data[col.field] + ' ', 80)">
-                    </div>
+                    <span v-else-if="col.type == 'html'"
+                        v-html="typeof col.renderer === 'function' ? col.renderer(data[col.field]) : col.renderer">
+                    </span>
                     <p v-else class="">
                         {{ col.format ? col.format(truncateString(data[col.field] + ' ',
                             80)) : truncateString(data[col.field] + ' ', 80) }}
