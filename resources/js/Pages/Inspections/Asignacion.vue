@@ -21,12 +21,15 @@
       ></Input>
     </div>
     <div class="flex justify-between w-full items-center gap-x-2">
-      <Input
-        type="datetime"
-        class="w-full"
-        v-model="form.date"
-        label="Fecha y hora de programación"
-      ></Input>
+      <div class="flex flex-col w-full -mt-1">
+        <label class="font-bold">Fecha y hora de Inspección</label>
+        <input
+          type="datetime-local"
+          @input="getDateInspections"
+          v-model="form.date"
+          class="rounded-md h-10"
+        />
+      </div>
       <Input
         class="w-full"
         type="dropdown"
@@ -43,7 +46,6 @@
           { lavel: '4.5 horasa', value: 4.5 },
           { lavel: 'Todo el Dia', value: 9.5 },
         ]"
-        v-model="props.inspeccion.fecha"
         label="Duracion de la inspección"
       />
       <div
@@ -54,16 +56,53 @@
         {{ diffIndays }} Dias
       </div>
     </div>
-    <Input
-      label="Equipos"
-      class="w-full"
-      type="multiselect"
-      v-model="form.tools"
-      :options="tools"
-      option-label="name"
-      option-value="id"
-      :loading="loadingTools"
-    ></Input>
+    <div class="flex flex-col w-full">
+      <h1>Equipos</h1>
+      <MultiSelect
+        v-model="form.tools"
+        :options="tools"
+        optionLabel="name"
+        filter
+        placeholder="Seleccionar Equipos"
+        display="chip"
+        class="w-full"
+      >
+        <template #option="slotProps">
+          <div
+            class="flex items-center justify-between w-full"
+            :class="getDisponible(slotProps.option) == 0 ? 'text-danger ' : ''"
+          >
+            <div>{{ slotProps.option.name }}</div>
+            <span class="font-bold text-sm"
+              >{{ getDisponible(slotProps.option) }} Disponibles</span
+            >
+          </div>
+        </template>
+
+        <template #header>
+          <div class="font-medium px-3 py-2">Equipos</div>
+        </template>
+        <template #footer>
+          <div class="p-3 flex justify-between">
+            <Button
+              label="Add New"
+              severity="secondary"
+              text
+              size="small"
+              icon="pi pi-plus"
+            />
+            <Button
+              label="Remove All"
+              severity="danger"
+              text
+              size="small"
+              icon="pi pi-times"
+            />
+          </div>
+        </template>
+      </MultiSelect>
+    </div>
+
     <div class="flex justify-end">
       <!-- <Button @click="visibleAddInspector = false">Cancelar</Button> -->
       <Button label="Asignar" severity="success" @click="submit" />
@@ -91,7 +130,7 @@ const props = defineProps({
 const form = useForm({
   user_id: null,
   ayudante_id: null,
-  date: null,
+  date: props.inspeccion.fecha + "T07:00",
   tools: [],
 });
 
@@ -112,17 +151,46 @@ onMounted(() => {
 const diffIndays = computed(() => {
   if (!form.date) return 0;
   let fecha = form.date.split(",")[0];
-  console.log(fecha);
   const dt1 = new Date(fecha);
   const dt2 = new Date(props.inspeccion.fecha);
   return Math.floor(
     (Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) -
-      Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) /
+      Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate() - 1)) /
       (1000 * 60 * 60 * 24)
   );
 });
 
 const submit = () => {
   form.post(route("inspection.assing", props.inspeccion.id));
+};
+const toolsDisabled = ref([]);
+
+const getDateInspections = () => {
+  loadingTools.value = true;
+  axios
+    .get(route("getDateInspections"), {
+      params: {
+        date: form.date.split("T")[0],
+      },
+    })
+    .then((response) => {
+      loadingTools.value = false;
+      toolsDisabled.value = response.data.map((t) => {
+        return t.tools.map((t) => t.pivot.tool_id);
+      });
+      form.tools = [];
+    });
+};
+
+getDateInspections();
+
+const getDisponible = (equipo) => {
+  var total = 0;
+  let disponibles = 0;
+  toolsDisabled.value.forEach((t) => {
+    total = t.filter((t) => t == equipo.id).length + total;
+  });
+  return equipo.cant - total;
+  // return disponibles;
 };
 </script>

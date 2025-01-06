@@ -18,6 +18,7 @@
     <Input
       label="Gerencia"
       v-model="form.gerencia"
+      :errorMessage="form.errors.gerencia"
       type="dropdown"
       :options="['GEBOC', 'GECON', 'GEMAM', 'GEDIN']"
     ></Input>

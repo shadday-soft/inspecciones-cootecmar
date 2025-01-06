@@ -31,6 +31,7 @@ Route::middleware([
     })->name('dashboard');
     Route::resource('tools', ToolController::class);
     Route::resource('inspections', InspectionController::class);
+    Route::get('getDateInspections', [InspectionController::class, 'getDateInspections'])->name('getDateInspections');
     Route::post('inspectionAssing/{inspection}', [InspectionController::class, 'assing'])->name('inspection.assing');
 });
 

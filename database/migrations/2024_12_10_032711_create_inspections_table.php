@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('inspections', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('user_id')->nullable()->constrained(); //Este es el inspector
             $table->unsignedBigInteger('ayudante_id')->nullable();
             $table->foreign('ayudante_id')->references('id')->on('users');
             $table->string('solicitante');
@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('supervisor');
             $table->integer('prioridad'); // 1, 2, 3, 4 , 5
             $table->text('descripcion');
+            $table->dateTime('fecha_programada')->nullable();
+            $table->double('duracion')->nullable(); //Duracion en horas
             $table->timestamps();
         });
     }
