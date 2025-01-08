@@ -109,7 +109,7 @@ import { useForm, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
 import Swal from "sweetalert2";
 import Asignacion from "./Asignacion.vue";
-import show from "./show.vue";
+import show from "@/Pages/Inspections/Show.vue";
 
 const visible = ref(false);
 const visibleAddInspector = ref(false);
