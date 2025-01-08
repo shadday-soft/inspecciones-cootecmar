@@ -11,7 +11,8 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        // TODO: Cambiar a que solo los inspectores puedan crear tareas
+        return true;
     }
 
     /**
@@ -22,7 +23,9 @@ class StoreTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            // 'percentDone' => 'nullable|numeric',
+            'inspection_id' => 'required|uuid',
         ];
     }
 }

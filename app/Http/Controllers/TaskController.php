@@ -16,11 +16,22 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $inspections = Inspection::all(); //cambiarlo con has role "inspector"
+        $inspections = Inspection::get(); //cambiarlo con has role "inspector"
         if (request()->wantsJson()) {
+
             return response()->json($inspections);
         }
         return Inertia::render('Tasks/index', ['inspections' => $inspections]);
+    }
+
+    public function getTasksByInspection(Inspection $inspection)
+    {
+        try {
+            $tasks = Task::where('inspection_id', $inspection->id)->get();
+            return response()->json($tasks);
+        } catch (Exception $e) {
+            return back()->withErrors('message', 'Ocurrio un Error Al obtener las tareas : ' . $e);
+        }
     }
 
     /**
@@ -37,11 +48,14 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $validateData = $request->validated();
-
         try {
+            $validateData['user_id'] = Inspection::find($validateData['inspection_id'])->user_id;
+            $validateData['percentDone'] = 0;
             Task::create($validateData);
+            return response()->json(['message' => 'Tarea Creada']);
         } catch (Exception $e) {
-            return back()->withErrors('message', 'Ocurrio un Error Al Crear : ' . $e);
+            return response()->json(['message' => 'Ocurrio un Error Al Crear : ' . $e]);
+            // return back()->withErrors('message', 'Ocurrio un Error Al Crear : ' . $e);
         }
     }
 
@@ -66,10 +80,7 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        $validateData = $request->validate([
-            //
-        ]);
-
+        $validateData = $request->validated();
         try {
             $task->update($validateData);
         } catch (Exception $e) {

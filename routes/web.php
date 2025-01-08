@@ -34,7 +34,8 @@ Route::middleware([
     Route::resource('inspections', InspectionController::class);
     Route::get('getDateInspections', [InspectionController::class, 'getDateInspections'])->name('getDateInspections');
     Route::post('inspectionAssing/{inspection}', [InspectionController::class, 'assing'])->name('inspection.assing');
-    Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::resource('tasks', TaskController::class);
+    Route::get('getTasksByInspection/{inspection}', [TaskController::class, 'getTasksByInspection'])->name('getTasksByInspection');
 });
 
 /*

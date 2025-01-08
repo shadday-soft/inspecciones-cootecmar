@@ -11,7 +11,16 @@
   </AppLayout>
 
   <!-- modal de tareas -->
-  <Modal v-model="visibleTareas" closeOnEscape> <List :inspeccion></List> </Modal>
+  <Modal
+    v-if="inspeccion"
+    :title="`Listado de tareas de la solicitud ${inspeccion.code}`"
+    v-model="visibleTareas"
+    closeOnEscape
+  >
+    <div class="flex flex-col gap-y-4">
+      <List :inspeccion></List>
+    </div>
+  </Modal>
   <!-- End modal tareas -->
   <Modal
     v-model="visible"
@@ -117,6 +126,7 @@ import { ref } from "vue";
 import Swal from "sweetalert2";
 import Asignacion from "./Asignacion.vue";
 import List from "@/Pages/Tasks/List.vue";
+import Create from "@/Pages/Tasks/Create.vue";
 import show from "./show.vue";
 
 const visible = ref(false);
