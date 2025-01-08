@@ -6,6 +6,8 @@ use App\Models\Task;
 use Exception;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Models\Inspection;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
@@ -14,7 +16,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $inspections = Inspection::all(); //cambiarlo con has role "inspector"
+        if (request()->wantsJson()) {
+            return response()->json($inspections);
+        }
+        return Inertia::render('Tasks/index', ['inspections' => $inspections]);
     }
 
     /**
@@ -32,10 +38,10 @@ class TaskController extends Controller
     {
         $validateData = $request->validated();
 
-        try{
+        try {
             Task::create($validateData);
-        }catch(Exception $e){
-            return back()->withErrors('message', 'Ocurrio un Error Al Crear : '.$e);
+        } catch (Exception $e) {
+            return back()->withErrors('message', 'Ocurrio un Error Al Crear : ' . $e);
         }
     }
 
@@ -64,10 +70,10 @@ class TaskController extends Controller
             //
         ]);
 
-        try{
+        try {
             $task->update($validateData);
-        }catch(Exception $e){
-            return back()->withErrors('message', 'Ocurrio un Error Al Actualizar : '.$e);
+        } catch (Exception $e) {
+            return back()->withErrors('message', 'Ocurrio un Error Al Actualizar : ' . $e);
         }
     }
 
@@ -76,10 +82,10 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        try{
+        try {
             $task->delete();
-        }catch(Exception $e){
-            return back()->withErrors('message', 'Ocurrio un Error Al eliminar : '.$e);
+        } catch (Exception $e) {
+            return back()->withErrors('message', 'Ocurrio un Error Al eliminar : ' . $e);
         }
     }
 }

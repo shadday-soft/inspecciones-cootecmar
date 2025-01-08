@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Models\Tool;
 
 class DatabaseSeeder extends Seeder
 {
@@ -35,5 +36,12 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        Tool::create([
+            'name' => 'Taladro',
+            'cant' => 1,
+            'description' => 'Taladro de 1/2 pulgada',
+            'status' => 'Disponible',
+            'type' => 'Herramienta',
+        ]);
     }
 }

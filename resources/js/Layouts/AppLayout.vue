@@ -53,7 +53,7 @@ const sidebarNavigation = [
     { name: 'Equipos', href: 'tools.index', icon: Squares2X2Icon, current: route().current('tools.*') },
     { name: 'Solicitud de Inspecciones', href: 'inspections.index', icon: PhotoIcon, current: route().current('inspections.*') },
     { name: 'Personal', href: 'dashboard', icon: UserGroupIcon, current: false },
-    { name: 'Mis tareas', href: 'dashboard', icon: RectangleStackIcon, current: false },
+    { name: 'Mis tareas', href: 'tasks.index', icon: RectangleStackIcon, current: route().current('tasks.*') },
     { name: 'Ajustes', href: 'dashboard', icon: CogIcon, current: false },
 ]
 const userNavigation = [

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\InspectionController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,6 +34,7 @@ Route::middleware([
     Route::resource('inspections', InspectionController::class);
     Route::get('getDateInspections', [InspectionController::class, 'getDateInspections'])->name('getDateInspections');
     Route::post('inspectionAssing/{inspection}', [InspectionController::class, 'assing'])->name('inspection.assing');
+    Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index');
 });
 
 /*
