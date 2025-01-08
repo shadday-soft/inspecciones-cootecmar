@@ -109,4 +109,12 @@ class InspectionController extends Controller
             return back()->withErrors('message', 'Usuario o Ayudante No Encontrado');
         }
     }
+
+
+    public function getDateInspections()
+    {
+        $date = request('date');
+        $inspections = Inspection::where('fecha', $date)->has('tools')->with('tools')->get();
+        return response()->json($inspections);
+    }
 }
