@@ -93,10 +93,13 @@ class InspectionController extends Controller
     {
         $validateData = $request->validate([
             'user_id' => 'required',
-            // 'ayudante_id' => 'required',
+            'ayudante_id' => 'nullable|numeric',
             'tools' => 'nullable|array',
-            'tools.*' => 'required|string|distinct|uuid',
+            'tools.*' => 'required|distinct|uuid',
+            'fecha_programada' => 'nullable|date',
+            'duracion' => 'nullable|numeric',
         ]);
+
         $user = User::find($request->user_id);
         $ayudante = User::find($request->ayudante_id);
         $inspection->tools()->sync($validateData['tools']);

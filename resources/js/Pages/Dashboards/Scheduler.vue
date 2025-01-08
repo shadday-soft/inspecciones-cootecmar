@@ -11,12 +11,12 @@ import {
 import "@schedule-x/theme-shadcn/dist/index.css";
 import Modal from "@/Components/Customs/Modal.vue";
 import ItemDetail from "@/Pages/Inspections/ItemDetail.vue";
+import Show from "@/Pages/Inspections/Show.vue";
 import { ref } from "vue";
 
 const visible = ref(false);
 const eventSelected = ref(null);
 const eventsServicePlugin = createEventsServicePlugin();
-import Show from "@/Pages/Inspections/Show.vue";
 
 const calendarApp = createCalendar({
   theme: "shadcn",

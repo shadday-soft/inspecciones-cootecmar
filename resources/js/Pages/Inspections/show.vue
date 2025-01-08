@@ -26,6 +26,17 @@
           class="flex justify-between"
         ></ItemDetail>
         <ItemDetail
+          v-if="inspeccion.fecha_programada"
+          :value="inspeccion.fecha_programada"
+          label="Programación"
+          class="flex justify-between"
+        ></ItemDetail>
+        <ItemDetail
+          :value="inspeccion.duracion + ' Horas'"
+          label="Duracion"
+          class="flex justify-between"
+        ></ItemDetail>
+        <ItemDetail
           :value="inspeccion.supervisor"
           label="Supervisor"
           class="flex justify-between"
@@ -77,9 +88,9 @@
             {{ tool.name }}
           </span>
         </div>
-        <div class="flex justify-start text-md gap-x-4 w-full bg-gray-500">
+        <div class="flex flex-col justify-start text-md gap-y-4 w-full">
           <div
-            class="flex gap-x-2 items-center pr-6 bg-primary text-white rounded-r-lg w-full"
+            class="flex gap-x-2 items-center pr-6 bg-primary text-white rounded-lg w-full"
           >
             <div>
               <img :src="inspeccion.user.profile_photo_url" class="" />
@@ -91,7 +102,7 @@
           </div>
           <div
             v-if="inspeccion.ayudante"
-            class="flex gap-x-2 items-center w-full pr-6 bg-primary text-white rounded-r-lg"
+            class="flex gap-x-2 items-center w-full pr-6 bg-primary text-white rounded-lg"
           >
             <div>
               <img :src="inspeccion.ayudante.profile_photo_url" class="" />

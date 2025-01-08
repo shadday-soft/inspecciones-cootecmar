@@ -9,6 +9,10 @@
     >
     </Datatable>
   </AppLayout>
+
+  <!-- modal de tareas -->
+  <Modal v-model="visibleTareas" closeOnEscape> <List :inspeccion></List> </Modal>
+  <!-- End modal tareas -->
   <Modal
     v-model="visible"
     :title="form.id ? 'Editar Solicitud' : 'Añadir inspección'"
@@ -99,6 +103,8 @@
     :inspeccion="inspeccionShow"
     v-if="inspeccionShow"
   ></show>
+
+  <!-- <Index></Index> -->
 </template>
 
 <script setup>
@@ -110,12 +116,14 @@ import { useForm, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
 import Swal from "sweetalert2";
 import Asignacion from "./Asignacion.vue";
+import List from "@/Pages/Tasks/List.vue";
 import show from "./show.vue";
 
 const visible = ref(false);
 const visibleAddInspector = ref(false);
 const visibleDetails = ref(false);
 const inspeccionShow = ref(null);
+const visibleTareas = ref(false);
 
 const columns = [
   {
@@ -217,6 +225,20 @@ const actions = [
     icon: "fa-solid fa-eye text-sm",
     severity: "info",
     label: "Ver detalles",
+  },
+  {
+    action: (data) => {
+      inspeccion.value = data;
+      visibleTareas.value = true;
+    },
+    icon: "fa-solid fa-list text-sm",
+    show: (data) => {
+      return usePage().props.auth.user.id !== data.user_id;
+      console.log(data);
+      return true;
+    },
+    severity: "info",
+    label: "Tareas",
   },
   {
     action: (data) => {

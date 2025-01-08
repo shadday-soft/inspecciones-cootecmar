@@ -26,13 +26,14 @@
         <input
           type="datetime-local"
           @input="getDateInspections"
-          v-model="form.date"
+          v-model="form.fecha_programada"
           class="rounded-md h-10"
         />
       </div>
       <Input
         class="w-full"
         type="dropdown"
+        v-model="form.duracion"
         option-label="lavel"
         option-value="value"
         :options="[
@@ -128,9 +129,10 @@ const props = defineProps({
 });
 
 const form = useForm({
-  user_id: null,
-  ayudante_id: null,
-  date: props.inspeccion.fecha + "T07:00",
+  user_id: props.inspeccion.user_id,
+  ayudante_id: props.inspeccion.ayudante_id,
+  fecha_programada: props.inspeccion.fecha + "T07:00",
+  duracion: 0.5,
   tools: [],
 });
 
@@ -149,8 +151,8 @@ onMounted(() => {
 });
 
 const diffIndays = computed(() => {
-  if (!form.date) return 0;
-  let fecha = form.date.split(",")[0];
+  if (!form.fecha_programada) return 0;
+  let fecha = form.fecha_programada.split(",")[0];
   const dt1 = new Date(fecha);
   const dt2 = new Date(props.inspeccion.fecha);
   return Math.floor(
@@ -170,7 +172,7 @@ const getDateInspections = () => {
   axios
     .get(route("getDateInspections"), {
       params: {
-        date: form.date.split("T")[0],
+        date: form.fecha_programada.split("T")[0],
       },
     })
     .then((response) => {
