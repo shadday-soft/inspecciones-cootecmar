@@ -107,11 +107,11 @@
   >
     <Asignacion :users :inspeccion />
   </Modal>
-  <show
+  <Show
     v-model="visibleDetails"
     :inspeccion="inspeccionShow"
     v-if="inspeccionShow"
-  ></show>
+  ></Show>
 
   <!-- <Index></Index> -->
 </template>
@@ -126,8 +126,7 @@ import { ref } from "vue";
 import Swal from "sweetalert2";
 import Asignacion from "./Asignacion.vue";
 import List from "@/Pages/Tasks/List.vue";
-import Create from "@/Pages/Tasks/Create.vue";
-import show from "./show.vue";
+import Show from "./Show.vue";
 
 const visible = ref(false);
 const visibleAddInspector = ref(false);
@@ -243,9 +242,7 @@ const actions = [
     },
     icon: "fa-solid fa-list text-sm",
     show: (data) => {
-      return usePage().props.auth.user.id !== data.user_id;
-      console.log(data);
-      return true;
+      return usePage().props.auth.user.id == data.user_id;
     },
     severity: "info",
     label: "Tareas",

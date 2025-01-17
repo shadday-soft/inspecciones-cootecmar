@@ -1,6 +1,7 @@
 <template>
   <AppLayout title="Tareas">
     <Datatable
+      empty-message="Sin asignaciones"
       :data="inspections"
       :columnas="columns"
       :actions
@@ -74,19 +75,6 @@ const columns = [
   {
     field: "descripcion",
     header: "Descripción",
-  },
-  {
-    field: "user",
-    header: "Inspector",
-    type: "html",
-    renderer: (rowData) => {
-      return rowData
-        ? `<div class="flex gap-2 text-sm items-center">
-                      <img src="${rowData.profile_photo_url}" class="size-6 rounded-full" alt="avatar">
-                      <p>${rowData.name}</p>
-                  </div>`
-        : `<p class="italic text-center">Sin Asignación</p>`;
-    },
   },
 ];
 
