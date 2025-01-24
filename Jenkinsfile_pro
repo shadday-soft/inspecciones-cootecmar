@@ -3,8 +3,8 @@
 
 DeployPipeline {
    framework             = 'Laravel-Vite'
-   projectName           = 'portalgestioncontratos'
-   https_port            = '9534'
+   projectName           = 'portalinspeccionensayo'
+   https_port            = '9569'
 
 }
 
