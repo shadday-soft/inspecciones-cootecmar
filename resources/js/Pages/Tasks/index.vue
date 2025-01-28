@@ -7,6 +7,17 @@
       title="Mis tareas Asignadas"
     >
     </Datatable>
+
+    <Modal
+      v-if="inspeccion"
+      :title="`Listado de tareas de la solicitud ${inspeccion.code}`"
+      v-model="visibleTareas"
+      closeOnEscape
+    >
+      <div class="flex flex-col gap-y-4">
+        <List :inspeccion></List>
+      </div>
+    </Modal>
   </AppLayout>
 
   <show
@@ -19,16 +30,27 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Datatable from "@/Components/Customs/Datatable.vue";
-import Input from "@/Components/Customs/Input.vue";
 import Modal from "@/Components/Customs/Modal.vue";
-import { useForm, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
 import show from "@/Pages/Inspections/Show.vue";
+import { usePage } from "@inertiajs/vue3";
 
-const visible = ref(false);
-const visibleAddInspector = ref(false);
 const visibleDetails = ref(false);
 const inspeccionShow = ref(null);
+const visibleTareas = ref(false);
+
+const inspeccion = ref(null);
+
+const props = defineProps({
+  inspections: {
+    type: Array,
+    Required: true,
+  },
+  users: {
+    type: Array,
+    Required: true,
+  },
+});
 
 const columns = [
   {
@@ -90,36 +112,6 @@ const columns = [
   },
 ];
 
-const props = defineProps({
-  inspections: {
-    type: Array,
-    Required: true,
-  },
-  users: {
-    type: Array,
-    Required: true,
-  },
-});
-
-const form = useForm({
-  id: "",
-  solicitante: usePage().props.auth.user.name,
-  gerencia: "",
-  fecha: "",
-  tipo: "",
-  grafo: "",
-  supervisor: "",
-  prioridad: "",
-  descripcion: "",
-});
-
-const add = {
-  action: () => {
-    form.reset();
-    visible.value = true;
-  },
-};
-const inspeccion = ref(null);
 const actions = [
   {
     action: (data) => {
@@ -130,6 +122,18 @@ const actions = [
     icon: "fa-solid fa-eye text-sm",
     severity: "info",
     label: "Ver detalles",
+  },
+  {
+    action: (data) => {
+      inspeccion.value = data;
+      visibleTareas.value = true;
+    },
+    icon: "fa-solid fa-list text-sm",
+    show: (data) => {
+      return usePage().props.auth.user.id !== data.user_id;
+    },
+    severity: "info",
+    label: "Tareas",
   },
 ];
 </script>

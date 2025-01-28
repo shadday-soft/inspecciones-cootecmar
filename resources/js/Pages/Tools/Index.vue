@@ -1,6 +1,11 @@
 <template>
     <AppLayout title="Equipos">
-        <Datatable :add :data=tools :columnas=columns :actions title="Listado de equipos"></Datatable>
+        <Datatable 
+            :add 
+            :data=tools 
+            :columnas=columns 
+            :actions title="Listado de equipos">
+        </Datatable>
     </AppLayout>
     <Modal v-model="visible" title="Añadir Equipo" close-on-escape>
         <Input label="Nombre" v-model="form.name" placeholder="Escriba el nombre del Equipo"

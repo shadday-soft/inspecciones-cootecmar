@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\InspectionController;
 use App\Http\Controllers\TaskController;
@@ -32,6 +33,7 @@ Route::middleware([
     })->name('dashboard');
     Route::resource('tools', ToolController::class);
     Route::resource('inspections', InspectionController::class);
+    Route::resource('users', UserController::class);
     Route::get('getDateInspections', [InspectionController::class, 'getDateInspections'])->name('getDateInspections');
     Route::post('inspectionAssing/{inspection}', [InspectionController::class, 'assing'])->name('inspection.assing');
     Route::resource('tasks', TaskController::class);
