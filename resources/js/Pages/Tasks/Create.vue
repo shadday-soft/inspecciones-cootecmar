@@ -23,6 +23,7 @@
 <script setup>
 import { ref, defineEmits } from "vue";
 import Input from "@/Components/Customs/Input.vue";
+import axios from "axios";
 
 const emit = defineEmits(["nueva-tarea"]);
 const props = defineProps({
@@ -54,13 +55,13 @@ const options = [
 ];
 
 const store = async () => {
-  let task = await axios.post(route("tasks.store"), {
+  let { data } = await axios.post(route("tasks.store"), {
     name: name.value,
     percentDone: percentDone.value,
     inspection_id: props.inspeccion.id,
   });
-
-  emit("nueva-tarea");
+  // console.log(data.task);
+  emit("nueva-tarea", data.task);
 
   name.value = "";
   percentDone.value = null;
@@ -71,7 +72,8 @@ const update = async () => {
     name: name.value,
     percentDone: percentDone.value,
   });
-  emit("nueva-tarea");
+  console.log(task);
+  emit("nueva-tarea", task);
   name.value = "";
   percentDone.value = null;
 };

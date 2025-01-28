@@ -7,6 +7,7 @@ use Exception;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Inspection;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class TaskController extends Controller
@@ -16,7 +17,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $inspections = Inspection::get(); //cambiarlo con has role "inspector"
+        $inspections = Inspection::where('user_id', Auth::user()->id)->orWhere('ayudante_id', Auth::user()->id)->get(); //cambiarlo con has role "inspector"
         if (request()->wantsJson()) {
 
             return response()->json($inspections);
@@ -51,8 +52,8 @@ class TaskController extends Controller
         try {
             $validateData['user_id'] = Inspection::find($validateData['inspection_id'])->user_id;
             $validateData['percentDone'] = 0;
-            Task::create($validateData);
-            return response()->json(['message' => 'Tarea Creada']);
+            $task = Task::create($validateData);
+            return response()->json(['message' => 'Tarea Creada', 'task' => $task], 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Ocurrio un Error Al Crear : ' . $e]);
             // return back()->withErrors('message', 'Ocurrio un Error Al Crear : ' . $e);

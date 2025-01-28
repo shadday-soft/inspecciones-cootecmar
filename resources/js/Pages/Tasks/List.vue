@@ -1,40 +1,38 @@
 <template>
   <div class="flex flex-col gap-y-4">
-    <Create @nueva-tarea="getTasks" :inspeccion :task :key></Create>
+    <Create @nueva-tarea="addTask" :inspeccion :task :key></Create>
     <div>
-      <draggable
-        class="w-full shadow-sm rounded-lg p-2"
-        v-model="myArray"
-        group="people"
-        :component-data="{ tag: 'div', name: 'flip-list', type: 'transition' }"
-        @start="drag = true"
-        @end="endDrag"
-        v-bind="dragOptons"
-        item-key="id"
-      >
-        <template #item="{ element }">
-          <div
-            class="list-group-item w-full border-b-2 cursor-move my-2 p-4 flex justify-between items-center"
-            :class="{ 'bg-teal-200': element.percentDone == 100 }"
-          >
-            <div class="flex flex-col text-lg">
-              <p>
-                {{ element.name }}
-              </p>
-              <p class="text-xs font-bold">{{ element.percentDone }} %</p>
-            </div>
-            <div class="flex gap-2">
-              <Button
-                outlined
-                icon="fa-solid fa-edit"
-                severity="secondary"
-                @click="editTask(element)"
-              ></Button>
-              <Button icon="fa-solid fa-trash" outlined severity="danger"></Button>
-            </div>
+      <TransitionGroup name="list" tag="div">
+        <div
+          class="list-group-item w-full border-b-2 cursor-move my-2 p-4 flex justify-between items-center"
+          :class="{ 'bg-green-200': element.percentDone == 100 }"
+          :key="element.id"
+          v-for="(element, index) in myArray"
+        >
+          <div class="flex flex-col text-lg">
+            <p>
+              {{ element.name }}
+            </p>
+            <p class="text-xs font-bold">{{ element.percentDone }} %</p>
           </div>
-        </template>
-      </draggable>
+          <div class="flex gap-2">
+            <Button
+              text
+              icon="fa-solid fa-edit"
+              size="small"
+              severity="primary"
+              @click="edit(element)"
+            ></Button>
+            <Button
+              icon="fa-solid fa-trash"
+              text
+              size="small"
+              @click="deleteTask(element, index)"
+              severity="danger"
+            ></Button>
+          </div>
+        </div>
+      </TransitionGroup>
     </div>
   </div>
 </template>
@@ -42,6 +40,7 @@
 import draggable from "vuedraggable";
 import { ref, computed } from "vue";
 import Create from "./Create.vue";
+import axios from "axios";
 
 const props = defineProps({
   inspeccion: {
@@ -51,23 +50,6 @@ const props = defineProps({
 });
 
 const key = ref(0);
-
-const dragOptons = computed(() => {
-  return {
-    animation: 250,
-    group: "description",
-    disabled: false,
-    ghostClass: "ghost",
-  };
-});
-
-const drag = ref(false);
-
-const endDrag = () => {
-  drag.value = false;
-  console.log(myArray.value);
-  console.log("end drag");
-};
 
 const myArray = ref([]);
 
@@ -88,9 +70,20 @@ const options = [
 
 const task = ref("");
 
-const editTask = (taskEdit) => {
+const deleteTask = async (t, index) => {
+  await axios.delete(route("tasks.destroy", t)).then((response) => {});
+  myArray.value.splice(index, 1);
+};
+
+const edit = (taskEdit) => {
   key.value++;
   task.value = taskEdit;
+};
+
+const addTask = (t) => {
+  getTasks();
+  // myArray.value.push(t);
+  // console.log(t);
 };
 
 const getTasks = () => {
@@ -104,33 +97,13 @@ getTasks();
 </script>
 
 <style>
-.button {
-  margin-top: 35px;
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
 }
-
-.flip-list-move {
-  transition: transform 0.8s;
-}
-
-.no-move {
-  transition: transform 0.1s;
-}
-
-.ghost {
-  opacity: 0.2;
-  @apply text-white;
-  @apply bg-primary;
-}
-
-.list-group {
-  min-height: 20px;
-}
-
-.list-group-item {
-  cursor: move;
-}
-
-.list-group-item i {
-  cursor: pointer;
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>
