@@ -1,14 +1,16 @@
 #COTECMAR DOCKERFILE
 #COTECMAR
-FROM php:8.1.0-apache
-ARG XDEBUG_VERSION="xdebug-3.1.1"
+FROM php:8.2.0-apache
+ARG XDEBUG_VERSION="xdebug-3.3.1"
 ENV TZ=America/Bogota
+ENV NODE_VERSION=20.17.0
+ENV NVM_DIR=/root/.nvm
 USER root
 
 WORKDIR /var/www/html
 
 RUN yes | pecl install ${XDEBUG_VERSION} \
-    && docker-php-ext-enable xdebug
+&& docker-php-ext-enable xdebug
 
 RUN apt update &&  apt install -y -f \
         git \
@@ -18,6 +20,7 @@ RUN apt update &&  apt install -y -f \
         zlib1g-dev \
         libxml2-dev \
         libzip-dev \
+        default-jre \
         libonig-dev \
         libbz2-dev \
         libcurl3-openssl-dev \
@@ -48,7 +51,7 @@ RUN apt update &&  apt install -y -f \
     && docker-php-ext-install pdo_sqlite \
     && docker-php-ext-install opcache \
     && docker-php-ext-install zip
-
+	
 RUN mkdir -p /etc/apache2/certificate
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
@@ -61,5 +64,16 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
 COPY . /var/www/html/PROJECT/
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN apt install -y curl
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+
+RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+RUN node --version
+RUN npm --version
 
 RUN chown -R www-data:www-data /var/www/html && a2enmod rewrite && a2enmod ssl
