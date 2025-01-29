@@ -17,7 +17,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $inspections = Inspection::where('user_id', Auth::user()->id)->orWhere('ayudante_id', Auth::user()->id)->get(); //cambiarlo con has role "inspector"
+        $inspections = Inspection::where('user_id', Auth::user()->id)
+                                ->orWhere('ayudante_id', Auth::user()->id)
+                                ->with('user', 'ayudante', 'tools')
+                                ->get();
+                                
         if (request()->wantsJson()) {
 
             return response()->json($inspections);

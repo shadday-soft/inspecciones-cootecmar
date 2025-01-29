@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('tools', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('cant');
+            $table->string('serial');
+            $table->date('last_calibration')->nullable();
             $table->string('description')->nullable();
             $table->string('type');
             $table->string('status');

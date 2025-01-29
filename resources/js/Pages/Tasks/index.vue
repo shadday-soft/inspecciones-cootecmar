@@ -34,7 +34,7 @@ import Datatable from "@/Components/Customs/Datatable.vue";
 import Modal from "@/Components/Customs/Modal.vue";
 import { ref } from "vue";
 import show from "@/Pages/Inspections/Show.vue";
-import { usePage } from "@inertiajs/vue3";
+import List from "@/Pages/Tasks/List.vue";
 
 const visibleDetails = ref(false);
 const inspeccionShow = ref(null);
@@ -117,9 +117,6 @@ const actions = [
       visibleTareas.value = true;
     },
     icon: "fa-solid fa-list text-sm",
-    show: (data) => {
-      return usePage().props.auth.user.id !== data.user_id;
-    },
     severity: "info",
     label: "Tareas",
   },

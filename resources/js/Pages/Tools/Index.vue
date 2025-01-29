@@ -10,8 +10,10 @@
     <Modal v-model="visible" title="Añadir Equipo" close-on-escape>
         <Input label="Nombre" v-model="form.name" placeholder="Escriba el nombre del Equipo"
             :error-message="form.errors.name"></Input>
-        <Input label="Cantidad" v-model="form.cant" placeholder="Escriba la cantidad de estos equipos"
-            type="number"></Input>
+        <Input label="Serial" v-model="form.serial" placeholder="Escriba el serial del equipo"
+            type="string"></Input>
+        <Input label="Última calibración" v-model="form.last_calibration" placeholder="Escriba la ultima calibración"
+            type="date"></Input>
         <Input label="Tipo" v-model="form.type" placeholder="Escriba el tipo de equipo"></Input>
         <Input label="Estado" v-model="form.status" placeholder="Escriba el estado del equipo"></Input>
         <Input label="Descripción" type="textarea" v-model="form.description"
@@ -49,7 +51,8 @@ const actions = [
             visible.value = true
             form.id = data.id,
                 form.name = data.name,
-                form.cant = data.cant,
+                form.serial = data.serial,
+                form.last_calibration = data.last_calibration,
                 form.description = data.description,
                 form.type = data.type,
                 form.status = data.status,
@@ -98,7 +101,8 @@ const actions = [
 const form = useForm({
     id: '',
     name: '',
-    cant: '',
+    serial: '',
+    last_calibration: '',
     description: '',
     type: '',
     status: '',
@@ -118,10 +122,9 @@ const columns = [
         filter: true
     },
     {
-        field: 'cant',
-        header: 'Cantidad',
-        type: 'number',
-        filter: true
+        field: 'serial',
+        header: 'Serial',
+        type: 'string',
     },
     {
         field: 'description',
@@ -131,10 +134,17 @@ const columns = [
     {
         field: 'type',
         header: 'Tipo',
+        filter: true
     },
     {
         field: 'status',
         header: 'Estado',
+        filter: true
+    },
+    {
+        field: 'last_calibration',
+        header: 'Última calibración',
+        type: 'date',
     },
     {
         field: 'file',

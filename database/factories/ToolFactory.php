@@ -17,7 +17,12 @@ class ToolFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'serial' => fake()->phoneNumber(),
+            'last_calibration' => fake()->date,
+            'description' => fake()->sentence,
+            'status' => 'Disponible',
+            'type' => 'Herramienta',
         ];
     }
 }

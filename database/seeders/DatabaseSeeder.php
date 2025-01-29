@@ -36,12 +36,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Tool::create([
-            'name' => 'Taladro',
-            'cant' => 1,
-            'description' => 'Taladro de 1/2 pulgada',
-            'status' => 'Disponible',
-            'type' => 'Herramienta',
-        ]);
+
+        Tool::factory(5)->create();
     }
 }
