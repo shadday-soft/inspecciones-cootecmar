@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('serial');
             $table->date('last_calibration')->nullable();
             $table->string('description')->nullable();
-            $table->string('type');
-            $table->string('status');
             $table->string('file')->nullable();
             $table->timestamps();
         });

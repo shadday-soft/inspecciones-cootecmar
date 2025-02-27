@@ -26,6 +26,7 @@ import {
 } from "@heroicons/vue/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
 import CreateRequets from "@/Components/CreateRequets.vue";
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 
 defineProps({
   title: String,
@@ -94,11 +95,8 @@ const mobileMenuOpen = ref(false);
       <div class="hidden w-28 overflow-y-auto bg-primary md:block">
         <div class="flex w-full flex-col items-center py-6">
           <div class="flex shrink-0 items-center">
-            <img
-              class="h-8 w-auto"
-              src="https://tailwindui.com/plus/img/logos/mark.svg?color=white"
-              alt="Your Company"
-            />
+            <ApplicationLogo class="h-12 w-auto text-white" />
+            
           </div>
           <div class="mt-6 w-full flex-1 space-y-1 px-2">
             <Link
