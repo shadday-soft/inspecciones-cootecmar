@@ -99,14 +99,13 @@
       </div>
     </template>
   </Modal>
-  <Modal
-    v-if="inspeccion"
-    :title="`Asignar Inspector a ${inspeccion.code}`"
+  <Asignacion
     v-model="visibleAddInspector"
-    close-on-escape
+    :inspeccion="inspeccion"
+    v-if="inspeccion"
+    :users="users"
   >
-    <Asignacion :users :inspeccion />
-  </Modal>
+  </Asignacion>
   <Show
     v-model="visibleDetails"
     :inspeccion="inspeccionShow"

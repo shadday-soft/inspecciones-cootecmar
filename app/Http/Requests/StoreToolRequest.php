@@ -24,11 +24,9 @@ class StoreToolRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255', 'unique:tools,name'],
             'description' => ['required', 'string', 'max:255'],
-            'cant' => ['required', 'numeric'],
-            'type' => ['required', 'string', 'max:255'],
-            'status' => ['required', 'string', 'max:255'],
             'file' => ['nullable', 'file'],
-
+            'serial' => ['required', 'string', 'max:255', 'unique:tools,serial'],
+            'last_calibration' => ['required', 'date'],
         ];
     }
 }
