@@ -146,6 +146,41 @@ createInertiaApp({
                     overlay: 1000,      //dropdown, overlaypanel
                     menu: 1000,         //overlay menus
                     tooltip: 1100       //tooltip
+                },
+                locale: {
+                    startsWith: 'Empieza con',
+                    contains: 'Contiene',
+                    notContains: 'No contiene',
+                    endsWith: 'Termina con',
+                    equals: 'Igual a',
+                    notEquals: 'Diferente de',
+                    noFilter: 'Sin filtro',
+                    lt: 'Menor que',
+                    lte: 'Menor o igual que',
+                    gt: 'Mayor que',
+                    gte: 'Mayor o igual que',
+                    dateIs: 'Fecha es',
+                    dateIsNot: 'Fecha no es',
+                    dateBefore: 'Fecha antes de',
+                    dateAfter: 'Fecha después de',
+                    clear: 'Limpiar',
+                    apply: 'Aplicar',
+                    matchAll: 'Coincidir todo',
+                    matchAny: 'Coincidir cualquiera',
+                    upload: 'Subir',
+                    cancel: 'Cancelar',
+                    choose: 'Elegir archivo',
+                    completed: 'Completado',
+                    pending: 'Pendiente',
+                    chooseLabel: 'Seleccionar archivos',
+                    uploadLabel: 'Subir archivos',
+                    cancelLabel: 'Cancelar subida',
+                    invalidFileSizeMessage: 'El archivo es demasiado grande, el tamaño máximo es {0}.',
+                    invalidFileTypeMessage: 'Tipo de archivo inválido.',
+                    invalidFileLimitMessage: 'Número máximo de archivos excedido.',
+                    accept: 'Aceptar',
+                    reject: 'Rechazar',
+                    close: 'Cerrar'
                 }
             })
             .directive('tooltip', Tooltip)

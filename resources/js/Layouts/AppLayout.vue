@@ -76,7 +76,11 @@ const sidebarNavigation = [
     icon: RectangleStackIcon,
     current: route().current("tasks.*"),
   },
-  { name: "Ajustes", href: "dashboard", icon: CogIcon, current: false },
+  { name: "Ajustes", 
+    href: "settings", 
+    icon: CogIcon, 
+    current: route().current("settings") 
+  },
 ];
 const userNavigation = [
   { name: "Your Profile", action: () => console.log("Your Profile") },

@@ -41,6 +41,8 @@ Route::middleware([
     Route::post('inspectionAssing/{inspection}', [InspectionController::class, 'assing'])->name('inspection.assing');
     Route::resource('tasks', TaskController::class);
     Route::get('getTasksByInspection/{inspection}', [TaskController::class, 'getTasksByInspection'])->name('getTasksByInspection');
+    Route::get('settings', [UserController::class, 'settings'])->name("settings");
+    Route::post('users/signature', [UserController::class, 'signature'])->name('users.signature');
 
     Route::get('pdf/test', function () {
         $data = [
