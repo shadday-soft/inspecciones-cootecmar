@@ -1,5 +1,5 @@
 <template>
-  <div class="border p-4 shadow-md flex flex-col gap-y-2">
+  <div class="p-4 shadow-md flex flex-col gap-y-2">
     <div class="flex justify-between items-center gap-x-4">
       <Input label="Titulo de la tarea" class="w-full" v-model="name"></Input>
       <Input

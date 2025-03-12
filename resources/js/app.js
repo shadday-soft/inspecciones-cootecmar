@@ -15,6 +15,8 @@ import ToastService from 'primevue/toastservice';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import AOS from 'aos'
 import Tooltip from 'primevue/tooltip';
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import VueSweetalert2 from 'vue-sweetalert2';
 // If you don't need the styles, do not connect
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -148,6 +150,7 @@ createInertiaApp({
             })
             .directive('tooltip', Tooltip)
             .component('VueDatePicker', VueDatePicker)
+            .component('QuillEditor', QuillEditor)
             .mount(el);
     },
     progress: {

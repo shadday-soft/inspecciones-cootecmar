@@ -121,94 +121,30 @@
         </p>
       </div>
     </div>
-    <!-- <Modal v-model="visible" title="Inspección" close-on-escape>
-      <div class="p-2 flex flex-col gap-y-2">
-       
-        <div>
-          <p class="text-md font-semibold">Tipos de Inspecciones</p>
-          <div class="grid grid-cols-6 gap-2">
-            <ul
-              class="px-2 py-1 border-primary text-primary border rounded-md cursor-default"
-              v-for="type in eventSelected.tipo.split(', ')"
-            >
-              {{
-                type
-              }}
-            </ul>
-          </div>
-        </div>
-
-        <div v-if="eventSelected.user" class="flex flex-col gap-y-2">
-          <div class="flex gap-x-4 w-full items-center">
-            <h2 class="text-md font-semibold">Equipos Asignados:</h2>
-            <span
-              class="border py-1 px-4 rounded-sm"
-              v-for="tool in eventSelected.tools"
-              :key="tool.id"
-            >
-              {{ tool.name }}
-            </span>
-          </div>
-          <div class="flex justify-start text-md gap-x-4">
-            <div
-              class="flex gap-x-2 items-center pr-6 bg-primary text-white rounded-r-lg"
-            >
-              <div>
-                <img :src="eventSelected.user.profile_photo_url" class="" />
-              </div>
-              <span class="flex flex-col">
-                <h3 class="font-bold">Inspector</h3>
-                <p>{{ eventSelected.user.name }}</p>
-              </span>
-            </div>
-            <div
-              v-if="eventSelected.ayudante"
-              class="flex gap-x-2 items-center pr-6 bg-primary text-white rounded-r-lg"
-            >
-              <div>
-                <img :src="eventSelected.ayudante.profile_photo_url" class="" />
-              </div>
-              <span class="flex flex-col">
-                <h3 class="font-bold">Ayudante</h3>
-                <p>{{ eventSelected.ayudante.name }}</p>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div v-else>
-          <p class="p-2 bg-danger text-white text-center font-bold rounded-md">
-            Sin Asignación
-          </p>
-        </div>
+    <template #footer>
+      <div class="flex w-full justify-between">
+        <Button
+          @click="addReport = true"
+          icon="fa-solid fa-file-contract"
+          v-tooltip.top="`Añadir Reporte`"
+        />
       </div>
-
-      <template #footer>
-        <div class="flex gap-x-2">
-          <Button
-            class="!h-8"
-            label="Cancelar"
-            severity="danger"
-            icon="fa-solid fa-xmark"
-            @click="visible = false"
-          />
-          <Button
-            class="!h-8"
-            label="Guardar"
-            severity="success"
-            icon="fa-solid fa-save"
-            @click="save()"
-          />
-        </div>
-      </template> 
-    </Modal> -->
+    </template>
   </Drawer>
+
+  <Modal v-model="addReport" title="Reportes" width="90rem">
+    <List></List>
+  </Modal>
 </template>
 <script setup>
+import Modal from "@/Components/Customs/Modal.vue";
 import ItemDetail from "@/Pages/Inspections/ItemDetail.vue";
+import { ref } from "vue";
+import List from "../Reports/List.vue";
 
 const props = defineProps({
   inspeccion: Object,
 });
 const visible = defineModel();
+const addReport = ref(false);
 </script>

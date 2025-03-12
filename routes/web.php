@@ -3,10 +3,12 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\InspectionController;
+use App\Http\Controllers\InspectionCreateController;
 use App\Http\Controllers\TaskController;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -53,6 +55,8 @@ Route::middleware([
         # Option 1) Show the PDF in the browser
         return $pdf->stream();
     })->name('pdf.test');
+
+    Route::post('upload/reports/images/', [InspectionCreateController::class, 'uploadImage'])->name('upload.photos');
 });
 
 /*

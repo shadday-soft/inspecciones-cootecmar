@@ -1,38 +1,40 @@
 <template>
   <div class="flex flex-col gap-y-4">
-    <Create @nueva-tarea="addTask" :inspeccion :task :key></Create>
-    <div>
-      <TransitionGroup name="list" tag="div">
-        <div
-          class="list-group-item w-full border-b-2 cursor-move my-2 p-4 flex justify-between items-center"
-          :class="{ 'bg-green-200': element.percentDone == 100 }"
+    <div class="flex flex-col gap-y-2">
+      <div class="grid grid-cols-3 gap-4 h-[40vh] overflow-y-auto py-2">
+        <TransitionGroup
+          name="list"
+          tag="div"
+          class="list-group-item shadow-lg p-4 flex flex-col rounded-lg hover:bg-blue-100"
+          :class="{ 'bg-green-200 hover:bg-green-200': element.percentDone == 100 }"
           :key="element.id"
           v-for="(element, index) in myArray"
         >
-          <div class="flex flex-col text-lg">
-            <p>
-              {{ element.name }}
-            </p>
-            <p class="text-xs font-bold">{{ element.percentDone }} %</p>
+          <p>
+            {{ element.name }}
+          </p>
+          <div class="flex justify-between items-center w-full">
+            <p class="text-lg font-bold">{{ element.percentDone }} %</p>
+            <div>
+              <Button
+                text
+                icon="fa-solid fa-edit"
+                size="small"
+                severity="primary"
+                @click="edit(element)"
+              ></Button>
+              <Button
+                icon="fa-solid fa-trash"
+                text
+                size="small"
+                @click="deleteTask(element, index)"
+                severity="danger"
+              ></Button>
+            </div>
           </div>
-          <div class="flex gap-2">
-            <Button
-              text
-              icon="fa-solid fa-edit"
-              size="small"
-              severity="primary"
-              @click="edit(element)"
-            ></Button>
-            <Button
-              icon="fa-solid fa-trash"
-              text
-              size="small"
-              @click="deleteTask(element, index)"
-              severity="danger"
-            ></Button>
-          </div>
-        </div>
-      </TransitionGroup>
+        </TransitionGroup>
+      </div>
+      <Create @nueva-tarea="addTask" :inspeccion :task :key></Create>
     </div>
   </div>
 </template>
@@ -41,6 +43,7 @@ import draggable from "vuedraggable";
 import { ref, computed } from "vue";
 import Create from "./Create.vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const props = defineProps({
   inspeccion: {
@@ -71,8 +74,31 @@ const options = [
 const task = ref("");
 
 const deleteTask = async (t, index) => {
-  await axios.delete(route("tasks.destroy", t)).then((response) => {});
-  myArray.value.splice(index, 1);
+  Swal.fire({
+    title: "Quieres eliminar el registro?",
+    text: "No podrás recuperar esta información!",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Sí, eliminar",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      await axios.delete(route("tasks.destroy", t)).then((response) => {
+        myArray.value.splice(index, 1);
+        Swal.fire({
+          title: "Eliminado!",
+          text: "El registro ha sido eliminado.",
+          icon: "success",
+          timer: 2500,
+          willClose: () => {
+            clearInterval(timerInterval);
+          },
+        });
+      });
+    }
+  });
 };
 
 const edit = (taskEdit) => {

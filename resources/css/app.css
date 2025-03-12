@@ -81,3 +81,7 @@
         --p-text-hover-muted-color: var(--p-surface-300);
     }
 }
+
+.swal2-container {
+    z-index: 1000000 !important;
+}

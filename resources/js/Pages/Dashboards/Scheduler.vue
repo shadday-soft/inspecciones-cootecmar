@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ScheduleXCalendar } from "@schedule-x/vue";
 import { createEventsServicePlugin } from "@schedule-x/events-service";
 import {
@@ -92,4 +92,4 @@ getInspection();
   </div>
 
   <Show v-if="eventSelected" v-model="visible" :inspeccion="eventSelected"></Show>
-</template>
+</template> -->
