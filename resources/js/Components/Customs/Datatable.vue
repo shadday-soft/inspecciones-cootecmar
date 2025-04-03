@@ -544,30 +544,6 @@ const mensaje =
               "
             />
           </span>
-          <Button
-            v-if="showItem"
-            v-tooltip.left="'Ver'"
-            @click="open($event, data, 'show')"
-            text
-            icon="fa-solid fa-eye"
-            severity="success"
-          />
-          <Button
-            v-if="routes?.update"
-            v-tooltip.left="'Editar'"
-            @click="open($event, data, 'edit')"
-            text
-            icon="fa-solid fa-pencil"
-            severity="warning"
-          />
-          <Button
-            v-if="routes?.delete"
-            v-tooltip.left="'Eliminar'"
-            @click="deleteItem($event, data)"
-            text
-            icon="fa-solid fa-trash-can"
-            severity="danger"
-          />
         </div>
       </template>
     </Column>

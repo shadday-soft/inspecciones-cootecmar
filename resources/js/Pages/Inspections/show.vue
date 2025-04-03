@@ -133,7 +133,7 @@
   </Drawer>
 
   <Modal v-model="addReport" title="Reportes" width="90rem">
-    <List></List>
+    <List :inspeccion></List>
   </Modal>
 </template>
 <script setup>

@@ -1,53 +1,59 @@
 <template>
-  <div>
-    <label for="" class="font-bold">Novedades presentes (ANOMALY):</label>
-    <div class="rounded-lg border border-gray-300">
-      <QuillEditor
-        theme="snow"
-        v-model:content="text"
-        contentType="html"
-        toolbar="full"
-      />
+  <div class="flex flex-col gap-y-4">
+    <!-- {{ inspeccion }} -->
+    <div v-for="(input, index) of form.inputs" :key="index">
+      <label for="" class="font-bold">{{ input.textLabel }}:</label>
+      <div class="rounded-lg border border-gray-300">
+        <QuillEditor
+          theme="snow"
+          v-if="input.type == 'textLong'"
+          v-model:content="input.value"
+          contentType="html"
+          toolbar="full"
+        />
+      </div>
     </div>
   </div>
-  <div>
-    <Button @click="submit" />
+  <div class="flex justify-end gap-x-2 mt-2">
+    <Button
+      @click="submit"
+      label="Guardar"
+      severity="success"
+      size="small"
+      icon="fa-solid fa-save"
+    />
+    <Button label="Cancelar" severity="danger" size="small" icon="fa-solid fa-xmark" />
   </div>
 </template>
 <script setup>
 import { ref } from "vue";
-import ImageUploader from "quill-image-uploader";
 import axios from "axios";
+import { useForm } from "@inertiajs/vue3";
+const props = defineProps({
+  inspeccion: Object,
+});
 
-const text = ref(null);
-
-const modules = {
-  name: "imageUploader",
-  module: ImageUploader,
-  options: {
-    upload: (file) => {
-      return new Promise((resolve, reject) => {
-        const formData = new FormData();
-        formData.append("image", file);
-        axios
-          .post(route("upload.photos"), formData)
-          .then((res) => {
-            console.log(res.data.url);
-            resolve(
-              "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/JavaScript-logo.png/480px-JavaScript-logo.png"
-            );
-          })
-          .catch((err) => {
-            reject("Upload failed");
-            console.error("Error:", err);
-          });
-      });
+const form = useForm({
+  inspection_id: props.inspeccion.id,
+  type: "Reporte de Inspección",
+  inputs: [
+    {
+      label: "anomaly",
+      type: "textLong",
+      textLabel: "Novedades presentes (ANOMALY)",
+      value: "",
     },
-  },
-};
+    {
+      label: "acciones",
+      type: "textLong",
+      textLabel: "ACCIÓN (ES) A SEGUIR Y/O ALTERNATIVAS DE SOLUCIÓN",
+      value: "",
+    },
+  ],
+});
 
 function submit() {
-  axios.post(route("upload.photos"), { text: text.value });
-  console.log(text.value);
+  form.post(route("reports.store"));
+  // axios.post(route("reports.store"), { text: text.value });
 }
 </script>

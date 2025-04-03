@@ -29,6 +29,7 @@
         "@schedule-x/theme-default": "^2.11.0",
         "@schedule-x/theme-shadcn": "^2.12.1",
         "@schedule-x/vue": "^2.10.0",
+        "@tanstack/vue-query": "^5.67.3",
         "@vuepic/vue-datepicker": "^9.0.2",
         "@vueup/vue-quill": "^1.2.0",
         "aos": "^2.3.4",

@@ -4,7 +4,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\InspectionController;
 use App\Http\Controllers\InspectionCreateController;
+use App\Http\Controllers\pdf\ExportController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TaskController;
+use App\Models\Report;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,21 +46,12 @@ Route::middleware([
     Route::get('getTasksByInspection/{inspection}', [TaskController::class, 'getTasksByInspection'])->name('getTasksByInspection');
     Route::get('settings', [UserController::class, 'settings'])->name("settings");
     Route::post('users/signature', [UserController::class, 'signature'])->name('users.signature');
+    Route::resource('reports', ReportController::class);
 
-    Route::get('pdf/test', function () {
-        $data = [
-            'to' => 'Sam Example',
-            'subtotal' => '5.00',
-            'tax' => '.35',
-            'total' => '5.35'
-        ];
-
-        $pdf = Pdf::loadView('pdf.invoice', $data);
-
-        # Option 1) Show the PDF in the browser
-        return $pdf->stream();
-    })->name('pdf.test');
-
+    Route::name('export.')->controller(ExportController::class)->group(function () {
+        Route::get('report-inspection/{report}', 'export')->name('report-inspeccion');
+    });
+   
     Route::post('upload/reports/images/', [InspectionCreateController::class, 'uploadImage'])->name('upload.photos');
 });
 

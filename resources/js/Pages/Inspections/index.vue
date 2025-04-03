@@ -228,7 +228,6 @@ const actions = [
     action: (data) => {
       inspeccionShow.value = data;
       visibleDetails.value = true;
-      console.log(inspeccionShow.value);
     },
     icon: "fa-solid fa-eye text-sm",
     severity: "info",

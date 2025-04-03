@@ -21,8 +21,6 @@ class ToolFactory extends Factory
             'serial' => fake()->phoneNumber(),
             'last_calibration' => fake()->date,
             'description' => fake()->sentence,
-            'status' => 'Disponible',
-            'type' => 'Herramienta',
         ];
     }
 }

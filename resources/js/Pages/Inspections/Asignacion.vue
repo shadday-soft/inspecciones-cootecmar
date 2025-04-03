@@ -138,10 +138,6 @@ const getTools = async () => {
   loadingTools.value = false;
 };
 
-onMounted(() => {
-  getTools();
-});
-
 const diffIndays = computed(() => {
   if (!form.fecha_programada) return 0;
   let fecha = form.fecha_programada.split(",")[0];
@@ -173,17 +169,21 @@ const getDateInspections = async () => {
     .map((t) => {
       return t.tools.map((tool) => tool.pivot.tool_id);
     });
+
   toolsOptions.value = tools.value.filter((t) => {
-    let disabled = false;
+    let available = true;
     toolsDisabled.value.forEach((tool) => {
       if (tool.includes(t.id)) {
-        disabled = true;
+        available = false;
       }
     });
-    return !disabled;
+    return available;
   });
   loadingTools.value = false;
 };
 
-getDateInspections();
+onMounted(async () => {
+  await getTools();
+  getDateInspections();
+});
 </script>
