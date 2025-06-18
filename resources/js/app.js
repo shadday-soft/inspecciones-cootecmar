@@ -21,7 +21,6 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import 'primeicons/primeicons.css'
-import { VueQueryPlugin } from '@tanstack/vue-query'
 
 
 // https://vue3datepicker.com/installation/#global [Libreria para seleccionar fechas y horas]
@@ -114,7 +113,6 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(VueQueryPlugin)
             .use(ZiggyVue)
             .use(ConfirmationService)
             .use(ToastService)

@@ -129,33 +129,44 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useQuery } from "@tanstack/vue-query";
 import Create from "./Create.vue";
+import { onMounted, ref } from "vue";
 
 const list = ref([]);
 
 const props = defineProps({
   inspeccion: Object,
 });
+
 const createReport = ref(false);
 
-const fetcher = async () =>
-  await fetch(
-    route("reports.index", {
+import axios from "axios";
+
+const data = ref([]);
+const isPending = ref(true);
+const isError = ref(false);
+const error = ref(null);
+
+const fetchReports = async () => {
+  isPending.value = true;
+  isError.value = false;
+  try {
+    const response = await axios.get(route("reports.index", {
       inspeccion: props.inspeccion.id,
-    }),
-    {
+    }), {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    }
-  ).then((response) => response.json());
+    });
+    data.value = response.data;
+  } catch (err) {
+    isError.value = true;
+    error.value = err;
+  } finally {
+    isPending.value = false;
+  }
+};
 
-const { isPending, isError, data, error, isPlaceholderData } = useQuery({
-  queryKey: ["users"],
-  queryFn: () => fetcher(),
-  refetchInterval: 1000 * 60 * 2,
-});
+onMounted(fetchReports);
 </script>

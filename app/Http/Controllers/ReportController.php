@@ -56,7 +56,8 @@ class ReportController extends Controller
             foreach($request->inputs as $field_report){
                 FieldReport::create([
                     'report_id' => $report->id,
-                    'label' => $field_report['label'], // TODO: Cambiar por field
+                    'field' => $field_report['label'], 
+                    'label' => $field_report['textLabel'], 
                     'value' => $field_report['value'], 
                 ]);
             }
