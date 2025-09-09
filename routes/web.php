@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\InspectionController;
@@ -40,6 +41,7 @@ Route::middleware([
     Route::resource('tools', ToolController::class);
     Route::resource('inspections', InspectionController::class);
     Route::resource('users', UserController::class);
+    Route::resource('projects', ProjectController::class);
     Route::get('getDateInspections', [InspectionController::class, 'getDateInspections'])->name('getDateInspections');
     Route::post('inspectionAssing/{inspection}', [InspectionController::class, 'assing'])->name('inspection.assing');
     Route::resource('tasks', TaskController::class);

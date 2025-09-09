@@ -35,6 +35,8 @@
       type="dropdown"
       :options="['GEBOC', 'GECON', 'GEMAM', 'GEDIN']"
     ></Input>
+
+    <!-- Input de seleccion de proyectos  -->
     <Input label="Fecha" type="date" v-model="form.fecha" min-date="new Date()"></Input>
     <Input
       label="Tipo"
@@ -125,7 +127,7 @@ import { ref } from "vue";
 import Swal from "sweetalert2";
 import Asignacion from "./Asignacion.vue";
 import List from "@/Pages/Tasks/List.vue";
-import Show from "./Show.vue";
+import Show from "./show.vue";
 
 const visible = ref(false);
 const visibleAddInspector = ref(false);
