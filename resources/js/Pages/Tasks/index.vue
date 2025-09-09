@@ -33,7 +33,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import Datatable from "@/Components/Customs/Datatable.vue";
 import Modal from "@/Components/Customs/Modal.vue";
 import { ref } from "vue";
-import show from "@/Pages/Inspections/Show.vue";
+import show from "@/Pages/Inspections/show.vue";
 import List from "@/Pages/Tasks/List.vue";
 
 const visibleDetails = ref(false);

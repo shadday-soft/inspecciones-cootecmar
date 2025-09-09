@@ -58,6 +58,12 @@ const sidebarNavigation = [
     current: route().current("dashboard"),
   },
   {
+    name: "Proyectos",
+    href: "projects.index",
+    icon: HomeIcon,
+    current: route().current("projects.*"),
+  },
+  {
     name: "Equipos",
     href: "tools.index",
     icon: Squares2X2Icon,

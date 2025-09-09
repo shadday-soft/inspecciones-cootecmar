@@ -12,9 +12,9 @@
 </head>
 
 <body>
-    <header>
-        <x-pdf.header></x-pdf.header>
-    </header>
+   <header>
+       <x-pdf.header></x-pdf.header>
+   </header>
 
     <main>
         <x-pdf.table></x-pdf.table>
