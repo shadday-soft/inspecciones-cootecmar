@@ -22,6 +22,7 @@ class InspectionController extends Controller
         if (request()->wantsJson()) {
             return response()->json($inspections);
         }
+        // dd($inspections, $users);
         return Inertia::render('Inspections/index', ['inspections' => $inspections, 'users' => $users]);
     }
 

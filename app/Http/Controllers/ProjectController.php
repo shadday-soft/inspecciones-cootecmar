@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
 use Exception;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProjectController extends Controller
 {
@@ -13,7 +16,11 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        $projects = Project::all();
+        if (request()->wantsJson()) {
+            return response()->json($projects);
+        }
+        return Inertia::render('Projects/Index', ['projects' => $projects]);
     }
 
     /**
@@ -27,7 +34,7 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
         $validateData = $request->validated();
 
@@ -57,12 +64,10 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
-        $validateData = $request->validate([
-            //
-        ]);
-
+        $validateData = $request->validated();
+        
         try{
             $project->update($validateData);
         }catch(Exception $e){

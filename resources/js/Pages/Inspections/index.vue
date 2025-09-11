@@ -36,7 +36,11 @@
       :options="['GEBOC', 'GECON', 'GEMAM', 'GEDIN']"
     ></Input>
 
-    <!-- Input de seleccion de proyectos  -->
+    <Input
+      label="Proyecto"
+
+    ></Input>
+
     <Input label="Fecha" type="date" v-model="form.fecha" min-date="new Date()"></Input>
     <Input
       label="Tipo"
@@ -149,6 +153,11 @@ const columns = [
   {
     field: "gerencia",
     header: "Gerencia",
+    filter: "true",
+  },
+  {
+    field: "proyecto",
+    header: "Proyecto",
     filter: "true",
   },
   {

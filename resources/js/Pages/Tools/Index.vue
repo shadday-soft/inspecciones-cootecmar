@@ -72,13 +72,13 @@ const actions = [
     action: (data) => {
       visible.value = true;
       (form.id = data.id),
-        (form.name = data.name),
-        (form.serial = data.serial),
-        (form.last_calibration = data.last_calibration),
-        (form.description = data.description),
-        (form.type = data.type),
-        (form.status = data.status),
-        (form.file = data.file);
+      (form.name = data.name),
+      (form.serial = data.serial),
+      (form.last_calibration = data.last_calibration),
+      (form.description = data.description),
+      (form.type = data.type),
+      (form.status = data.status),
+      (form.file = data.file);
     },
     severity: "info",
     icon: "fa-solid fa-pencil text-sm",
@@ -145,6 +145,7 @@ const columns = [
     field: "serial",
     header: "Serial",
     type: "string",
+    filter: true,
   },
   {
     field: "description",

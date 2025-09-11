@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('gerencia');
-            $table->string('code-sap')->unique();
+            $table->string('code_sap')->unique();
             $table->string('date')->nullable();
             $table->timestamps();
         });
