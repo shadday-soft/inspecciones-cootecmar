@@ -9,6 +9,8 @@ use App\Http\Controllers\pdf\ExportController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 use App\Models\Report;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -48,6 +50,14 @@ Route::middleware([
     Route::get('settings', [UserController::class, 'settings'])->name("settings");
     Route::post('users/signature', [UserController::class, 'signature'])->name('users.signature');
     Route::resource('reports', ReportController::class);
+
+    // Rutas para gestión de roles y permisos
+    Route::resource('roles', RoleController::class);
+    Route::resource('permissions', PermissionController::class);
+    Route::post('roles/{role}/assign-user', [RoleController::class, 'assignToUser'])->name('roles.assign-user');
+    Route::delete('roles/{role}/remove-user', [RoleController::class, 'removeFromUser'])->name('roles.remove-user');
+    Route::get('users/{user}/roles', [UserController::class, 'manageRoles'])->name('users.manage-roles');
+    Route::post('users/{user}/assign-roles', [UserController::class, 'assignRoles'])->name('users.assign-roles');
 
     Route::name('export.')->controller(ExportController::class)->group(function () {
         Route::get('report-inspection/{report}', 'export')->name('report-inspeccion');
