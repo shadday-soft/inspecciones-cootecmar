@@ -6,7 +6,6 @@ import Welcome from "@/Components/Welcome.vue";
 <template>
   <AppLayout title="Dashboard">
     <div class="p-2">
-      <!-- <Schedule></Schedule> -->
     </div>
   </AppLayout>
 </template>

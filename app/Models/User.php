@@ -58,4 +58,20 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Relación con inspecciones como inspector principal
+     */
+    public function inspections()
+    {
+        return $this->hasMany(Inspection::class);
+    }
+
+    /**
+     * Relación con inspecciones como ayudante
+     */
+    public function assistantInspections()
+    {
+        return $this->hasMany(Inspection::class, 'ayudante_id');
+    }
 }

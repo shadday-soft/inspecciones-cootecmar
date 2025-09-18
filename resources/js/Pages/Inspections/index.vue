@@ -38,7 +38,13 @@
 
     <Input
       label="Proyecto"
-
+      v-model="form.project_id"
+      :errorMessage="form.errors.project_id"
+      type="dropdown"
+      option-label="display_name"
+      option-value="id"
+      :options="projectsFormatted"
+      placeholder="Seleccione un proyecto"
     ></Input>
 
     <Input label="Fecha" type="date" v-model="form.fecha" min-date="new Date()"></Input>
@@ -127,7 +133,7 @@ import Datatable from "@/Components/Customs/Datatable.vue";
 import Input from "@/Components/Customs/Input.vue";
 import Modal from "@/Components/Customs/Modal.vue";
 import { useForm, usePage } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import Swal from "sweetalert2";
 import Asignacion from "./Asignacion.vue";
 import List from "@/Pages/Tasks/List.vue";
@@ -156,9 +162,18 @@ const columns = [
     filter: "true",
   },
   {
-    field: "proyecto",
+    field: "project",
     header: "Proyecto",
     filter: "true",
+    type: "html",
+    renderer: (rowData) => {
+      return rowData 
+        ? `<div class="flex flex-col">
+             <span class="font-medium">${rowData.name}</span>
+             <span class="text-xs text-gray-500">${rowData.code_sap}</span>
+           </div>` 
+        : '<span class="italic text-center text-gray-400">Sin proyecto</span>';
+    },
   },
   {
     field: "fecha",
@@ -213,18 +228,30 @@ const props = defineProps({
     type: Array,
     Required: true,
   },
+  projects: {
+    type: Array,
+    Required: true,
+  },
 });
 
 const form = useForm({
   id: "",
   solicitante: usePage().props.auth.user.name,
   gerencia: "",
+  project_id: "",
   fecha: "",
   tipo: "",
   grafo: "",
   supervisor: "",
   prioridad: "",
   descripcion: "",
+});
+
+const projectsFormatted = computed(() => {
+  return props.projects.map(project => ({
+    ...project,
+    display_name: `${project.name} (${project.code_sap})`
+  }));
 });
 
 const add = {
@@ -270,6 +297,7 @@ const actions = [
       visible.value = true;
       form.id = data.id;
       form.gerencia = data.gerencia;
+      form.project_id = data.project_id;
       form.fecha = data.fecha;
       form.tipo = data.tipo;
       form.tipo = data.tipo.split(", ");
