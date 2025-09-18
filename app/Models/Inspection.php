@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Contracts\Auditable;
 
 class Inspection extends Model
 {
@@ -24,7 +21,12 @@ class Inspection extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                return $value  ? implode(', ', json_decode($value)) : '';
+                if (!$value) {
+                    return '';
+                }
+                
+                $decoded = json_decode($value, true);
+                return is_array($decoded) ? implode(', ', $decoded) : $value;
             },
             set: function ($value) {
                 return $value;
@@ -45,7 +47,8 @@ class Inspection extends Model
     public function getCodeAttribute()
     {
         $consecutive = $this->consecutive;
-        return  str_pad($consecutive, 3, '0', STR_PAD_LEFT) . '-' . substr($this->gerencia, -3) .  '-' . date('Y');
+
+        return str_pad($consecutive, 3, '0', STR_PAD_LEFT).'-'.substr($this->gerencia, -3).'-'.date('Y');
     }
 
     public function prioridad(): Attribute
@@ -72,10 +75,14 @@ class Inspection extends Model
         return $this->belongsToMany(Tool::class, 'inspection_tools');
     }
 
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
 
     public static function booted()
     {
-        static::creating(function (self  $inspection) {
+        static::creating(function (self $inspection) {
             $inspection->consecutive = Inspection::whereYear('created_at', date('Y'))->count() + 1;
         });
     }

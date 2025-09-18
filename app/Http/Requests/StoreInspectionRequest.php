@@ -24,12 +24,13 @@ class StoreInspectionRequest extends FormRequest
         return [
             'solicitante' => ['required', 'string', 'max:255'],
             'gerencia' => ['required'],
-            'fecha' => ['required','date'],
+            'project_id' => ['required', 'exists:projects,id'],
+            'fecha' => ['required', 'date'],
             'tipo' => ['required'],
             'grafo' => ['required'],
             'supervisor' => ['required', 'string', 'max:255'],
             'prioridad' => ['required'],
-            'descripcion' => ['required']
+            'descripcion' => ['required'],
         ];
     }
 }

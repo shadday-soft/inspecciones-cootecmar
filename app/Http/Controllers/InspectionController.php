@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Inspection;
-use Exception;
 use App\Http\Requests\StoreInspectionRequest;
 use App\Http\Requests\UpdateInspectionRequest;
+use App\Models\Inspection;
+use App\Models\Project;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,13 +18,19 @@ class InspectionController extends Controller
      */
     public function index()
     {
-        $inspections = Inspection::with('user', 'tools', 'ayudante')->get();
+        $inspections = Inspection::with('user', 'tools', 'ayudante', 'project')->get();
         $users = User::get();
+        $projects = Project::get();
         if (request()->wantsJson()) {
             return response()->json($inspections);
         }
+
         // dd($inspections, $users);
-        return Inertia::render('Inspections/index', ['inspections' => $inspections, 'users' => $users]);
+        return Inertia::render('Inspections/index', [
+            'inspections' => $inspections,
+            'users' => $users,
+            'projects' => $projects,
+        ]);
     }
 
     /**
@@ -44,7 +51,7 @@ class InspectionController extends Controller
         try {
             Inspection::create($validateData);
         } catch (Exception $e) {
-            return back()->withErrors('message', 'Ocurrio un Error Al Crear : ' . $e);
+            return back()->withErrors('message', 'Ocurrio un Error Al Crear : '.$e);
         }
     }
 
@@ -74,7 +81,7 @@ class InspectionController extends Controller
         try {
             $inspection->update($validateData);
         } catch (Exception $e) {
-            return back()->withErrors('message', 'Ocurrio un Error Al Actualizar : ' . $e);
+            return back()->withErrors('message', 'Ocurrio un Error Al Actualizar : '.$e);
         }
     }
 
@@ -86,7 +93,7 @@ class InspectionController extends Controller
         try {
             $inspection->delete();
         } catch (Exception $e) {
-            return back()->withErrors('message', 'Ocurrio un Error Al eliminar : ' . $e);
+            return back()->withErrors('message', 'Ocurrio un Error Al eliminar : '.$e);
         }
     }
 
@@ -108,17 +115,18 @@ class InspectionController extends Controller
         if ($user && $ayudante) {
             unset($validateData['tools']);
             $inspection->update($validateData);
+
             return back()->with('message', 'Usuario y Ayudante Asignados Correctamente');
         } else {
             return back()->withErrors('message', 'Usuario o Ayudante No Encontrado');
         }
     }
 
-
     public function getDateInspections()
     {
         $date = request('date');
         $inspections = Inspection::where('fecha', $date)->has('tools')->with('tools')->get();
+
         return response()->json($inspections);
     }
 }
