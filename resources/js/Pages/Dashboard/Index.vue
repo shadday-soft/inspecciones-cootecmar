@@ -655,6 +655,7 @@ onMounted(() => {
                             </button>
                             <button 
                                 class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-200"
+                                @click="$inertia.visit(route('inspections.index', {inspection: selectedInspection.id}))"
                             >
                                 Ver Detalles Completos
                             </button>

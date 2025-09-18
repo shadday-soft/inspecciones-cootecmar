@@ -16,8 +16,12 @@ class InspectionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('inspection')) {
+            $inspectionToShow = Inspection::where('id', $request->inspection)->first();
+        }
+
         $inspections = Inspection::with('user', 'tools', 'ayudante', 'project')->get();
         $users = User::get();
         $projects = Project::get();
@@ -25,11 +29,12 @@ class InspectionController extends Controller
             return response()->json($inspections);
         }
 
-        // dd($inspections, $users);
         return Inertia::render('Inspections/index', [
             'inspections' => $inspections,
             'users' => $users,
             'projects' => $projects,
+            'inspectionToShow' => $inspectionToShow ?? null,
+            'search' => $search ?? null,
         ]);
     }
 
