@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -14,13 +15,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
+        $users = User::with('roles')->get();
         if (request()->wantsJson()) {
             return response()->json($users);
         }
         
         return Inertia::render('Users/index', [
-            'users' => $users
+            'users' => $users,
+            'roles' => Role::all()
         ]);
     }
 
@@ -114,5 +116,35 @@ class UserController extends Controller
         $user->save();
 
         return;
+    }
+
+    /**
+     * Asignar roles a un usuario
+     */
+    public function assignRoles(Request $request, User $user)
+    {
+        $request->validate([
+            'roles' => 'required|array',
+            'roles.*' => 'exists:roles,id',
+        ]);
+
+        $roles = Role::whereIn('id', $request->roles)->get();
+        $user->syncRoles($roles);
+
+        return back()->with('success', 'Roles asignados exitosamente al usuario.');
+    }
+
+    /**
+     * Mostrar página de gestión de roles para un usuario
+     */
+    public function manageRoles(User $user)
+    {
+        $user->load('roles');
+        $roles = Role::all();
+
+        return Inertia::render('Users/ManageRoles', [
+            'user' => $user,
+            'roles' => $roles,
+        ]);
     }
 }
