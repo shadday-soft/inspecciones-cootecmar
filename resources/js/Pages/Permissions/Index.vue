@@ -1,121 +1,187 @@
 <template>
   <AppLayout title="Gestión de Permisos">
     <div class="p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Gestión de Permisos</h1>
-        <Link
-          :href="route('permissions.create')"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-        >
-          Crear Permiso
-        </Link>
-      </div>
-
-      <!-- Tabla de permisos -->
-      <div class="bg-white shadow overflow-hidden sm:rounded-md">
-        <div class="px-6 py-4 border-b border-gray-200">
-          <h3 class="text-lg font-medium text-gray-900">Lista de Permisos</h3>
-          <p class="text-sm text-gray-500 mt-1">
-            Total: {{ permissions.data.length }} permisos
-          </p>
-        </div>
-        <ul class="divide-y divide-gray-200">
-          <li v-for="permission in permissions.data" :key="permission.id" class="px-6 py-4">
-            <div class="flex items-center justify-between">
-              <div class="flex-1">
-                <h3 class="text-lg font-medium text-gray-900">{{ permission.name }}</h3>
-                <p class="text-sm text-gray-500 mt-1">
-                  Guard: {{ permission.guard_name }}
-                </p>
-                <p class="text-xs text-gray-400 mt-1">
-                  Creado: {{ formatDate(permission.created_at) }}
-                </p>
-              </div>
-              <div class="flex items-center space-x-2">
-                <Link
-                  :href="route('permissions.show', permission.id)"
-                  class="text-indigo-600 hover:text-indigo-900 text-sm font-medium"
-                >
-                  Ver
-                </Link>
-                <Link
-                  :href="route('permissions.edit', permission.id)"
-                  class="text-green-600 hover:text-green-900 text-sm font-medium"
-                >
-                  Editar
-                </Link>
-                <button
-                  @click="deletePermission(permission)"
-                  class="text-red-600 hover:text-red-900 text-sm font-medium"
-                >
-                  Eliminar
-                </button>
-              </div>
+      <Datatable
+        :data="permissions.data"
+        :columnas="columns"
+        :actions="tableActions"
+        title="Gestión de Permisos"
+        :add="{ action: () => router.visit(route('permissions.create')) }"
+        emptyMessage="No hay permisos registrados"
+      >
+        <template #title>
+          <div class="flex gap-4 items-center">
+            <!-- Filtros -->
+            <div class="flex gap-2 items-center">
+              <InputText
+                v-model="searchForm.search"
+                placeholder="Buscar por nombre..."
+                @input="search"
+                class="w-48"
+              />
+              <Select
+                v-model="searchForm.guard"
+                :options="guardOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Todos los guards"
+                @change="search"
+                class="w-40"
+                showClear
+              />
+              <Select
+                v-model="searchForm.has_roles"
+                :options="roleOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Asignación"
+                @change="search"
+                class="w-32"
+                showClear
+              />
+              <Button
+                @click="clearFilters"
+                icon="pi pi-filter-slash"
+                severity="secondary"
+                outlined
+                size="small"
+                v-tooltip="'Limpiar filtros'"
+              />
             </div>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Paginación -->
-      <div v-if="permissions.links" class="mt-6">
-        <nav class="flex justify-center">
-          <div class="flex space-x-1">
-            <Link
-              v-for="link in permissions.links"
-              :key="link.label"
-              :href="link.url"
-              :class="[
-                'px-3 py-2 text-sm rounded-md',
-                link.active
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
-              ]"
-              v-html="link.label"
-            />
           </div>
-        </nav>
-      </div>
+        </template>
+      </Datatable>
     </div>
 
     <!-- Modal de confirmación de eliminación -->
-    <Modal :show="showDeleteModal" @close="closeDeleteModal">
-      <div class="p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">Confirmar eliminación</h3>
-        <p class="text-sm text-gray-700 mb-6">
-          ¿Estás seguro de que deseas eliminar el permiso "{{ permissionToDelete?.name }}"? 
-          Esta acción no se puede deshacer.
-        </p>
-        <div class="flex justify-end space-x-3">
-          <button
-            @click="closeDeleteModal"
-            class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md text-sm font-medium"
-          >
-            Cancelar
-          </button>
-          <button
-            @click="confirmDelete"
-            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-          >
-            Eliminar
-          </button>
-        </div>
-      </div>
-    </Modal>
+    <ConfirmDialog />
+    <Toast />
   </AppLayout>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { Link, router } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
-import Modal from '@/Components/Customs/Modal.vue'
+import Datatable from '@/Components/Customs/Datatable.vue'
+import { useConfirm } from 'primevue/useconfirm'
+import { useToast } from 'primevue/usetoast'
 
-defineProps({
+const props = defineProps({
   permissions: Object,
+  filters: Object,
+  guards: Array,
 })
 
-const showDeleteModal = ref(false)
-const permissionToDelete = ref(null)
+const confirm = useConfirm()
+const toast = useToast()
+
+// Formulario de búsqueda
+const searchForm = reactive({
+  search: props.filters?.search || '',
+  guard: props.filters?.guard || '',
+  has_roles: props.filters?.has_roles || '',
+})
+
+// Opciones para los selects
+const guardOptions = computed(() => [
+  { label: 'Todos los guards', value: '' },
+  ...props.guards.map(guard => ({ label: guard, value: guard }))
+])
+
+const roleOptions = [
+  { label: 'Todos', value: '' },
+  { label: 'Asignados a roles', value: 'yes' },
+  { label: 'Sin asignar', value: 'no' }
+]
+
+// Configuración de columnas para la tabla
+const columns = [
+  {
+    field: 'name',
+    header: 'Nombre del Permiso',
+    sortable: true,
+    filter: true,
+    class: 'font-medium text-gray-900'
+  },
+  {
+    field: 'guard_name',
+    header: 'Guard',
+    sortable: true,
+    filter: true,
+    type: 'tag',
+    severitys: [
+      { text: 'web', severity: 'info', class: 'bg-blue-100 text-blue-800' },
+      { text: 'api', severity: 'success', class: 'bg-green-100 text-green-800' },
+      { text: 'admin', severity: 'warning', class: 'bg-yellow-100 text-yellow-800' }
+    ]
+  },
+  {
+    field: 'roles_count',
+    header: 'Roles Asignados',
+    class: 'text-center',
+    format: (count) => `${count || 0} roles`
+  },
+  {
+    field: 'roles',
+    header: 'Vista previa de roles',
+    class: 'max-w-xs',
+    format: (roles) => {
+      if (!roles || roles.length === 0) return 'Sin roles asignados'
+      const preview = roles.slice(0, 3).map(r => r.name).join(', ')
+      return roles.length > 3 ? `${preview} y ${roles.length - 3} más...` : preview
+    }
+  },
+  {
+    field: 'created_at',
+    header: 'Fecha de creación',
+    type: 'date',
+    sortable: true,
+    filter: true
+  }
+]
+
+// Acciones de la tabla
+const tableActions = [
+  {
+    icon: 'pi pi-eye',
+    label: 'Ver',
+    severity: 'info',
+    outlined: true,
+    action: (data) => router.visit(route('permissions.show', data.id))
+  },
+  {
+    icon: 'pi pi-pencil',
+    label: 'Editar',
+    severity: 'warning',
+    outlined: true,
+    action: (data) => router.visit(route('permissions.edit', data.id))
+  },
+  {
+    icon: 'pi pi-trash',
+    label: 'Eliminar',
+    severity: 'danger',
+    outlined: true,
+    action: (data) => deletePermission(data)
+  }
+]
+
+const search = () => {
+  router.get(route('permissions.index'), searchForm, {
+    preserveState: true,
+    replace: true,
+  })
+}
+
+const clearFilters = () => {
+  searchForm.search = ''
+  searchForm.guard = ''
+  searchForm.has_roles = ''
+  router.get(route('permissions.index'), {}, {
+    preserveState: true,
+    replace: true,
+  })
+}
 
 const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString('es-ES', {
@@ -126,22 +192,33 @@ const formatDate = (dateString) => {
 }
 
 const deletePermission = (permission) => {
-  permissionToDelete.value = permission
-  showDeleteModal.value = true
-}
-
-const closeDeleteModal = () => {
-  showDeleteModal.value = false
-  permissionToDelete.value = null
-}
-
-const confirmDelete = () => {
-  if (permissionToDelete.value) {
-    router.delete(route('permissions.destroy', permissionToDelete.value.id), {
-      onSuccess: () => {
-        closeDeleteModal()
-      }
-    })
-  }
+  confirm.require({
+    message: `¿Estás seguro de que deseas eliminar el permiso "${permission.name}"? Esta acción no se puede deshacer.`,
+    header: 'Confirmar eliminación',
+    icon: 'pi pi-exclamation-triangle',
+    rejectClass: 'p-button-secondary p-button-outlined',
+    rejectLabel: 'Cancelar',
+    acceptLabel: 'Eliminar',
+    accept: () => {
+      router.delete(route('permissions.destroy', permission.id), {
+        onSuccess: () => {
+          toast.add({
+            severity: 'success',
+            summary: 'Permiso eliminado',
+            detail: `El permiso "${permission.name}" ha sido eliminado correctamente`,
+            life: 3000
+          })
+        },
+        onError: () => {
+          toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se pudo eliminar el permiso',
+            life: 3000
+          })
+        }
+      })
+    }
+  })
 }
 </script>

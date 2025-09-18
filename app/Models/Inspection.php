@@ -21,11 +21,12 @@ class Inspection extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                if (!$value) {
+                if (! $value) {
                     return '';
                 }
-                
+
                 $decoded = json_decode($value, true);
+
                 return is_array($decoded) ? implode(', ', $decoded) : $value;
             },
             set: function ($value) {
@@ -42,6 +43,11 @@ class Inspection extends Model
     public function ayudante(): BelongsTo
     {
         return $this->belongsTo(User::class, 'ayudante_id');
+    }
+
+    public function ayudantes()
+    {
+        return $this->belongsToMany(User::class, 'inspection_ayudantes', 'inspection_id', 'ayudante_id');
     }
 
     public function getCodeAttribute()

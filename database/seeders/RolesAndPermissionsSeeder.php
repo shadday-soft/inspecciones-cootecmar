@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -21,7 +20,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $permissions = [
             // Permisos de usuarios
             'ver usuarios',
-            'crear usuarios', 
+            'crear usuarios',
             'editar usuarios',
             'eliminar usuarios',
             'gestionar roles usuarios',
@@ -29,7 +28,7 @@ class RolesAndPermissionsSeeder extends Seeder
             // Permisos de roles
             'ver roles',
             'crear roles',
-            'editar roles', 
+            'editar roles',
             'eliminar roles',
 
             // Permisos de permisos
@@ -41,7 +40,7 @@ class RolesAndPermissionsSeeder extends Seeder
             // Permisos de proyectos
             'ver proyectos',
             'crear proyectos',
-            'editar proyectos', 
+            'editar proyectos',
             'eliminar proyectos',
 
             // Permisos de herramientas/equipos
@@ -73,6 +72,9 @@ class RolesAndPermissionsSeeder extends Seeder
             // Permisos administrativos
             'acceso dashboard',
             'configurar sistema',
+
+            // Permisos de auditoría
+            'audit.view',
         ];
 
         foreach ($permissions as $permission) {

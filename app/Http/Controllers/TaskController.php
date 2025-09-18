@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use Exception;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Inspection;
+use App\Models\Task;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -17,15 +17,21 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $inspections = Inspection::where('user_id', Auth::user()->id)
-                                ->orWhere('ayudante_id', Auth::user()->id)
-                                ->with('user', 'ayudante', 'tools')
-                                ->get();
-                                
-        if (request()->wantsJson()) {
+        $userId = Auth::user()->id;
 
+        $inspections = Inspection::where(function ($query) use ($userId) {
+            $query->where('user_id', $userId)
+                ->orWhereHas('ayudantes', function ($subQuery) use ($userId) {
+                    $subQuery->where('ayudante_id', $userId);
+                });
+        })
+            ->with('user', 'ayudante', 'ayudantes', 'tools')
+            ->get();
+
+        if (request()->wantsJson()) {
             return response()->json($inspections);
         }
+
         return Inertia::render('Tasks/index', ['inspections' => $inspections]);
     }
 
@@ -33,9 +39,10 @@ class TaskController extends Controller
     {
         try {
             $tasks = Task::where('inspection_id', $inspection->id)->get();
+
             return response()->json($tasks);
         } catch (Exception $e) {
-            return back()->withErrors('message', 'Ocurrio un Error Al obtener las tareas : ' . $e);
+            return back()->withErrors('message', 'Ocurrio un Error Al obtener las tareas : '.$e);
         }
     }
 
@@ -57,9 +64,10 @@ class TaskController extends Controller
             $validateData['user_id'] = Inspection::find($validateData['inspection_id'])->user_id;
             $validateData['percentDone'] = 0;
             $task = Task::create($validateData);
+
             return response()->json(['message' => 'Tarea Creada', 'task' => $task], 200);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Ocurrio un Error Al Crear : ' . $e]);
+            return response()->json(['message' => 'Ocurrio un Error Al Crear : '.$e]);
             // return back()->withErrors('message', 'Ocurrio un Error Al Crear : ' . $e);
         }
     }
@@ -89,7 +97,7 @@ class TaskController extends Controller
         try {
             $task->update($validateData);
         } catch (Exception $e) {
-            return back()->withErrors('message', 'Ocurrio un Error Al Actualizar : ' . $e);
+            return back()->withErrors('message', 'Ocurrio un Error Al Actualizar : '.$e);
         }
     }
 
@@ -101,7 +109,7 @@ class TaskController extends Controller
         try {
             $task->delete();
         } catch (Exception $e) {
-            return back()->withErrors('message', 'Ocurrio un Error Al eliminar : ' . $e);
+            return back()->withErrors('message', 'Ocurrio un Error Al eliminar : '.$e);
         }
     }
 }

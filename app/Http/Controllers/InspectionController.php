@@ -18,7 +18,7 @@ class InspectionController extends Controller
      */
     public function index()
     {
-        $inspections = Inspection::with('user', 'tools', 'ayudante', 'project')->get();
+        $inspections = Inspection::with('user', 'tools', 'ayudante', 'ayudantes', 'project')->get();
         $users = User::get();
         $projects = Project::get();
         if (request()->wantsJson()) {
@@ -101,7 +101,8 @@ class InspectionController extends Controller
     {
         $validateData = $request->validate([
             'user_id' => 'required',
-            'ayudante_id' => 'nullable|numeric',
+            'ayudante_ids' => 'nullable|array',
+            'ayudante_ids.*' => 'required|distinct|numeric',
             'tools' => 'nullable|array',
             'tools.*' => 'required|distinct|uuid',
             'fecha_programada' => 'nullable|date',
@@ -109,16 +110,26 @@ class InspectionController extends Controller
         ]);
 
         $user = User::find($request->user_id);
-        $ayudante = User::find($request->ayudante_id);
         $inspection->tools()->sync($validateData['tools']);
 
-        if ($user && $ayudante) {
-            unset($validateData['tools']);
-            $inspection->update($validateData);
+        if ($user) {
+            // Actualizar datos básicos de la inspección
+            $inspection->update([
+                'user_id' => $validateData['user_id'],
+                'fecha_programada' => $validateData['fecha_programada'],
+                'duracion' => $validateData['duracion'],
+            ]);
 
-            return back()->with('message', 'Usuario y Ayudante Asignados Correctamente');
+            // Sincronizar ayudantes
+            if (isset($validateData['ayudante_ids']) && is_array($validateData['ayudante_ids'])) {
+                $inspection->ayudantes()->sync($validateData['ayudante_ids']);
+            } else {
+                $inspection->ayudantes()->detach();
+            }
+
+            return back()->with('message', 'Inspector y Ayudantes Asignados Correctamente');
         } else {
-            return back()->withErrors('message', 'Usuario o Ayudante No Encontrado');
+            return back()->withErrors('message', 'Inspector No Encontrado');
         }
     }
 

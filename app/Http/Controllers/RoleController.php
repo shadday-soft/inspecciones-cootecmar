@@ -14,14 +14,36 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::with('permissions')
-            ->orderBy('name')
-            ->paginate(10);
+        $query = Role::with('permissions')->orderBy('name');
+
+        // Búsqueda por nombre
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        // Filtro por guard
+        if ($request->filled('guard')) {
+            $query->where('guard_name', $request->guard);
+        }
+
+        // Filtro por número de permisos
+        if ($request->filled('has_permissions')) {
+            if ($request->has_permissions === 'yes') {
+                $query->has('permissions');
+            } elseif ($request->has_permissions === 'no') {
+                $query->doesntHave('permissions');
+            }
+        }
+
+        $roles = $query->paginate(10)->withQueryString();
 
         return Inertia::render('Roles/Index', [
             'roles' => $roles,
+            'filters' => $request->only(['search', 'guard', 'has_permissions']),
+            'guards' => Role::distinct()->pluck('guard_name'),
         ]);
     }
 
@@ -31,7 +53,7 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = Permission::orderBy('name')->get();
-        
+
         return Inertia::render('Roles/Create', [
             'permissions' => $permissions,
         ]);
@@ -51,6 +73,9 @@ class RoleController extends Controller
             $role->syncPermissions($request->permissions);
         }
 
+        // Log auditoría
+        self::logRoleCreated($role);
+
         return redirect()->route('roles.index')
             ->with('success', 'Rol creado exitosamente.');
     }
@@ -62,7 +87,7 @@ class RoleController extends Controller
     {
         $role->load('permissions');
         $roleUsers = $role->users()->get();
-        
+
         return Inertia::render('Roles/Show', [
             'role' => $role,
             'roleUsers' => $roleUsers,
@@ -76,7 +101,7 @@ class RoleController extends Controller
     {
         $permissions = Permission::orderBy('name')->get();
         $role->load('permissions');
-        
+
         return Inertia::render('Roles/Edit', [
             'role' => $role,
             'permissions' => $permissions,
@@ -88,6 +113,9 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
+        // Guardar datos originales para auditoría
+        $originalData = $role->toArray();
+
         $role->update([
             'name' => $request->name,
             'guard_name' => $request->guard_name ?? 'web',
@@ -98,6 +126,9 @@ class RoleController extends Controller
         } else {
             $role->syncPermissions([]);
         }
+
+        // Log auditoría
+        self::logRoleUpdated($role, $originalData);
 
         return redirect()->route('roles.index')
             ->with('success', 'Rol actualizado exitosamente.');
@@ -111,6 +142,9 @@ class RoleController extends Controller
         if ($role->users()->count() > 0) {
             return back()->with('error', 'No se puede eliminar el rol porque tiene usuarios asignados.');
         }
+
+        // Log auditoría antes de eliminar
+        self::logRoleDeleted($role);
 
         $role->delete();
 

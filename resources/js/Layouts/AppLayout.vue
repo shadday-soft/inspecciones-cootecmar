@@ -21,9 +21,7 @@ import {
   PlusIcon,
   RectangleStackIcon,
   Squares2X2Icon,
-  UserGroupIcon,
   XMarkIcon,
-  ShieldCheckIcon,
 } from "@heroicons/vue/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
 import CreateRequets from "@/Components/CreateRequets.vue";
@@ -77,30 +75,13 @@ const sidebarNavigation = [
     current: route().current("inspections.*"),
   },
   {
-    name: "Usuarios",
-    href: "users.index",
-    icon: UserGroupIcon,
-    current: route().current("users.*"),
-  },
-  {
-    name: "Roles",
-    href: "roles.index",
-    icon: ShieldCheckIcon,
-    current: route().current("roles.*"),
-  },
-  {
-    name: "Permisos",
-    href: "permissions.index",
-    icon: ShieldCheckIcon,
-    current: route().current("permissions.*"),
-  },
-  {
     name: "Mis tareas",
     href: "tasks.index",
     icon: RectangleStackIcon,
     current: route().current("tasks.*"),
   },
-  { name: "Ajustes", 
+  { 
+    name: "Configuraciones", 
     href: "settings", 
     icon: CogIcon, 
     current: route().current("settings") 

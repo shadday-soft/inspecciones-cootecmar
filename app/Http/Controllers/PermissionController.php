@@ -13,12 +13,36 @@ class PermissionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = Permission::orderBy('name')->paginate(15);
+        $query = Permission::orderBy('name');
+
+        // Búsqueda por nombre
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        // Filtro por guard
+        if ($request->filled('guard')) {
+            $query->where('guard_name', $request->guard);
+        }
+
+        // Filtro por si están asignados a roles
+        if ($request->filled('has_roles')) {
+            if ($request->has_roles === 'yes') {
+                $query->has('roles');
+            } elseif ($request->has_roles === 'no') {
+                $query->doesntHave('roles');
+            }
+        }
+
+        $permissions = $query->paginate(15)->withQueryString();
 
         return Inertia::render('Permissions/Index', [
             'permissions' => $permissions,
+            'filters' => $request->only(['search', 'guard', 'has_roles']),
+            'guards' => Permission::distinct()->pluck('guard_name'),
         ]);
     }
 
@@ -50,7 +74,7 @@ class PermissionController extends Controller
     public function show(Permission $permission)
     {
         $permissionRoles = $permission->roles()->get();
-        
+
         return Inertia::render('Permissions/Show', [
             'permission' => $permission,
             'permissionRoles' => $permissionRoles,

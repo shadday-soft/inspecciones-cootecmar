@@ -112,6 +112,25 @@
               <p>{{ inspeccion.ayudante.name }}</p>
             </span>
           </div>
+          <div
+            v-if="inspeccion.ayudantes && inspeccion.ayudantes.length > 0"
+            class="flex flex-col gap-y-2"
+          >
+            <h3 class="font-bold text-md">Ayudantes</h3>
+            <div
+              v-for="ayudante in inspeccion.ayudantes"
+              :key="ayudante.id"
+              class="flex gap-x-2 items-center w-full pr-6 bg-secondary text-white rounded-lg"
+            >
+              <div>
+                <img :src="ayudante.profile_photo_url" class="" />
+              </div>
+              <span class="flex flex-col">
+                <h4 class="font-semibold">Ayudante</h4>
+                <p>{{ ayudante.name }}</p>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 

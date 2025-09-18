@@ -15,15 +15,25 @@
           option-label="name"
           option-value="id"
         ></Input>
-        <Input
-          label="Ayudante"
-          class="w-full"
-          type="dropdown"
-          v-model="form.ayudante_id"
-          :options="users.filter((u) => u.id != form.user_id)"
-          option-label="name"
-          option-value="id"
-        ></Input>
+        <div class="w-full">
+          <label class="font-bold">Ayudantes</label>
+          <MultiSelect
+            v-model="form.ayudante_ids"
+            :options="users.filter((u) => u.id != form.user_id)"
+            optionLabel="name"
+            optionValue="id"
+            filter
+            placeholder="Seleccionar Ayudantes"
+            display="chip"
+            class="w-full"
+          >
+            <template #option="slotProps">
+              <div class="flex items-center">
+                <div>{{ slotProps.option.name }}</div>
+              </div>
+            </template>
+          </MultiSelect>
+        </div>
       </div>
       <div class="flex justify-between w-full items-center gap-x-2">
         <div class="flex flex-col w-full -mt-1">
@@ -122,7 +132,7 @@ const props = defineProps({
 
 const form = useForm({
   user_id: props.inspeccion.user_id,
-  ayudante_id: props.inspeccion.ayudante_id,
+  ayudante_ids: props.inspeccion.ayudantes ? props.inspeccion.ayudantes.map(a => a.id) : [],
   fecha_programada: props.inspeccion.fecha + "T07:00",
   duracion: 0.5,
   tools: [],
