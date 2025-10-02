@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -14,6 +15,8 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run(): void
     {
         // Limpiar cache
+        User::find(1)->assignRole('Administrador');
+        return;
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Crear permisos básicos para el sistema

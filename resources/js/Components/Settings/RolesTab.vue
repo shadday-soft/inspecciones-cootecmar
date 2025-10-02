@@ -88,16 +88,7 @@ const columns = [
         class: 'text-center',
         format: (permissions) => `${permissions?.length || 0} permisos`
     },
-    {
-        field: 'permissions',
-        header: 'Vista previa de permisos',
-        class: 'max-w-xs',
-        format: (permissions) => {
-            if (!permissions || permissions.length === 0) return 'Sin permisos'
-            const preview = permissions.slice(0, 3).map(p => p.name).join(', ')
-            return permissions.length > 3 ? `${preview} y ${permissions.length - 3} más...` : preview
-        }
-    },
+    
     {
         field: 'created_at',
         header: 'Fecha de creación',

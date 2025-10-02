@@ -128,16 +128,7 @@ const columns = [
         class: 'text-center',
         format: (count) => `${count || 0} roles`
     },
-    {
-        field: 'roles',
-        header: 'Vista previa de roles',
-        class: 'max-w-xs',
-        format: (roles) => {
-            if (!roles || roles.length === 0) return 'Sin roles asignados'
-            const preview = roles.slice(0, 3).map(r => r.name).join(', ')
-            return roles.length > 3 ? `${preview} y ${roles.length - 3} más...` : preview
-        }
-    },
+  
     {
         field: 'created_at',
         header: 'Fecha de creación',
