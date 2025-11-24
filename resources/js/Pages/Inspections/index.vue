@@ -232,7 +232,16 @@ const props = defineProps({
     type: Array,
     Required: true,
   },
+  inspectionToShow: {
+    type: Object,
+    default: null,
+  },
 });
+
+if (props.inspectionToShow) {
+  inspeccionShow.value = props.inspectionToShow;
+  visibleDetails.value = true;
+}
 
 const form = useForm({
   id: "",
