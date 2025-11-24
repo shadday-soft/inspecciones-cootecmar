@@ -8,6 +8,7 @@
     />
     <div>
       <ReporteInspeccion v-if="typeSeclect == 'Reporte de Inspección'" :inspeccion />
+      <ReporteHermeticidad v-if="typeSeclect == 'REPORTE DE INSPECCIÓN DE HERMETICIDAD POR PRESIÓN'" :inspeccion />
     </div>
   </div>
 </template>
@@ -15,7 +16,8 @@
 import Input from "@/Components/Customs/Input.vue";
 import { ref } from "vue";
 import ReporteInspeccion from "./Forms/ReporteInspeccion.vue";
-const typesReports = ref(["Reporte de Inspección"]);
+import ReporteHermeticidad from "./Forms/ReporteHermeticidad.vue";
+const typesReports = ref(["Reporte de Inspección", "REPORTE DE INSPECCIÓN DE HERMETICIDAD POR PRESIÓN"]);
 const typeSeclect = ref(null);
 
 const props = defineProps({

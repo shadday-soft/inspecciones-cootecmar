@@ -86,6 +86,7 @@ Route::middleware([
 
     // Rutas de reportes
     Route::resource('reports', ReportController::class)->middleware('permission:ver reportes');
+    
     Route::resource('reports', ReportController::class)->only(['create', 'store'])
         ->middleware('permission:crear reportes');
     Route::resource('reports', ReportController::class)->only(['edit', 'update'])

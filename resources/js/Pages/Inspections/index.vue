@@ -69,7 +69,7 @@
         'Medición de dureza',
       ]"
     ></Input>
-    <Input label="Grafo" v-model="form.grafo" placeholder="xxxxxx_xx"></Input>
+    <Input label="Grafo" v-model="form.grafo" placeholder="xxxxxx_xx" :errorMessage="form.errors.grafo"></Input>
     <Input
       label="Supervisor"
       v-model="form.supervisor"

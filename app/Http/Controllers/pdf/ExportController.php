@@ -11,16 +11,16 @@ class ExportController extends Controller
 {
     public function export (Report $report){
 
-        $reporte = $report->load('user', 'fieldReports');
+        $reporte = $report->load('user', 'fieldReports', 'inspection', 'inspection.project');
         $data = [
             'report' => $reporte,
-            'to' => 'Sam Example',
-            'subtotal' => '5.00',
-            'tax' => '.35',
-            'total' => '5.35'
         ];
 
-        $pdf = Pdf::loadView('pdf.reporte-inspeccion', $data);
+        if($report->type == 'REPORTE DE INSPECCIÓN DE HERMETICIDAD POR PRESIÓN'){
+            $pdf = Pdf::loadView('pdf.reporte-hermeticidad-por-presion', $data);
+        }else{
+            $pdf = Pdf::loadView('pdf.reporte-inspeccion', $data);
+        }
 
         # Option 1) Show the PDF in the browser
         return $pdf->stream();

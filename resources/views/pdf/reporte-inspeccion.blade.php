@@ -8,7 +8,13 @@
     {{-- Use an absolute path when specifying the CSS so it works in the PDF --}}
     <link href='{{ public_path('css/reports/general.css') }}' rel='stylesheet'>
     <link href='{{ public_path('css/components/header.css') }}' rel='stylesheet'>
+    <style>
 
+        img {
+            max-width: 600px;
+            max-height: 300px;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,7 +23,7 @@
    </header>
 
     <main>
-        <x-pdf.table></x-pdf.table>
+        <x-pdf.table :report="$report"></x-pdf.table>
 
         <x-pdf.text-area style="margin-top: 40px" label="NOVEDADES PRESENTES (ANOMALY):">
             {!! $report->fieldReports[0]['value'] !!}

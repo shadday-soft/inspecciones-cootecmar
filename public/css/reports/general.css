@@ -40,8 +40,10 @@ main {
 
 table td {
     border: solid black 1px;
-    padding: 1px;
+    padding: 10px 5px;
     width: 50%;
+    font-size: small;
+    text-transform: uppercase;
 }
 
 table {

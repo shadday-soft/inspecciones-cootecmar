@@ -54,11 +54,16 @@ class ReportController extends Controller
                 // 'signature_reviewed' => $request->signature_reviewed,
             ]);
             foreach($request->inputs as $field_report){
+                $value = $field_report['value'];
+                if(is_array($field_report['value'])){
+                    $value = json_encode($field_report['value']);
+                }
+              
                 FieldReport::create([
                     'report_id' => $report->id,
                     'field' => $field_report['label'], 
                     'label' => $field_report['textLabel'], 
-                    'value' => $field_report['value'], 
+                    'value' => $value, 
                 ]);
             }
             

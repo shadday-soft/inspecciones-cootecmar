@@ -8,7 +8,7 @@
     :header="inspeccion.code"
     position="right"
   >
-    <div class="py-2 h-[91vh] overflow-y-auto">
+    <div class="py-2 ">
       <div class="flex flex-col gap-y-2">
         <ItemDetail
           label="Codigo"
