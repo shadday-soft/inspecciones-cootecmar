@@ -21,7 +21,7 @@ return new class extends Migration
             $table->json('new_values')->nullable();
             $table->string('description')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // quien hizo el cambio
-            $table->foreignId('target_user_id')->nullable()->constrained('users')->cascadeOnDelete(); // usuario afectado (para asignaciones)
+            $table->foreignId('target_user_id')->nullable(); // usuario afectado (para asignaciones)
             $table->string('ip_address')->nullable();
             $table->string('user_agent')->nullable();
             $table->timestamps();

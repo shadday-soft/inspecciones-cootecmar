@@ -6,7 +6,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use App\Models\Tool;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,7 +16,6 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        
         User::create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
@@ -38,6 +36,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Tool::factory(5)->create();
+        $this->call(RolesAndPermissionsSeeder::class);
+        $this->call(ToolSeeder::class);
     }
 }

@@ -289,13 +289,7 @@ const mobileMenuOpen = ref(false);
                   </transition>
                 </Menu>
 
-                <button
-                  type="button"
-                  class="flex items-center justify-center rounded-full bg-indigo-600 p-1 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  <PlusIcon class="size-6" aria-hidden="true" />
-                  <span class="sr-only">Add file</span>
-                </button>
+               
               </div>
             </div>
           </div>

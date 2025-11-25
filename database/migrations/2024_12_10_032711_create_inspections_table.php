@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('supervisor');
             $table->integer('prioridad'); // 1, 2, 3, 4 , 5
             $table->text('descripcion');
-            $table->dateTime('fecha_programada')->nullable();
+            $table->string('fecha_programada')->nullable();
             $table->double('duracion')->nullable(); // Duracion en horas
             $table->timestamps();
         });

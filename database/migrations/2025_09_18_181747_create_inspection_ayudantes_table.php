@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('inspection_ayudantes', function (Blueprint $table) {
             $table->id();
             $table->string('inspection_id');
-            $table->foreignId('ayudante_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('ayudante_id');
             $table->timestamps();
-
-            $table->foreign('inspection_id')->references('id')->on('inspections')->onDelete('cascade');
             $table->unique(['inspection_id', 'ayudante_id']);
         });
     }

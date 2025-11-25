@@ -9,16 +9,7 @@
     >
     </Datatable>
 
-    <Modal
-      v-if="inspeccion"
-      :title="`Listado de tareas de la solicitud ${inspeccion.code}`"
-      v-model="visibleTareas"
-      closeOnEscape
-    >
-      <div class="flex flex-col gap-y-4">
-        <List :inspeccion></List>
-      </div>
-    </Modal>
+    <TareasModal v-model="visibleTareas" :inspeccion="inspeccion" v-if="inspeccion" />
   </AppLayout>
 
   <show
@@ -31,15 +22,17 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Datatable from "@/Components/Customs/Datatable.vue";
-import Modal from "@/Components/Customs/Modal.vue";
+import TareasModal from "./TareasModal.vue";
 import { ref } from "vue";
 import show from "@/Pages/Inspections/show.vue";
-import List from "@/Pages/Tasks/List.vue";
+
+// Importar módulos extraídos
+import columns from "./columns";
+import { createActions } from "./actions";
 
 const visibleDetails = ref(false);
 const inspeccionShow = ref(null);
 const visibleTareas = ref(false);
-
 const inspeccion = ref(null);
 
 const props = defineProps({
@@ -53,72 +46,11 @@ const props = defineProps({
   },
 });
 
-const columns = [
-  {
-    field: "code",
-    header: "code",
-    filter: "true",
-  },
-  {
-    field: "solicitante",
-    header: "Solicitante",
-    filter: "true",
-  },
-  {
-    field: "gerencia",
-    header: "Gerencia",
-    filter: "true",
-  },
-  {
-    field: "fecha",
-    header: "Fecha",
-    filter: "true",
-  },
-  {
-    field: "tipo",
-    header: "Tipo",
-  },
-  {
-    field: "grafo",
-    header: "Grafo",
-    filter: "true",
-  },
-  {
-    field: "supervisor",
-    header: "Supervisor",
-    filter: "true",
-  },
-  {
-    field: "prioridad",
-    header: "Prioridad",
-    filter: "true",
-  },
-
-  {
-    field: "descripcion",
-    header: "Descripción",
-  },
-];
-
-const actions = [
-  {
-    action: (data) => {
-      inspeccionShow.value = data;
-      visibleDetails.value = true;
-      console.log(inspeccionShow.value);
-    },
-    icon: "fa-solid fa-eye text-sm",
-    severity: "info",
-    label: "Ver detalles",
-  },
-  {
-    action: (data) => {
-      inspeccion.value = data;
-      visibleTareas.value = true;
-    },
-    icon: "fa-solid fa-list text-sm",
-    severity: "info",
-    label: "Tareas",
-  },
-];
+// Crear las acciones pasando referencias necesarias
+const actions = createActions({
+  inspeccion,
+  inspeccionShow,
+  visibleDetails,
+  visibleTareas,
+});
 </script>

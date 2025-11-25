@@ -14,10 +14,6 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        // Limpiar cache
-        User::find(1)->assignRole('Administrador');
-        return;
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Crear permisos básicos para el sistema
         $permissions = [
@@ -142,5 +138,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'ver reportes',
             'acceso dashboard',
         ]);
+
+        User::find(1)->assignRole('Administrador');
     }
 }

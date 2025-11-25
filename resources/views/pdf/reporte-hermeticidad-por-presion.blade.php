@@ -54,7 +54,7 @@
         }
 
         .checkbox.checked::before {
-            content: "✓";
+            content: "X";
             display: block;
             text-align: center;
             font-weight: bold;
@@ -103,160 +103,128 @@
 
             <!-- Tercera fila: TIPO DE PRUEBA -->
             @php
-                $tipoPrueba = collect($report->fieldReports)->firstWhere('field', 'tipo_prueba')['value'] ?? '';
+                $tipoPrueba = collect($report->fieldReports)->firstWhere('field', 'tipo_prueba')['value'] ?? '';;
                 $montajeDispositivo = collect($report->fieldReports)->firstWhere('field', 'montaje_dispositivo')['value'] ?? '';
             @endphp
             <tr>
-                <td rowspan="2" class="header-cell" style="width: 25%;">TIPO DE PRUEBA: {{ $tipoPrueba }}</td>
-                <td>
+                <td class="header-cell">TIPO DE PRUEBA:</td>
+                <td  colspan="4">
                     <span class="checkbox-group">
-                        <span class="checkbox {{ $tipoPrueba == 'hidrostatica' ? 'checked' : '' }}"></span> HIDROSTÁTICA
+                        <span class="checkbox {{ str_contains($tipoPrueba, 'HIDROSTATICA') ? 'checked' : '' }}"></span> HIDROSTÁTICA
                     </span>
                     <span class="checkbox-group">
-                        <span class="checkbox {{ $tipoPrueba == 'neumatica' ? 'checked' : '' }}"></span> NEUMÁTICA
+                        <span class="checkbox {{ str_contains($tipoPrueba, 'NEUMATICA') ? 'checked' : '' }}"></span>  NEUMÁTICA
                     </span>
                     <span class="checkbox-group">
-                        <span class="checkbox {{ $tipoPrueba == 'vacio' ? 'checked' : '' }}"></span> VACÍO
+                        <span class="checkbox {{ str_contains($tipoPrueba, 'VACIO') ? 'checked' : '' }}"></span> VACÍO
                     </span>
                 </td>
-                <td colspan="2" rowspan="2">
+                
+            </tr>
+            <tr>
+                <td  class="header-cell">
+                    <strong>MONTAJE DEL<br>DISPOSITIVO DE LA<br>PRUEBA.</strong>
+                </td>
+                <td colspan="4">
                     <table style="border: none; width: 100%;">
                         <tr>
                             <td style="border: none; padding: 2px;" colspan="2">
-                                <span class="checkbox {{ $montajeDispositivo == 'division_soldadura' ? 'checked' : '' }}"></span> 
+                                <span class="checkbox {{ str_contains($montajeDispositivo, 'Division de Soldadura') ? 'checked' : '' }}"></span> 
                                 <strong>División de Soldadura</strong>
                             </td>
                             <td style="border: none; padding: 2px;" colspan="2">
-                                <span class="checkbox {{ $montajeDispositivo == 'division_motores' ? 'checked' : '' }}"></span> 
+                                <span class="checkbox {{ str_contains($montajeDispositivo, 'Division de motores|') ? 'checked' : '' }}"></span> 
                                 <strong>División de Motores</strong>
                             </td>
                         </tr>
                         <tr>
                             <td style="border: none; padding: 2px;" colspan="2">
-                                <span class="checkbox {{ $montajeDispositivo == 'division_mecanica' ? 'checked' : '' }}"></span> 
+                                <span class="checkbox {{ str_contains($montajeDispositivo, 'Division de mecanica|') ? 'checked' : '' }}"></span> 
                                 <strong>División de Mecánica</strong>
                             </td>
                             <td style="border: none; padding: 2px;" colspan="2">
-                                <span class="checkbox {{ $montajeDispositivo == 'casco_estructura' ? 'checked' : '' }}"></span> 
+                                <span class="checkbox {{ str_contains($montajeDispositivo, 'Casco y Estructura - Maquinaria') ? 'checked' : '' }}"></span> 
                                 <strong>Casco y Estructura - Maquinaria</strong>
                             </td>
                         </tr>
                         <tr>
                             <td style="border: none; padding: 2px;" colspan="2">
-                                <span class="checkbox {{ $montajeDispositivo == 'contratista' ? 'checked' : '' }}"></span> 
+                                <span class="checkbox {{ str_contains($montajeDispositivo, 'Contratista') ? 'checked' : '' }}"></span> 
                                 <strong>Contratista</strong>
                             </td>
                             <td style="border: none; padding: 2px;" colspan="2">
-                                <span class="checkbox {{ $montajeDispositivo == 'propulsion_electricidad' ? 'checked' : '' }}"></span> 
+                                <span class="checkbox {{ str_contains($montajeDispositivo, 'Propulsión y Electricidad.') ? 'checked' : '' }}"></span> 
                                 <strong>Propulsión y Electricidad.</strong>
                             </td>
                         </tr>
                         <tr>
                             <td style="border: none; padding: 2px;" colspan="4">
-                                <span class="checkbox {{ $montajeDispositivo == 'otro' ? 'checked' : '' }}"></span> 
-                                <strong>Otro:</strong> {{ $montajeDispositivo == 'otro' ? collect($report->fieldReports)->firstWhere('field', 'montaje_otro')['value'] ?? '' : '' }}
+                                <span class="checkbox {{ str_contains($montajeDispositivo, 'Otro') ? 'checked' : '' }}"></span> 
+                                <strong>Otro:</strong> {{ str_contains($montajeDispositivo, 'Otro') ? collect($report->fieldReports)->firstWhere('field', 'montaje_otro')['value'] ?? '' : '' }}
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
-            <tr>
-                <td class="header-cell">
-                    <strong>MONTAJE DEL<br>DISPOSITIVO DE LA<br>PRUEBA.</strong>
-                </td>
-            </tr>
 
             <!-- Cuarta fila: INSPECCIÓN REALIZADA POR -->
             <tr>
-                <td colspan="4" class="header-cell">INSPECCIÓN REALIZADA POR:</td>
+                <td colspan="4" class="header-cell">INSPECCIÓN REALIZADA POR: {{ $report->user->name ?? '' }}</td>
             </tr>
-            <tr>
-                <td colspan="4">{{ $report->user->name ?? '' }}</td>
-            </tr>
-
+           
             <!-- Quinta fila: Instrumento, Rango, Unidad -->
             <tr>
-                <td class="header-cell">INSTRUMENTO DE MEDICIÓN:</td>
-                <td class="header-cell">RANGO:</td>
-                <td colspan="2" class="header-cell">UNIDAD DE MEDIDA:</td>
+                <td class="header-cell">INSTRUMENTO DE MEDICIÓN: {{ collect($report->fieldReports)->firstWhere('field', 'instrumento_medicion')['value'] ?? '' }}</td>
+                <td class="header-cell">RANGO: {{ collect($report->fieldReports)->firstWhere('field', 'rango')['value'] ?? '' }}</td>
+                <td colspan="2" class="header-cell">UNIDAD DE MEDIDA: {{ collect($report->fieldReports)->firstWhere('field', 'unidad_medida')['value'] ?? '' }}</td>
             </tr>
-            <tr>
-                <td>{{ collect($report->fieldReports)->firstWhere('field', 'instrumento_medicion')['value'] ?? '' }}</td>
-                <td>{{ collect($report->fieldReports)->firstWhere('field', 'rango')['value'] ?? '' }}</td>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'unidad_medida')['value'] ?? '' }}</td>
-            </tr>
+           
 
             <!-- Sexta fila: Código metrológico y fecha de calibración -->
             <tr>
-                <td colspan="2" class="header-cell">CÓDIGO METROLÓGICO:</td>
-                <td colspan="2" class="header-cell">FECHA DE CALIBRACIÓN:</td>
+                <td colspan="1" class="header-cell">CÓDIGO METROLÓGICO: {{ collect($report->fieldReports)->firstWhere('field', 'codigo_metrologico')['value'] ?? '' }} </td>
+                <td colspan="3" class="header-cell">FECHA DE CALIBRACIÓN: {{ collect($report->fieldReports)->firstWhere('field', 'fecha_calibracion')['value'] ?? '' }}</td>
             </tr>
-            <tr>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'codigo_metrologico')['value'] ?? '' }}</td>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'fecha_calibracion')['value'] ?? '' }}</td>
-            </tr>
+           
 
             <!-- Séptima fila: Equipo y medio utilizado -->
             <tr>
-                <td colspan="2" class="header-cell">EQUIPO Y MEDIO UTILIZADO:</td>
-                <td colspan="2" class="header-cell">EQUIPO / PIEZA A INSPECCIONAR:</td>
+                <td colspan="2" class="header-cell">EQUIPO Y MEDIO UTILIZADO: {{ collect($report->fieldReports)->firstWhere('field', 'equipo_medio_utilizado')['value'] ?? '' }}</td>
+                <td colspan="2" class="header-cell">EQUIPO / PIEZA A INSPECCIONAR: {{ collect($report->fieldReports)->firstWhere('field', 'equipo_pieza_inspeccionar')['value'] ?? '' }}</td>
             </tr>
-            <tr>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'equipo_medio_utilizado')['value'] ?? '' }}</td>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'equipo_pieza_inspeccionar')['value'] ?? '' }}</td>
-            </tr>
+            
 
             <!-- Octava fila: Zona a inspeccionar y Material -->
             <tr>
-                <td colspan="2" class="header-cell">ZONA A INSPECCIONAR:</td>
-                <td colspan="2" class="header-cell">MATERIAL:</td>
+                <td colspan="2" class="header-cell">ZONA A INSPECCIONAR: {{ collect($report->fieldReports)->firstWhere('field', 'zona_inspeccionar')['value'] ?? '' }}</td>
+                <td colspan="2" class="header-cell">MATERIAL: {{ collect($report->fieldReports)->firstWhere('field', 'material')['value'] ?? '' }}</td>
             </tr>
-            <tr>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'zona_inspeccionar')['value'] ?? '' }}</td>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'material')['value'] ?? '' }}</td>
-            </tr>
+            
 
             <!-- Novena fila: Presión de diseño y presión de prueba -->
             <tr>
-                <td colspan="2" class="header-cell">PRESIÓN DE DISEÑO:</td>
-                <td colspan="2" class="header-cell">PRESIÓN DE PRUEBA:</td>
+                <td colspan="2" class="header-cell">PRESIÓN DE DISEÑO: {{ collect($report->fieldReports)->firstWhere('field', 'presion_diseno')['value'] ?? '' }}</td>
+                <td colspan="2" class="header-cell">PRESIÓN DE PRUEBA: {{ collect($report->fieldReports)->firstWhere('field', 'presion_prueba')['value'] ?? '' }}</td>
             </tr>
-            <tr>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'presion_diseno')['value'] ?? '' }}</td>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'presion_prueba')['value'] ?? '' }}</td>
-            </tr>
-
             <!-- Décima fila: Tiempo y factor -->
             <tr>
-                <td colspan="2" class="header-cell">TIEMPO DE PERMANENCIA:</td>
-                <td colspan="2" class="header-cell">FACTOR DE RELACIÓN:</td>
+                <td colspan="2" class="header-cell">TIEMPO DE PERMANENCIA: {{ collect($report->fieldReports)->firstWhere('field', 'tiempo_permanencia')['value'] ?? '' }}</td>
+                <td colspan="2" class="header-cell">FACTOR DE RELACIÓN: {{ collect($report->fieldReports)->firstWhere('field', 'factor_relacion')['value'] ?? '' }}</td>
             </tr>
-            <tr>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'tiempo_permanencia')['value'] ?? '' }}</td>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'factor_relacion')['value'] ?? '' }}</td>
-            </tr>
-
             <!-- Undécima fila: Temperaturas -->
             <tr>
-                <td colspan="2" class="header-cell">TEMPERATURA DE PRUEBA:</td>
-                <td colspan="2" class="header-cell">TEMPERATURA RECOMENDADA:</td>
+                <td colspan="2" class="header-cell">TEMPERATURA DE PRUEBA: {{ collect($report->fieldReports)->firstWhere('field', 'temperatura_prueba')['value'] ?? '' }}</td>
+                <td colspan="2" class="header-cell">TEMPERATURA RECOMENDADA: {{ collect($report->fieldReports)->firstWhere('field', 'temperatura_recomendada')['value'] ?? '' }}</td>
             </tr>
-            <tr>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'temperatura_prueba')['value'] ?? '' }}</td>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'temperatura_recomendada')['value'] ?? '' }}</td>
-            </tr>
+           
 
             <!-- Duodécima fila: Instrumento de medición y fecha de calibración -->
             <tr>
-                <td class="header-cell">INSTRUMENTO DE<br>MEDICIÓN:</td>
-                <td class="header-cell">CÓDIGO METROLÓGICO:</td>
-                <td colspan="2" class="header-cell">FECHA DE CALIBRACIÓN:</td>
+                <td class="header-cell">INSTRUMENTO DE<br>MEDICIÓN: {{ collect($report->fieldReports)->firstWhere('field', 'instrumento_medicion_temp')['value'] ?? '' }}</td>
+                <td class="header-cell">CÓDIGO METROLÓGICO: {{ collect($report->fieldReports)->firstWhere('field', 'codigo_metrologico_temp')['value'] ?? '' }}</td>
+                <td colspan="2" class="header-cell">FECHA DE CALIBRACIÓN : {{ collect($report->fieldReports)->firstWhere('field', 'fecha_calibracion_temp')['value'] ?? '' }}</td>
             </tr>
-            <tr>
-                <td>{{ collect($report->fieldReports)->firstWhere('field', 'instrumento_medicion_temp')['value'] ?? '' }}</td>
-                <td>{{ collect($report->fieldReports)->firstWhere('field', 'codigo_metrologico_temp')['value'] ?? '' }}</td>
-                <td colspan="2">{{ collect($report->fieldReports)->firstWhere('field', 'fecha_calibracion_temp')['value'] ?? '' }}</td>
-            </tr>
+          
 
             <!-- Decimotercera fila: Regulación aplicada -->
             <tr>

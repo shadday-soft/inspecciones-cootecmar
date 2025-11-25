@@ -1,8 +1,8 @@
 <template>
     <div class="flex flex-col gap-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div v-for="(input, index) of form.inputs.filter(i => i.type !== 'textLong')" :key="index"
-                :class="input.type === 'multiselect' ? 'col-span-1 md:col-span-2' : ''">
+                :class="input.type === 'multiselect' ? 'col-span-1 md:col-span-3' : ''">
                 <label class="font-bold">{{ input.textLabel }}:</label>
                 <div class="rounded-lg border border-gray-300">
                     <div v-if="input.type == 'multiselect'" class="p-3 flex gap-4">
@@ -49,7 +49,7 @@ const form = useForm({
             type: "multiselect",
             textLabel: "TIPO DE PRUEBA",
             value: [],
-            options: ["HIDROSTÁTICA", "NEUMÁTICA", "VACÍO"],
+            options: ["HIDROSTATICA", "NEUMATICA", "VACIO"],
         },
         {
             label: "montaje_dispositivo",
@@ -57,10 +57,10 @@ const form = useForm({
             textLabel: "MONTAJE DEL DISPOSITIVO DE LA PRUEBA",
             value: [],
             options: [
-                "División de Soldadura",
-                "División de Motores",
-                "División de Mecánica",
-                "Casco y Estructura - Maquinaria Propulsión y Electricidad",
+                "Division de Soldadura",
+                "Division de Motores",
+                "Division de Mecánica",
+                "Casco y Estructura - Maquinaria Propulsion y Electricidad",
                 "Contratista",
                 "Otro"
             ],
