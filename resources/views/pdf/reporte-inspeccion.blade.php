@@ -26,15 +26,24 @@
         <x-pdf.table :report="$report"></x-pdf.table>
 
         <x-pdf.text-area style="margin-top: 40px" label="NOVEDADES PRESENTES (ANOMALY):">
-            {!! $report->fieldReports[0]['value'] !!}
+            {!! $report->fieldReports[0]['value'] ?? '' !!}
         </x-pdf.text-area>
         @if (isset($report->fieldReports[1]))
             <x-pdf.text-area label="ACCIÓN (ES) A SEGUIR Y/O ALTERNATIVAS DE SOLUCIÓN:">
-                {!! $report->fieldReports[1]['value'] !!}
+                {!! $report->fieldReports[1]['value'] ?? '' !!}
             </x-pdf.text-area>
         @endif
 
-        <x-pdf.prepared-by :firma="'storage/' . $report->user->signature"></x-pdf.prepared-by>
+        @php
+            $elaborado_por_firma = collect($report->fieldReports)->firstWhere('field', 'elaborado_por_firma')['value'] ?? null;
+            $elaborado_por_nombre = collect($report->fieldReports)->firstWhere('field', 'elaborado_por_nombre')['value'] ?? '';
+            $elaborado_por_cargo = collect($report->fieldReports)->firstWhere('field', 'elaborado_por_cargo')['value'] ?? '';
+            $revisado_por_firma = collect($report->fieldReports)->firstWhere('field', 'revisado_por_firma')['value'] ?? null;
+            $revisado_por_nombre = collect($report->fieldReports)->firstWhere('field', 'revisado_por_nombre')['value'] ?? '';
+            $revisado_por_cargo = collect($report->fieldReports)->firstWhere('field', 'revisado_por_cargo')['value'] ?? '';
+        @endphp
+
+        @include('pdf.partials.firmas-section')
     </main>
 
 </body>

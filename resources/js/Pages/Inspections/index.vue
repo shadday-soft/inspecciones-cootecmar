@@ -33,6 +33,7 @@
   <Show
     v-model="visibleDetails"
     :inspeccion="inspeccionShow"
+    :users="users"
     v-if="inspeccionShow"
   ></Show>
 

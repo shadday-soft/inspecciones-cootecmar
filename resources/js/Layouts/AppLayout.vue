@@ -298,7 +298,6 @@ const mobileMenuOpen = ref(false);
         <!-- Main content -->
         <div class="flex flex-1 items-stretch overflow-hidden pb-4">
           <main class="flex-1 overflow-y-auto">
-            <!-- Primary column -->
             <section
               aria-labelledby="primary-heading"
               class="flex h-full min-w-0 flex-1 flex-col lg:order-last"

@@ -1,45 +1,19 @@
-<!-- <template>
-  <div class="flex flex-col gap-y-2">
-    <div class="flex justify-between w-full border-b items-center pb-2">
-      <h1 class="font-bold text-lg">Listado de Reportes</h1>
-      <Button
-        @click="createReport = !createReport"
-        :label="createReport ? 'Ver Listado' : 'Nuevo Reporte'"
-        :severity="!createReport ? 'success' : 'primary'"
-        icon="fa-solid fa-plus"
-        size="small"
-      />
-    </div>
-    
-    <div v-else-if="isPending">Cargando...</div>
-    <div v-else>
-      <div class=""></div>
-      <div class="" v-for="report of data">
-        {{ report.user.name }}
-      </div>
-      {{ data }}
-    </div>
-  </div>
-</template> -->
-
 <template>
   <div class="px-2 py-6">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
-        <h1 class="text-base font-semibold text-gray-900">Users</h1>
+        <h1 class="text-base font-semibold text-gray-900">
+          Listado de Reportes Generados
+        </h1>
         <p class="text-sm text-gray-700">
-          {{
-            createReport
-              ? "Crea un nuevo reporte para esta inspección"
-              : "Listado de Reportes Generados"
-          }}
+         
         </p>
       </div>
       <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
         <Button
-          @click="createReport = !createReport"
-          :label="createReport ? 'Ver Listado' : 'Nuevo Reporte'"
-          :severity="!createReport ? 'success' : 'primary'"
+          @click="goToCreateReport"
+          label="Nuevo Reporte"
+          severity="success"
           icon="fa-solid fa-plus"
           size="small"
         />
@@ -47,8 +21,7 @@
     </div>
 
     <div class="mt-8 flow-root">
-      <Create v-if="createReport" :inspeccion></Create>
-      <div v-else>
+      <div>
         <div class="inline-block min-w-full align-middle">
           <table class="min-w-full divide-y divide-gray-300">
             <thead>
@@ -101,13 +74,6 @@
                 <td
                   class="relative whitespace-nowrap py-1 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8"
                 >
-                  <!-- TODO: quitar el icono de editar cuando esté listo -->
-                  <Button
-                    text
-                    severity="warn"
-                    icon="fa-solid fa-pencil"
-                    v-tooltip="`Editar Reporte`"
-                  ></Button>
                   <a
                     target="_blank"
                     :href="route('export.report-inspeccion', inspection.id)"
@@ -118,6 +84,13 @@
                       v-tooltip="`Descargar Reporte`"
                     ></Button>
                   </a>
+                  <Button
+                    text
+                    severity="danger"
+                    icon="fa-solid fa-trash"
+                    @click="deleteReport(inspection)"
+                    v-tooltip="`Eliminar Reporte`"
+                  ></Button>
                 </td>
               </tr>
             </tbody>
@@ -129,16 +102,19 @@
 </template>
 
 <script setup>
-import Create from "./Create.vue";
 import { onMounted, ref } from "vue";
+import { router } from "@inertiajs/vue3";
+import Swal from "sweetalert2";
 
 const list = ref([]);
 
 const props = defineProps({
   inspeccion: Object,
+  users: {
+    type: Array,
+    default: () => []
+  }
 });
-
-const createReport = ref(false);
 
 import axios from "axios";
 
@@ -166,6 +142,46 @@ const fetchReports = async () => {
   } finally {
     isPending.value = false;
   }
+};
+
+const deleteReport = (report) => {
+  Swal.fire({
+    title: "¿Eliminar este reporte?",
+    text: `Se eliminará el reporte de ${report.type}. Esta acción no se puede deshacer.`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      router.delete(route("reports.destroy", report.id), {
+        onSuccess: () => {
+          Swal.fire({
+            title: "¡Eliminado!",
+            text: "El reporte ha sido eliminado correctamente.",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+          // Recargar la lista de reportes
+          fetchReports();
+        },
+        onError: () => {
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo eliminar el reporte. Inténtalo de nuevo.",
+            icon: "error",
+          });
+        },
+      });
+    }
+  });
+};
+
+const goToCreateReport = () => {
+  router.visit(route('reports.create', { inspection_id: props.inspeccion.id }));
 };
 
 onMounted(fetchReports);

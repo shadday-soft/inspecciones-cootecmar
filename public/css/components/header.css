@@ -10,7 +10,7 @@
     position: absolute;
     text-align: center;
     height: 66px;
-    width: 88%;
+    width: 84%;
     top: 0;
     border: solid 1px black;
     left: 81px;
@@ -33,14 +33,14 @@ h5 {
     border: solid 1px black;
     left: 81px;
     font-size: 9px;
-    padding: 1px 70px;
+    padding: 1px 50px;
 }
 
 .version-format {
     position: absolute;
     top: 67px;
     border: solid 1px black;
-    left: 320px;
+    left: 280px;
     font-size: 9px;
     padding-top: 1px;
     padding-bottom: 1px;
@@ -52,8 +52,8 @@ h5 {
     position: absolute;
     top: 67px;
     border: solid 1px black;
-    left: 441px;
+    left: 401px;
     font-size: 9px;
-    padding: 1px 60px;
+    padding: 1px 66px;
     white-space: nowrap;
 }

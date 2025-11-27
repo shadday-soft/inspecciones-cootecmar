@@ -152,7 +152,7 @@
   </Drawer>
 
   <Modal v-model="addReport" title="Reportes" width="90rem">
-    <List :inspeccion></List>
+    <List :inspeccion :users></List>
   </Modal>
 </template>
 <script setup>
@@ -163,6 +163,10 @@ import List from "../Reports/List.vue";
 
 const props = defineProps({
   inspeccion: Object,
+  users: {
+    type: Array,
+    default: () => []
+  }
 });
 const visible = defineModel();
 const addReport = ref(false);
