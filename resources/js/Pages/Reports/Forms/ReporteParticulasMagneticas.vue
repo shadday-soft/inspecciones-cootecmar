@@ -1,87 +1,98 @@
 <template>
-    <div class="flex flex-col gap-y-4">
+    <div class="flex flex-col gap-y-6">
         <!-- Campos principales en grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div v-for="(input, index) of mainFields" :key="index">
-                <label class="font-bold">{{ input.textLabel }}:</label>
-                <div class="rounded-lg border border-gray-300">
-                    <input v-if="input.type == 'text'" type="text" v-model="input.value"
-                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500" />
-                    <input v-else-if="input.type == 'date'" type="date" v-model="input.value"
-                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500" />
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-5 shadow-sm">
+            <h4 class="flex items-center gap-2 text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b border-gray-200 dark:border-gray-600">
+                <i class="fa-solid fa-clipboard-list text-blue-600 dark:text-blue-400"></i>
+                Información General
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div v-for="(input, index) of mainFields" :key="index">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ input.textLabel }}</label>
+                    <div class="rounded-lg border border-gray-300 dark:border-gray-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent transition-all" :class="input.disabled ? 'bg-gray-100 dark:bg-gray-600' : 'bg-white dark:bg-gray-700'">
+                        <input v-if="input.type == 'text'" type="text" v-model="input.value"
+                            :disabled="input.disabled"
+                            class="w-full px-3 py-2 border-0 rounded-lg focus:ring-0 bg-transparent dark:text-gray-200 disabled:cursor-not-allowed disabled:opacity-75" />
+                        <input v-else-if="input.type == 'date'" type="date" v-model="input.value"
+                            :disabled="input.disabled"
+                            class="w-full px-3 py-2 border-0 rounded-lg focus:ring-0 bg-transparent dark:text-gray-200 disabled:cursor-not-allowed disabled:opacity-75" />
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Tabla de Especificación de los Materiales -->
-        <div class="border-2 border-gray-800 bg-white overflow-hidden">
-            <h3 class="text-lg font-bold p-3 border-b-2 border-gray-800 bg-gray-100">ESPECIFICACIÓN DE LOS MATERIALES</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden">
+            <h3 class="flex items-center gap-2 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-purple-700 dark:from-purple-700 dark:to-purple-800 p-4">
+                <i class="fa-solid fa-flask text-white"></i>
+                ESPECIFICACIÓN DE LOS MATERIALES
+            </h3>
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-white border-b-2 border-gray-800">
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold w-1/5">TIPO DE MATERIALES.</th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold w-1/5">APL.</th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold w-1/5">FABRICANTE</th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold w-1/5">REF. COMERCIAL</th>
-                        <th class="p-2 text-center font-bold w-1/5">LOTE No</th>
+                    <tr class="bg-gray-50 dark:bg-gray-700">
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/5">TIPO DE MATERIALES</th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/5">APL.</th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/5">FABRICANTE</th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/5">REF. COMERCIAL</th>
+                        <th class="p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/5">LOTE No</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b-2 border-gray-800">
-                        <td class="border-r-2 border-gray-800 p-2 font-bold">LIMPIADOR</td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                    <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-3 font-semibold text-gray-700 dark:text-gray-300">LIMPIADOR</td>
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'limpiador_apl').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'limpiador_fabricante').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'limpiador_ref_comercial').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
                         <td class="p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'limpiador_lote').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
                     </tr>
-                    <tr class="border-b-2 border-gray-800">
-                        <td class="border-r-2 border-gray-800 p-2 font-bold">PARTÍCULAS MAGNÉTICAS</td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                    <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-3 font-semibold text-gray-700 dark:text-gray-300">PARTÍCULAS MAGNÉTICAS</td>
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'particulas_apl').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'particulas_fabricante').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'particulas_ref_comercial').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
                         <td class="p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'particulas_lote').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
                     </tr>
-                    <tr>
-                        <td class="border-r-2 border-gray-800 p-2 font-bold">PINTURA DE CONTRASTE</td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-3 font-semibold text-gray-700 dark:text-gray-300">PINTURA DE CONTRASTE</td>
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'pintura_apl').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'pintura_fabricante').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'pintura_ref_comercial').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
                         <td class="p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'pintura_lote').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200" />
                         </td>
                     </tr>
                 </tbody>
@@ -89,178 +100,125 @@
         </div>
 
         <!-- Condiciones en la Inspección -->
-        <div class="border-2 border-gray-400 rounded-lg p-4 bg-white">
-            <h3 class="text-lg font-bold mb-4">CONDICIONES EN LA INSPECCIÓN:</h3>
+        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 border-2 border-teal-300 dark:border-gray-600 rounded-xl p-6 shadow-md">
+            <h3 class="flex items-center gap-2 text-xl font-bold text-gray-800 dark:text-gray-100 mb-5 pb-3 border-b-2 border-teal-300 dark:border-gray-600">
+                <i class="fa-solid fa-microscope text-teal-600 dark:text-teal-400"></i>
+                CONDICIONES EN LA INSPECCIÓN
+            </h3>
             
             <!-- 1. TÉCNICA DE MAGNETIZACIÓN -->
-            <div class="mb-4 border-b pb-4">
-                <h4 class="font-bold mb-3">1. TÉCNICA DE MAGNETIZACIÓN</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-6 pb-6 border-b border-teal-200 dark:border-gray-600">
+                <h4 class="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-gray-100 mb-4">
+                    <i class="fa-solid fa-magnet text-teal-600 dark:text-teal-400"></i>
+                    1. TÉCNICA DE MAGNETIZACIÓN
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
-                        <label class="font-semibold">TIPO DE EQUIPO:</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">TIPO DE EQUIPO:</label>
                         <input type="text" v-model="form.inputs.find(i => i.label === 'tipo_equipo').value"
-                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-200 transition-all" />
                     </div>
                     <div>
-                        <label class="font-semibold">MARCA:</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">MARCA:</label>
                         <input type="text" v-model="form.inputs.find(i => i.label === 'marca_equipo').value"
-                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-200 transition-all" />
                     </div>
                     <div>
-                        <label class="font-semibold">MODELO:</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">MODELO:</label>
                         <input type="text" v-model="form.inputs.find(i => i.label === 'modelo_equipo').value"
-                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-200 transition-all" />
                     </div>
                     <div>
-                        <label class="font-semibold">CÓD. METROLÓGICO:</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">CÓD. METROLÓGICO:</label>
                         <input type="text" v-model="form.inputs.find(i => i.label === 'cod_metrologico_equipo').value"
-                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-200 transition-all" />
                     </div>
                     <div>
-                        <label class="font-semibold">FECHA DE CALIBRACIÓN:</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">FECHA DE CALIBRACIÓN:</label>
                         <input type="date" v-model="form.inputs.find(i => i.label === 'fecha_calibracion_equipo').value"
-                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-200 transition-all" />
                     </div>
                 </div>
                 
                 <div class="mt-4">
-                    <label class="font-semibold block mb-2">TIPO DE MAGNETIZACIÓN:</label>
-                    <div class="flex gap-8">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="LONGITUDINAL" v-model="form.inputs.find(i => i.label === 'tipo_magnetizacion').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>LONGITUDINAL</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="CIRCUNFERENCIAL" v-model="form.inputs.find(i => i.label === 'tipo_magnetizacion').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>CIRCUNFERENCIAL</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="MULTIDIRECCIONAL" v-model="form.inputs.find(i => i.label === 'tipo_magnetizacion').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>MULTIDIRECCIONAL</span>
-                        </label>
-                    </div>
+                    <CheckboxMultiple
+                        label="TIPO DE MAGNETIZACIÓN:"
+                        :options="['LONGITUDINAL', 'CIRCUNFERENCIAL', 'MULTIDIRECCIONAL']"
+                        v-model="form.inputs.find(i => i.label === 'tipo_magnetizacion').value"
+                        icon="fa-solid fa-magnet"
+                    />
                 </div>
 
                 <div class="mt-4">
-                    <label class="font-semibold block mb-2">TIPO DE CORRIENTE:</label>
-                    <div class="flex gap-8">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="CC" v-model="form.inputs.find(i => i.label === 'tipo_corriente').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>CC</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="CA" v-model="form.inputs.find(i => i.label === 'tipo_corriente').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>CA</span>
-                        </label>
-                    </div>
+                    <CheckboxMultiple
+                        label="TIPO DE CORRIENTE:"
+                        :options="['CC', 'CA']"
+                        v-model="form.inputs.find(i => i.label === 'tipo_corriente').value"
+                        icon="fa-solid fa-bolt"
+                    />
                 </div>
 
                 <div class="mt-4">
-                    <label class="font-semibold">AMPERAJE:</label>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">AMPERAJE:</label>
                     <input type="text" v-model="form.inputs.find(i => i.label === 'amperaje').value"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" 
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-200 transition-all" 
                         placeholder="N/A" />
                 </div>
             </div>
 
             <!-- 2. ESPECIFICACIONES GENERALES -->
-            <div class="mb-4 border-b pb-4">
-                <h4 class="font-bold mb-3">2. ESPECIFICACIONES GENERALES</h4>
+            <div class="mb-6 pb-6 border-b border-teal-200 dark:border-gray-600">
+                <h4 class="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-gray-100 mb-4">
+                    <i class="fa-solid fa-cogs text-teal-600 dark:text-teal-400"></i>
+                    2. ESPECIFICACIONES GENERALES
+                </h4>
+                <div class="grid grid-cols-2 gap-4 mb-3">
+                    <div class="mb-3">
+                    <CheckboxMultiple
+                        label="CLASE DE PARTÍCULA MAGNÉTICA:"
+                        :options="['P. M. SECAS', 'P. M. HÚMEDAS']"
+                        v-model="form.inputs.find(i => i.label === 'clase_particula').value"
+                        icon="fa-solid fa-vial"
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <CheckboxMultiple
+                        label="TIPO DE PARTÍCULAS:"
+                        :options="['FLUORESCENTES', 'CONTRASTANTES', 'COLOR']"
+                        v-model="form.inputs.find(i => i.label === 'tipo_particulas').value"
+                        icon="fa-solid fa-circle-dot"
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <CheckboxMultiple
+                        label="SECUENCIA DE APLICACIÓN DE LAS PARTÍCULAS MAGNÉTICAS:"
+                        :options="['CONTINUA', 'RESIDUAL']"
+                        v-model="form.inputs.find(i => i.label === 'secuencia_aplicacion').value"
+                        icon="fa-solid fa-arrow-right-arrow-left"
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <CheckboxMultiple
+                        label="MODO DE APLICACIÓN:"
+                        :options="['VÍA SECA', 'VÍA HÚMEDA']"
+                        v-model="form.inputs.find(i => i.label === 'modo_aplicacion').value"
+                        icon="fa-solid fa-hand-sparkles"
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <CheckboxMultiple
+                        label="TIPO DE ILUMINACIÓN:"
+                        :options="['NATURAL', 'BLANCA ARTIFICIAL', 'ULTRAVIOLETA']"
+                        v-model="form.inputs.find(i => i.label === 'tipo_iluminacion').value"
+                        icon="fa-solid fa-lightbulb"
+                    />
+                </div>
+                </div>
                 
-                <div class="mb-3">
-                    <label class="font-semibold block mb-2">CLASE DE PARTÍCULA MAGNÉTICA:</label>
-                    <div class="flex gap-8">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="P. M. SECAS" v-model="form.inputs.find(i => i.label === 'clase_particula').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>P. M. SECAS</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="P. M. HÚMEDAS" v-model="form.inputs.find(i => i.label === 'clase_particula').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>P. M. HÚMEDAS</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="font-semibold block mb-2">TIPO DE PARTÍCULAS:</label>
-                    <div class="flex gap-8">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="FLUORESCENTES" v-model="form.inputs.find(i => i.label === 'tipo_particulas').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>FLUORESCENTES</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="CONTRASTANTES" v-model="form.inputs.find(i => i.label === 'tipo_particulas').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>CONTRASTANTES</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="COLOR" v-model="form.inputs.find(i => i.label === 'tipo_particulas').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>COLOR</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="font-semibold block mb-2">SECUENCIA DE APLICACIÓN DE LAS PARTÍCULAS MAGNÉTICAS:</label>
-                    <div class="flex gap-8">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="CONTINUA" v-model="form.inputs.find(i => i.label === 'secuencia_aplicacion').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>CONTINUA</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="RESIDUAL" v-model="form.inputs.find(i => i.label === 'secuencia_aplicacion').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>RESIDUAL</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="font-semibold block mb-2">MODO DE APLICACIÓN:</label>
-                    <div class="flex gap-8">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="VÍA SECA" v-model="form.inputs.find(i => i.label === 'modo_aplicacion').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>VÍA SECA</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="VÍA HÚMEDA" v-model="form.inputs.find(i => i.label === 'modo_aplicacion').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>VÍA HÚMEDA</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="font-semibold block mb-2">TIPO DE ILUMINACIÓN:</label>
-                    <div class="flex gap-8">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="NATURAL" v-model="form.inputs.find(i => i.label === 'tipo_iluminacion').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>NATURAL</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="BLANCA ARTIFICIAL" v-model="form.inputs.find(i => i.label === 'tipo_iluminacion').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>BLANCA ARTIFICIAL</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" value="ULTRAVIOLETA" v-model="form.inputs.find(i => i.label === 'tipo_iluminacion').value"
-                                class="w-5 h-5 border-2 border-gray-800" />
-                            <span>ULTRAVIOLETA</span>
-                        </label>
-                    </div>
-                </div>
 
                 <div class="mb-3">
                     <label class="font-semibold block mb-2">DESMAGNETIZACIÓN:</label>
@@ -280,59 +238,62 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label class="font-semibold">CAMPO RESIDUAL FINAL:</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">CAMPO RESIDUAL FINAL:</label>
                         <input type="text" v-model="form.inputs.find(i => i.label === 'campo_residual_final').value"
-                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-200 transition-all" />
                     </div>
                     <div>
-                        <label class="font-semibold">TEMPERATURA DE SUPERFICIE:</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">TEMPERATURA DE SUPERFICIE:</label>
                         <input type="text" v-model="form.inputs.find(i => i.label === 'temperatura_superficie').value"
-                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-200 transition-all" />
                     </div>
                     <div>
-                        <label class="font-semibold">CONCENTRACIÓN DEL BAÑO:</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">CONCENTRACIÓN DEL BAÑO:</label>
                         <input type="text" v-model="form.inputs.find(i => i.label === 'concentracion_bano').value"
-                            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-200 transition-all" />
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Tabla de Discontinuidades (Croquis) -->
-        <div class="border-2 border-gray-800 bg-white overflow-hidden">
-            <h3 class="text-lg font-bold p-3 border-b-2 border-gray-800">3. CROQUIS (Ver detalle en la Pág. 2)</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden">
+            <h3 class="flex items-center gap-2 text-lg font-semibold text-white bg-gradient-to-r from-orange-600 to-orange-700 dark:from-orange-700 dark:to-orange-800 p-4">
+                <i class="fa-solid fa-chart-line text-white"></i>
+                3. CROQUIS (Ver detalle en la Pág. 2)
+            </h3>
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-white border-b-2 border-gray-800">
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold" style="width: 5%;">ITEM</th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold" style="width: 35%;">DESCRIPCIÓN DE LA DISCONTINUIDAD</th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold" style="width: 15%;">FORMA<br><small>(LINEAL/REDONDA)</small></th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold" style="width: 20%;">DIMENSIÓN</th>
-                        <th class="p-2 text-center font-bold" style="width: 25%;">EVALUACIÓN<br><small>(ACEPTADA/RECHAZADA)</small></th>
+                    <tr class="bg-gray-50 dark:bg-gray-700">
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300" style="width: 5%;">ITEM</th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300" style="width: 35%;">DESCRIPCIÓN DE LA DISCONTINUIDAD</th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300" style="width: 15%;">FORMA<br><small>(LINEAL/REDONDA)</small></th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300" style="width: 20%;">DIMENSIÓN</th>
+                        <th class="p-3 text-center font-semibold text-gray-700 dark:text-gray-300" style="width: 25%;">EVALUACIÓN<br><small>(ACEPTADA/RECHAZADA)</small></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="n in 6" :key="n" class="border-b border-gray-800">
-                        <td class="border-r-2 border-gray-800 p-2 text-center font-bold">{{ n }}</td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                    <tr v-for="n in 6" :key="n" class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300">{{ n }}</td>
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="discontinuidades[n-1].descripcion"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-orange-500 bg-transparent dark:text-gray-200" />
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <select v-model="discontinuidades[n-1].forma"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500">
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-orange-500 bg-transparent dark:text-gray-200">
                                 <option value="">-</option>
                                 <option value="LINEAL">LINEAL</option>
                                 <option value="REDONDA">REDONDA</option>
                             </select>
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="discontinuidades[n-1].dimension"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-orange-500 bg-transparent dark:text-gray-200" />
                         </td>
                         <td class="p-2">
                             <select v-model="discontinuidades[n-1].evaluacion"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500">
+                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-orange-500 bg-transparent dark:text-gray-200">
                                 <option value="">-</option>
                                 <option value="ACEPTADA">ACEPTADA</option>
                                 <option value="RECHAZADA">RECHAZADA</option>
@@ -344,23 +305,30 @@
         </div>
 
         <!-- Detalle de la Pieza -->
-        <div>
-            <label class="font-bold">DETALLE DE LA PIEZA:</label>
-            <div class="rounded-lg border border-gray-300 p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-5 shadow-sm">
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                <i class="fa-solid fa-image text-indigo-600 dark:text-indigo-400"></i>
+                DETALLE DE LA PIEZA
+            </label>
+            <div class="rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 bg-gray-50 dark:bg-gray-700 hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors">
                 <input 
                     type="file" 
                     @change="handleImageUpload"
                     accept="image/*"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 cursor-pointer bg-white dark:bg-gray-600 dark:text-gray-200"
                 />
                 <div v-if="detallePiezaImagen" class="mt-4">
-                    <p class="text-success font-semibold mb-2">✓ Imagen cargada correctamente</p>
-                    <img :src="detallePiezaImagen" alt="Detalle de la pieza" class="border rounded-lg max-w-full h-auto" style="max-height: 400px;" />
+                    <p class="flex items-center gap-2 text-green-600 dark:text-green-400 font-semibold mb-3">
+                        <i class="fa-solid fa-check-circle"></i>
+                        Imagen cargada correctamente
+                    </p>
+                    <img :src="detallePiezaImagen" alt="Detalle de la pieza" class="border-2 border-gray-300 dark:border-gray-600 rounded-lg max-w-full h-auto shadow-md" style="max-height: 400px;" />
                     <button 
                         @click="removeImage" 
                         type="button"
-                        class="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                        class="mt-3 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2"
                     >
+                        <i class="fa-solid fa-trash"></i>
                         Eliminar imagen
                     </button>
                 </div>
@@ -368,26 +336,32 @@
         </div>
 
         <!-- Observaciones -->
-        <div>
-            <label class="font-bold">OBSERVACIONES:</label>
-            <div class="rounded-lg border border-gray-300">
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-5 shadow-sm">
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                <i class="fa-solid fa-comment-dots text-blue-600 dark:text-blue-400"></i>
+                OBSERVACIONES
+            </label>
+            <div class="rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden">
                 <QuillEditor theme="snow" v-model:content="form.inputs.find(i => i.label === 'observaciones').value" contentType="html" toolbar="full" />
             </div>
         </div>
 
         <!-- Resultado Final -->
-        <div class="border-2 border-gray-400 rounded-lg p-4 bg-white">
-            <label class="font-bold block mb-3">RESULTADO FINAL DE LA PRUEBA:</label>
-            <div class="flex gap-8">
-                <label class="flex items-center gap-2 cursor-pointer">
+        <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-700 border-2 border-green-300 dark:border-gray-600 rounded-xl p-6 shadow-md">
+            <label class="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-gray-100 mb-4">
+                <i class="fa-solid fa-clipboard-check text-green-600 dark:text-green-400"></i>
+                RESULTADO FINAL DE LA PRUEBA
+            </label>
+            <div class="flex gap-6">
+                <label class="flex items-center gap-3 cursor-pointer px-4 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-green-500 dark:hover:border-green-400 transition-all bg-white dark:bg-gray-700">
                     <input type="radio" value="SATISFACTORIA" v-model="form.inputs.find(i => i.label === 'resultado_final').value"
-                        class="w-5 h-5" />
-                    <span>SATISFACTORIA</span>
+                        class="w-5 h-5 text-green-600" />
+                    <span class="font-semibold text-gray-700 dark:text-gray-300">SATISFACTORIA</span>
                 </label>
-                <label class="flex items-center gap-2 cursor-pointer">
+                <label class="flex items-center gap-3 cursor-pointer px-4 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-red-500 dark:hover:border-red-400 transition-all bg-white dark:bg-gray-700">
                     <input type="radio" value="NO SATISFACTORIA" v-model="form.inputs.find(i => i.label === 'resultado_final').value"
-                        class="w-5 h-5" />
-                    <span>NO SATISFACTORIA</span>
+                        class="w-5 h-5 text-red-600" />
+                    <span class="font-semibold text-gray-700 dark:text-gray-300">NO SATISFACTORIA</span>
                 </label>
             </div>
         </div>
@@ -403,15 +377,17 @@
         />
     </div>
 
-    <div class="flex justify-end gap-x-2 mt-2">
+    <!-- Botones de acción -->
+    <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
         <Button 
             @click="submit" 
-            label="Guardar" 
+            label="Guardar Reporte" 
             severity="success" 
             size="small" 
             icon="fa-solid fa-save"
             :loading="form.processing"
             :disabled="form.processing"
+            class="shadow-sm hover:shadow-md transition-shadow"
         />
         <Button 
             label="Cancelar" 
@@ -420,6 +396,7 @@
             icon="fa-solid fa-xmark"
             :disabled="form.processing"
             @click="$emit('cancel')"
+            class="shadow-sm hover:shadow-md transition-shadow"
         />
     </div>
 </template>
@@ -428,6 +405,7 @@
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import { watch, ref, computed } from "vue";
 import SignatureSection from "@/Components/Customs/SignatureSection.vue";
+import CheckboxMultiple from "@/Components/Customs/CheckboxMultiple.vue";
 import Button from "primevue/button";
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
@@ -465,15 +443,15 @@ const form = useForm({
     type: "REPORTE DE INSPECCIÓN POR PARTÍCULAS MAGNÉTICAS",
     inputs: [
         // Campos principales
-        { label: "informe_no", type: "text", textLabel: "INFORME No.", value: "" },
-        { label: "fecha", type: "date", textLabel: "FECHA", value: "" },
+        { label: "informe_no", type: "text", textLabel: "INFORME No.", value: props.inspeccion.code || "", disabled: true },
+        { label: "fecha", type: "date", textLabel: "FECHA", value: props.inspeccion.fecha || "", disabled: true },
         { label: "go_no", type: "text", textLabel: "G.O. No.", value: "" },
         { label: "cliente", type: "text", textLabel: "CLIENTE", value: "" },
-        { label: "proyecto", type: "text", textLabel: "PROYECTO", value: "" },
+        { label: "proyecto", type: "text", textLabel: "PROYECTO", value: props.inspeccion.project?.name || "", disabled: true },
         { label: "sitio_inspeccion", type: "text", textLabel: "SITIO DE INSPECCIÓN", value: "" },
         { label: "ciudad", type: "text", textLabel: "CIUDAD", value: "" },
         { label: "especificacion", type: "text", textLabel: "ESPECIFICACIÓN (NORMA)", value: "" },
-        { label: "gerencia", type: "text", textLabel: "GERENCIA", value: "" },
+        { label: "gerencia", type: "text", textLabel: "GERENCIA", value: props.inspeccion.gerencia || "", disabled: true },
         { label: "pieza_inspeccionar", type: "text", textLabel: "PIEZA A INSPECCIONAR", value: "" },
         { label: "material", type: "text", textLabel: "MATERIAL", value: "" },
         { label: "dimensiones", type: "text", textLabel: "DIMENSIONES", value: "" },

@@ -4,11 +4,13 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div v-for="(input, index) of form.inputs.filter(i => !['parte', 'posn', 'temperatura_pieza', 'equipo_medicion_1', 'codigo_metrologico_1', 'equipo_medicion_2', 'codigo_metrologico_2', 'croquis', 'accion_seguir', 'responsable', 'plazo', 'aprobado_para'].includes(i.label))" :key="index">
                 <label class="font-bold">{{ input.textLabel }}:</label>
-                <div class="rounded-lg border border-gray-300">
+                <div class="rounded-lg border border-gray-300" :class="input.disabled ? 'bg-gray-100' : ''">
                     <input v-if="input.type == 'text'" type="text" v-model="input.value"
-                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                        :disabled="input.disabled"
+                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-75" />
                     <input v-else-if="input.type == 'date'" type="date" v-model="input.value"
-                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                        :disabled="input.disabled"
+                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-75" />
                     <input v-else-if="input.type == 'time'" type="time" v-model="input.value"
                         class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500" />
                 </div>
@@ -264,13 +266,15 @@ const form = useForm({
             label: "gerencia",
             type: "text",
             textLabel: "GERENCIA",
-            value: "",
+            value: props.inspeccion.gerencia || "",
+            disabled: true,
         },
         {
             label: "proyecto",
             type: "text",
             textLabel: "PROYECTO",
-            value: "",
+            value: props.inspeccion.project?.name || "",
+            disabled: true,
         },
         {
             label: "descripcion",
@@ -294,7 +298,8 @@ const form = useForm({
             label: "fecha",
             type: "date",
             textLabel: "FECHA",
-            value: "",
+            value: props.inspeccion.fecha || "",
+            disabled: true,
         },
         {
             label: "hora",
@@ -306,7 +311,8 @@ const form = useForm({
             label: "registro_no",
             type: "text",
             textLabel: "REGISTRO No.",
-            value: "",
+            value: props.inspeccion.code || "",
+            disabled: true,
         },
         {
             label: "parte",

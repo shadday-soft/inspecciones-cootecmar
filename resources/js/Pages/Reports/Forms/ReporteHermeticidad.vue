@@ -1,43 +1,58 @@
 <template>
-    <div class="flex flex-col gap-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div v-for="(input, index) of form.inputs.filter(i => i.type !== 'textLong')" :key="index"
-                :class="input.type === 'multiselect' ? 'col-span-1 md:col-span-3' : ''">
-                <label class="font-bold">{{ input.textLabel }}:</label>
-                <div class="rounded-lg border border-gray-300">
-                    <div v-if="input.type == 'multiselect'" class="p-3 flex gap-4 flex-wrap">
-                        <div v-for="option in input.options" :key="option" class="flex items-center gap-2">
-                            <input type="checkbox" :value="option" v-model="input.value"
-                                :id="`${input.label}_${option}`"
-                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
-                            <label :for="`${input.label}_${option}`" class="font-normal">{{ option }}</label>
+    <div class="flex flex-col gap-y-6">
+        <!-- Campos del formulario en grid -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-5 shadow-sm">
+            <h4 class="flex items-center gap-2 text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b border-gray-200 dark:border-gray-600">
+                <i class="fa-solid fa-list-check text-blue-600 dark:text-blue-400"></i>
+                Información del Reporte
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <template v-for="(input, index) of form.inputs.filter(i => i.type !== 'textLong')" :key="index">
+                    <CheckboxMultiple
+                        v-if="input.type === 'multiselect'"
+                        :label="input.textLabel"
+                        :options="input.options"
+                        v-model="input.value"
+                        icon="fa-solid fa-list-check"
+                        class="col-span-1 md:col-span-2 lg:col-span-3"
+                    />
+                    <div v-else>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            {{ input.textLabel }}
+                        </label>
+                        <div class="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent transition-all">
+                        <select v-if="input.type == 'select'" v-model="input.value"
+                            class="w-full px-3 py-2 border-0 rounded-lg focus:ring-0 bg-transparent dark:text-gray-200">
+                            <option value="">Seleccione una opción</option>
+                            <option v-for="option in input.options" :key="option.value" :value="option.value">
+                                {{ option.label }}
+                            </option>
+                        </select>
+                        <select v-else-if="input.type == 'userSelect'" v-model="input.value"
+                            class="w-full px-3 py-2 border-0 rounded-lg focus:ring-0 bg-transparent dark:text-gray-200">
+                            <option :value="null">Seleccione un usuario</option>
+                            <option v-for="user in users" :key="user.id" :value="user.id">
+                                {{ user.name }} {{ user.cargo ? `- ${user.cargo}` : '' }}
+                            </option>
+                        </select>
+                        <input v-else-if="input.type == 'text'" type="text" v-model="input.value"
+                            class="w-full px-3 py-2 border-0 rounded-lg focus:ring-0 bg-transparent dark:text-gray-200" />
+                        <input v-else-if="input.type == 'date'" type="date" v-model="input.value"
+                            class="w-full px-3 py-2 border-0 rounded-lg focus:ring-0 bg-transparent dark:text-gray-200" />
                         </div>
                     </div>
-                    <select v-else-if="input.type == 'select'" v-model="input.value"
-                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        <option value="">Seleccione una opción</option>
-                        <option v-for="option in input.options" :key="option.value" :value="option.value">
-                            {{ option.label }}
-                        </option>
-                    </select>
-                    <select v-else-if="input.type == 'userSelect'" v-model="input.value"
-                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        <option :value="null">Seleccione un usuario</option>
-                        <option v-for="user in users" :key="user.id" :value="user.id">
-                            {{ user.name }} {{ user.cargo ? `- ${user.cargo}` : '' }}
-                        </option>
-                    </select>
-                    <input v-else-if="input.type == 'text'" type="text" v-model="input.value"
-                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500" />
-                    <input v-else-if="input.type == 'date'" type="date" v-model="input.value"
-                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500" />
-                </div>
+                </template>
             </div>
         </div>
 
-        <div v-for="(input, index) of form.inputs.filter(i => i.type === 'textLong')" :key="index">
-            <label class="font-bold">{{ input.textLabel }}:</label>
-            <div class="rounded-lg border border-gray-300">
+        <!-- Campos de texto largo -->
+        <div v-for="(input, index) of form.inputs.filter(i => i.type === 'textLong')" :key="index"
+             class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-5 shadow-sm">
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                <i class="fa-solid fa-align-left text-blue-600 dark:text-blue-400"></i>
+                {{ input.textLabel }}
+            </label>
+            <div class="rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden">
                 <QuillEditor theme="snow" v-model:content="input.value" contentType="html" toolbar="full" />
             </div>
         </div>
@@ -52,15 +67,18 @@
             v-model:revisado-por-firma="revisadoPorFirma"
         />
     </div>
-    <div class="flex justify-end gap-x-2 mt-2">
+    
+    <!-- Botones de acción -->
+    <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
         <Button 
             @click="submit" 
-            label="Guardar" 
+            label="Guardar Reporte" 
             severity="success" 
             size="small" 
             icon="fa-solid fa-save"
             :loading="form.processing"
             :disabled="form.processing"
+            class="shadow-sm hover:shadow-md transition-shadow"
         />
         <Button 
             label="Cancelar" 
@@ -69,6 +87,7 @@
             icon="fa-solid fa-xmark"
             :disabled="form.processing"
             @click="$emit('cancel')"
+            class="shadow-sm hover:shadow-md transition-shadow"
         />
     </div>
 </template>
@@ -76,6 +95,7 @@
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import { watch, ref } from "vue";
 import SignatureSection from "@/Components/Customs/SignatureSection.vue";
+import CheckboxMultiple from "@/Components/Customs/CheckboxMultiple.vue";
 import Swal from "sweetalert2";
 
 const props = defineProps({
@@ -110,7 +130,8 @@ const form = useForm({
             label: "registro_number",
             type: "text",
             textLabel: "REGISTRO No.",
-            value: "",
+            value: props.inspeccion.code || "",
+            disabled: true,
         },
         {
             label: "tipo_prueba",

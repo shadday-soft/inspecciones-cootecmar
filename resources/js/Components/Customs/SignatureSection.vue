@@ -1,66 +1,121 @@
 <template>
-    <div class="border-t-2 pt-6 mt-6">
-        <h3 class="text-xl font-bold mb-4 text-primary">FIRMAS</h3>
+    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-lg border-2 border-blue-200 dark:border-gray-600 p-6 mt-6">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-blue-300 dark:border-gray-600">
+            <div class="bg-blue-600 dark:bg-blue-500 rounded-full p-2">
+                <i class="fa-solid fa-signature text-white text-xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">FIRMAS</h3>
+        </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Elaborado Por -->
-            <div class="border-2 border-gray-300 rounded-lg p-4">
-                <h4 class="font-bold mb-3">ELABORADO POR (Done by):</h4>
-                <div class="mb-3">
-                    <label class="font-semibold">Nombre:</label>
-                    <input 
-                        type="text" 
-                        v-model="localElaboradoPorNombre"
-                        @input="emitElaboradoPor"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" 
-                    />
+            <div class="bg-white dark:bg-gray-800 border-2 border-blue-300 dark:border-gray-600 rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow">
+                <div class="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200 dark:border-gray-600">
+                    <i class="fa-solid fa-user-edit text-blue-600 dark:text-blue-400"></i>
+                    <h4 class="font-bold text-gray-800 dark:text-gray-100">ELABORADO POR (Done by)</h4>
                 </div>
-                <div class="mb-3">
-                    <label class="font-semibold">Cargo:</label>
-                    <input 
-                        type="text" 
-                        v-model="localElaboradoPorCargo"
-                        @input="emitElaboradoPor"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" 
-                    />
-                </div>
-                <div>
-                    <label class="font-semibold block mb-2">Firma:</label>
-                    <SignatureCanvas @signature-saved="handleElaboradoPorSignature" />
-                    <div v-if="localElaboradoPorFirma" class="mt-2">
-                        <p class="text-success font-semibold mb-1">✓ Firma capturada</p>
-                        <img :src="localElaboradoPorFirma" alt="Firma" class="border rounded-lg max-w-full" style="max-height: 100px;" />
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fa-solid fa-id-card text-gray-500 mr-1"></i>
+                            Nombre:
+                        </label>
+                        <input 
+                            type="text" 
+                            v-model="localElaboradoPorNombre"
+                            @input="emitElaboradoPor"
+                            placeholder="Ingrese nombre completo"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-700 dark:text-gray-200" 
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fa-solid fa-briefcase text-gray-500 mr-1"></i>
+                            Cargo:
+                        </label>
+                        <input 
+                            type="text" 
+                            v-model="localElaboradoPorCargo"
+                            @input="emitElaboradoPor"
+                            placeholder="Ingrese cargo"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:bg-gray-700 dark:text-gray-200" 
+                        />
+                    </div>
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fa-solid fa-pen-nib text-gray-500"></i>
+                            Firma:
+                        </label>
+                        <SignatureCanvas @signature-saved="handleElaboradoPorSignature" />
+                        <transition
+                            enter-active-class="transition-all duration-300 ease-out"
+                            enter-from-class="opacity-0 scale-95"
+                            enter-to-class="opacity-100 scale-100"
+                        >
+                            <div v-if="localElaboradoPorFirma" class="mt-3 p-3 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg">
+                                <p class="text-green-700 dark:text-green-300 font-semibold mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    Firma capturada correctamente
+                                </p>
+                                <img :src="localElaboradoPorFirma" alt="Firma" class="border-2 border-green-300 dark:border-green-600 rounded-lg max-w-full shadow-sm" style="max-height: 100px;" />
+                            </div>
+                        </transition>
                     </div>
                 </div>
             </div>
 
             <!-- Revisado y Autorizado Por -->
-            <div class="border-2 border-gray-300 rounded-lg p-4">
-                <h4 class="font-bold mb-3">REVISADO Y AUTORIZADO POR (Authorized by):</h4>
-                <div class="mb-3">
-                    <label class="font-semibold">Nombre:</label>
-                    <input 
-                        type="text" 
-                        v-model="localRevisadoPorNombre"
-                        @input="emitRevisadoPor"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" 
-                    />
+            <div class="bg-white dark:bg-gray-800 border-2 border-green-300 dark:border-gray-600 rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow">
+                <div class="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200 dark:border-gray-600">
+                    <i class="fa-solid fa-user-check text-green-600 dark:text-green-400"></i>
+                    <h4 class="font-bold text-gray-800 dark:text-gray-100">REVISADO Y AUTORIZADO POR (Authorized by)</h4>
                 </div>
-                <div class="mb-3">
-                    <label class="font-semibold">Cargo:</label>
-                    <input 
-                        type="text" 
-                        v-model="localRevisadoPorCargo"
-                        @input="emitRevisadoPor"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" 
-                    />
-                </div>
-                <div>
-                    <label class="font-semibold block mb-2">Firma:</label>
-                    <SignatureCanvas @signature-saved="handleRevisadoPorSignature" />
-                    <div v-if="localRevisadoPorFirma" class="mt-2">
-                        <p class="text-success font-semibold mb-1">✓ Firma capturada</p>
-                        <img :src="localRevisadoPorFirma" alt="Firma" class="border rounded-lg max-w-full" style="max-height: 100px;" />
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fa-solid fa-id-card text-gray-500 mr-1"></i>
+                            Nombre:
+                        </label>
+                        <input 
+                            type="text" 
+                            v-model="localRevisadoPorNombre"
+                            @input="emitRevisadoPor"
+                            placeholder="Ingrese nombre completo"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all dark:bg-gray-700 dark:text-gray-200" 
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fa-solid fa-briefcase text-gray-500 mr-1"></i>
+                            Cargo:
+                        </label>
+                        <input 
+                            type="text" 
+                            v-model="localRevisadoPorCargo"
+                            @input="emitRevisadoPor"
+                            placeholder="Ingrese cargo"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all dark:bg-gray-700 dark:text-gray-200" 
+                        />
+                    </div>
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fa-solid fa-pen-nib text-gray-500"></i>
+                            Firma:
+                        </label>
+                        <SignatureCanvas @signature-saved="handleRevisadoPorSignature" />
+                        <transition
+                            enter-active-class="transition-all duration-300 ease-out"
+                            enter-from-class="opacity-0 scale-95"
+                            enter-to-class="opacity-100 scale-100"
+                        >
+                            <div v-if="localRevisadoPorFirma" class="mt-3 p-3 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg">
+                                <p class="text-green-700 dark:text-green-300 font-semibold mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    Firma capturada correctamente
+                                </p>
+                                <img :src="localRevisadoPorFirma" alt="Firma" class="border-2 border-green-300 dark:border-green-600 rounded-lg max-w-full shadow-sm" style="max-height: 100px;" />
+                            </div>
+                        </transition>
                     </div>
                 </div>
             </div>

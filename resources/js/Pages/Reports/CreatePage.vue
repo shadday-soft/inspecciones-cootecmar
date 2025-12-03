@@ -1,27 +1,19 @@
 <template>
   <AppLayout title="Crear Nuevo Reporte">
-    <div class="px-6 py-8">
-      <div class="mb-6">
+    <div class="px-2 py-8">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-gray-900">
+            <h1 class="text-xl font-bold text-gray-900">
               Crear Nuevo Reporte
             </h1>
             <p class="mt-1 text-sm text-gray-600">
               Completa el formulario para generar un nuevo reporte de inspección
             </p>
           </div>
-          <Button
-            @click="goBack"
-            label="Volver al Listado"
-            severity="secondary"
-            icon="fa-solid fa-arrow-left"
-            size="small"
-          />
+          
         </div>
-      </div>
 
-      <div class="bg-white shadow-sm rounded-lg p-6">
+      <div class="bg-white shadow-sm rounded-lg mt-4">
         <Create 
           :inspeccion 
           :users

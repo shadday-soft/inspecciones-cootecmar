@@ -1,16 +1,22 @@
 <template>
-  <div class="flex flex-col gap-y-4">
-    <!-- {{ inspeccion }} -->
-    <div v-for="(input, index) of form.inputs" :key="index">
-      <label for="" class="font-bold">{{ input.textLabel }}:</label>
-      <div class="rounded-lg border border-gray-300">
-        <QuillEditor
-          theme="snow"
-          v-if="input.type == 'textLong'"
-          v-model:content="input.value"
-          contentType="html"
-          toolbar="full"
-        />
+  <div class="flex flex-col gap-y-6">
+    <!-- Campos del formulario -->
+    <div class="space-y-5">
+      <div v-for="(input, index) of form.inputs" :key="index" 
+           class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-4 shadow-sm hover:shadow-md transition-shadow">
+        <label class="flex items-center gap-2 font-bold text-gray-700 dark:text-gray-200 mb-3">
+          <i class="fa-solid fa-edit text-blue-600 dark:text-blue-400 text-sm"></i>
+          {{ input.textLabel }}
+        </label>
+        <div class="rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden">
+          <QuillEditor
+            theme="snow"
+            v-if="input.type == 'textLong'"
+            v-model:content="input.value"
+            contentType="html"
+            toolbar="full"
+          />
+        </div>
       </div>
     </div>
 
@@ -24,15 +30,18 @@
       v-model:revisado-por-firma="revisadoPorFirma"
     />
   </div>
-  <div class="flex justify-end gap-x-2 mt-2">
+  
+  <!-- Botones de acción -->
+  <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
     <Button
       @click="submit"
-      label="Guardar"
+      label="Guardar Reporte"
       severity="success"
       size="small"
       icon="fa-solid fa-save"
       :loading="form.processing"
       :disabled="form.processing"
+      class="shadow-sm hover:shadow-md transition-shadow"
     />
     <Button 
       label="Cancelar" 
@@ -41,6 +50,7 @@
       icon="fa-solid fa-xmark"
       :disabled="form.processing"
       @click="$emit('cancel')"
+      class="shadow-sm hover:shadow-md transition-shadow"
     />
   </div>
 </template>

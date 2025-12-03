@@ -1,88 +1,120 @@
 <template>
-    <div class="flex flex-col gap-y-4">
+    <div class="flex flex-col gap-y-6">
         <!-- Campos principales en grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div v-for="(input, index) of mainFields" :key="index">
-                <label class="font-bold">{{ input.textLabel }}:</label>
-                <div class="rounded-lg border border-gray-300">
-                    <input v-if="input.type == 'text'" type="text" v-model="input.value"
-                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500" />
-                    <input v-else-if="input.type == 'date'" type="date" v-model="input.value"
-                        class="w-full px-3 py-2 border-0 rounded-lg focus:ring-2 focus:ring-blue-500" />
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-5 shadow-sm">
+            <h4 class="flex items-center gap-2 text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b border-gray-200 dark:border-gray-600">
+                <i class="fa-solid fa-clipboard-list text-blue-600 dark:text-blue-400"></i>
+                Información General
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div v-for="(input, index) of mainFields" :key="index">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ input.textLabel }}</label>
+                    <div class="rounded-lg border border-gray-300 dark:border-gray-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent transition-all" :class="input.disabled ? 'bg-gray-100 dark:bg-gray-600' : 'bg-white dark:bg-gray-700'">
+                        <input v-if="input.type == 'text'" type="text" v-model="input.value"
+                            :disabled="input.disabled"
+                            class="w-full px-3 py-2 border-0 rounded-lg focus:ring-0 bg-transparent dark:text-gray-200 disabled:cursor-not-allowed disabled:opacity-75" />
+                        <input v-else-if="input.type == 'date'" type="date" v-model="input.value"
+                            :disabled="input.disabled"
+                            class="w-full px-3 py-2 border-0 rounded-lg focus:ring-0 bg-transparent dark:text-gray-200 disabled:cursor-not-allowed disabled:opacity-75" />
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Tabla de Tipo de Materiales -->
-        <div class="border-2 border-gray-800 bg-white overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden">
+            <h3 class="flex items-center gap-2 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-purple-700 dark:from-purple-700 dark:to-purple-800 p-4">
+                <i class="fa-solid fa-flask text-white"></i>
+                ESPECIFICACIÓN DE MATERIALES
+            </h3>
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-white border-b-2 border-gray-800">
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold w-1/4">TIPO DE MATERIALES.</th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold">FABRICANTE</th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold">REF. COMERCIAL</th>
-                        <th class="p-2 text-center font-bold">LOTE No</th>
+                    <tr class="bg-gray-50 dark:bg-gray-700">
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/4">TIPO DE MATERIAL</th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300">FABRICANTE</th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300">REF. COMERCIAL</th>
+                        <th class="p-3 text-center font-semibold text-gray-700 dark:text-gray-300">LOTE No</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b-2 border-gray-800">
-                        <td class="border-r-2 border-gray-800 p-2 font-bold">PENETRANTE:</td>
-                        <td class="border-r-2 border-gray-800 p-2">
-                            <input type="text" v-model="form.inputs.find(i => i.label === 'fabricante_penetrante').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                    <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-green-50 dark:hover:bg-gray-700 transition-colors">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-3 font-semibold text-gray-700 dark:text-gray-300 bg-green-50 dark:bg-gray-700">
+                            <i class="fa-solid fa-droplet mr-2 text-green-600 dark:text-green-400"></i>PENETRANTE
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
+                            <input type="text" v-model="form.inputs.find(i => i.label === 'fabricante_penetrante').value"
+                                placeholder="Nombre del fabricante"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
+                        </td>
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'ref_comercial_penetrante').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="Referencia"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
                         <td class="p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'lote_penetrante').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="N° de lote"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
                     </tr>
-                    <tr class="border-b-2 border-gray-800">
-                        <td class="border-r-2 border-gray-800 p-2 font-bold">EMULSIFICANTE:</td>
-                        <td class="border-r-2 border-gray-800 p-2">
-                            <input type="text" v-model="form.inputs.find(i => i.label === 'fabricante_emulsificante').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                    <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-3 font-semibold text-gray-700 dark:text-gray-300 bg-blue-50 dark:bg-gray-700">
+                            <i class="fa-solid fa-flask-vial mr-2 text-blue-600 dark:text-blue-400"></i>EMULSIFICANTE
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
+                            <input type="text" v-model="form.inputs.find(i => i.label === 'fabricante_emulsificante').value"
+                                placeholder="Nombre del fabricante"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
+                        </td>
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'ref_comercial_emulsificante').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="Referencia"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
                         <td class="p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'lote_emulsificante').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="N° de lote"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
                     </tr>
-                    <tr class="border-b-2 border-gray-800">
-                        <td class="border-r-2 border-gray-800 p-2 font-bold">LIMPIADOR/REMOVEDOR:</td>
-                        <td class="border-r-2 border-gray-800 p-2">
-                            <input type="text" v-model="form.inputs.find(i => i.label === 'fabricante_limpiador').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                    <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-cyan-50 dark:hover:bg-gray-700 transition-colors">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-3 font-semibold text-gray-700 dark:text-gray-300 bg-cyan-50 dark:bg-gray-700">
+                            <i class="fa-solid fa-spray-can mr-2 text-cyan-600 dark:text-cyan-400"></i>LIMPIADOR/REMOVEDOR
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
+                            <input type="text" v-model="form.inputs.find(i => i.label === 'fabricante_limpiador').value"
+                                placeholder="Nombre del fabricante"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
+                        </td>
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'ref_comercial_limpiador').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="Referencia"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
                         <td class="p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'lote_limpiador').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="N° de lote"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
                     </tr>
-                    <tr>
-                        <td class="border-r-2 border-gray-800 p-2 font-bold">REVELADOR:</td>
-                        <td class="border-r-2 border-gray-800 p-2">
-                            <input type="text" v-model="form.inputs.find(i => i.label === 'fabricante_revelador').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                    <tr class="hover:bg-pink-50 dark:hover:bg-gray-700 transition-colors">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-3 font-semibold text-gray-700 dark:text-gray-300 bg-pink-50 dark:bg-gray-700">
+                            <i class="fa-solid fa-eye mr-2 text-pink-600 dark:text-pink-400"></i>REVELADOR
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
+                            <input type="text" v-model="form.inputs.find(i => i.label === 'fabricante_revelador').value"
+                                placeholder="Nombre del fabricante"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
+                        </td>
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'ref_comercial_revelador').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="Referencia"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
                         <td class="p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === 'lote_revelador').value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="N° de lote"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
                     </tr>
                 </tbody>
@@ -90,150 +122,110 @@
         </div>
 
         <!-- Condiciones de Inspección -->
-        <div class="border-2 border-gray-400 rounded-lg p-4 bg-white">
-            <h3 class="text-lg font-bold mb-4">CONDICIONES DE INSPECCIÓN:</h3>
-            
-            <!-- PRELIMPIEZA -->
-            <div class="flex items-center gap-6 mb-3 border-b pb-3">
-                <span class="font-bold w-40">PRELIMPIEZA:</span>
-                <div class="flex gap-8">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="QUÍMICA" v-model="form.inputs.find(i => i.label === 'prelimpieza').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>QUÍMICA</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="MECÁNICA" v-model="form.inputs.find(i => i.label === 'prelimpieza').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>MECÁNICA</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="POR SOLVENTES" v-model="form.inputs.find(i => i.label === 'prelimpieza').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>POR SOLVENTES</span>
-                    </label>
-                </div>
-            </div>
+        <div class="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-gray-800 dark:to-gray-700 border-2 border-amber-300 dark:border-gray-600 rounded-xl p-6 shadow-md">
+            <h3 class="flex items-center gap-2 text-xl font-bold text-gray-800 dark:text-gray-100 mb-5 pb-3 border-b-2 border-amber-300 dark:border-gray-600">
+                <i class="fa-solid fa-cog text-amber-600 dark:text-amber-400"></i>
+                CONDICIONES DE INSPECCIÓN
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- PRELIMPIEZA -->
+                <CheckboxMultiple
+                    label="PRELIMPIEZA:"
+                    :options="['QUÍMICA', 'MECÁNICA', 'POR SOLVENTES']"
+                    v-model="form.inputs.find(i => i.label === 'prelimpieza').value"
+                    icon="fa-solid fa-spray-can"
+                />
 
-            <!-- PENETRANTE -->
-            <div class="flex items-center gap-6 mb-3 border-b pb-3">
-                <span class="font-bold w-40">PENETRANTE:</span>
-                <div class="flex gap-8">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="VISIBLE O COLOREADO" v-model="form.inputs.find(i => i.label === 'penetrante_tipo').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>VISIBLE O COLOREADO</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="FLUORESCENTE" v-model="form.inputs.find(i => i.label === 'penetrante_tipo').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>FLUORESCENTE</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="DUALES" v-model="form.inputs.find(i => i.label === 'penetrante_tipo').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>DUALES</span>
-                    </label>
-                </div>
-            </div>
+                <!-- PENETRANTE -->
+                <CheckboxMultiple
+                    label="PENETRANTE:"
+                    :options="['VISIBLE O COLOREADO', 'FLUORESCENTE', 'DUALES']"
+                    v-model="form.inputs.find(i => i.label === 'penetrante_tipo').value"
+                    icon="fa-solid fa-droplet"
+                />
 
-            <!-- MÉTODO REMOCIÓN DEL PENETRANTE -->
-            <div class="flex items-center gap-6 mb-3 border-b pb-3">
-                <span class="font-bold w-40">MÉTODO REMOCIÓN DEL PENETRANTE:</span>
-                <div class="flex gap-8 flex-wrap">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="LAVABLE-AGUA" v-model="form.inputs.find(i => i.label === 'metodo_remocion').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>LAVABLE-AGUA</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="POST-EMULSIFICABLE" v-model="form.inputs.find(i => i.label === 'metodo_remocion').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>POST-EMULSIFICABLE</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="SOLVENTE" v-model="form.inputs.find(i => i.label === 'metodo_remocion').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>SOLVENTE</span>
-                    </label>
-                </div>
-            </div>
+                <!-- MÉTODO REMOCIÓN DEL PENETRANTE -->
+                <CheckboxMultiple
+                    label="MÉTODO REMOCIÓN DEL PENETRANTE:"
+                    :options="['LAVABLE-AGUA', 'POST-EMULSIFICABLE', 'SOLVENTE']"
+                    v-model="form.inputs.find(i => i.label === 'metodo_remocion').value"
+                    icon="fa-solid fa-shower"
+                />
 
-            <!-- REVELADOR -->
-            <div class="flex items-center gap-6 mb-3 border-b pb-3">
-                <span class="font-bold w-40">REVELADOR:</span>
-                <div class="flex gap-8 flex-wrap">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="POLVO SECO" v-model="form.inputs.find(i => i.label === 'revelador_tipo').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>POLVO SECO</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="SUSPENSIÓN NO ACUOSO" v-model="form.inputs.find(i => i.label === 'revelador_tipo').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>SUSPENSIÓN NO ACUOSO</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="EN SOLUCIÓN ACUOSA" v-model="form.inputs.find(i => i.label === 'revelador_tipo').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>EN SOLUCIÓN ACUOSA</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="SUSPENSIÓN ACUOSA" v-model="form.inputs.find(i => i.label === 'revelador_tipo').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>SUSPENSIÓN ACUOSA</span>
-                    </label>
-                </div>
-            </div>
+                <!-- REVELADOR -->
+                <CheckboxMultiple
+                    label="REVELADOR:"
+                    :options="['POLVO SECO', 'SUSPENSIÓN NO ACUOSO', 'EN SOLUCIÓN ACUOSA', 'SUSPENSIÓN ACUOSA']"
+                    v-model="form.inputs.find(i => i.label === 'revelador_tipo').value"
+                    icon="fa-solid fa-eye"
+                />
 
-            <!-- ILUMINACIÓN -->
-            <div class="flex items-center gap-6">
-                <span class="font-bold w-40">ILUMINACIÓN:</span>
-                <div class="flex gap-8">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="VISIBLE" v-model="form.inputs.find(i => i.label === 'iluminacion').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>VISIBLE</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" value="UV" v-model="form.inputs.find(i => i.label === 'iluminacion').value"
-                            class="w-5 h-5 border-2 border-gray-800" />
-                        <span>UV</span>
-                    </label>
-                </div>
+                <!-- ILUMINACIÓN -->
+                <CheckboxMultiple
+                    label="ILUMINACIÓN:"
+                    :options="['VISIBLE', 'UV']"
+                    v-model="form.inputs.find(i => i.label === 'iluminacion').value"
+                    icon="fa-solid fa-lightbulb"
+                />
             </div>
         </div>
 
         <!-- Tabla de Parámetros de Operación -->
-        <div class="border-2 border-gray-800 bg-white overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden">
+            <h3 class="flex items-center gap-2 text-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-indigo-700 dark:from-indigo-700 dark:to-indigo-800 p-4">
+                <i class="fa-solid fa-sliders text-white"></i>
+                PARÁMETROS DE OPERACIÓN
+            </h3>
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-white border-b-2 border-gray-800">
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold w-1/5">PARÁMETROS DE OPERACIÓN</th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold w-1/5">TIEMPO DE PERMANENCIA</th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold w-1/5">TEMP. °C DE INSP.</th>
-                        <th class="border-r-2 border-gray-800 p-2 text-center font-bold w-1/5">MÉTODO APLICACIÓN</th>
-                        <th class="p-2 text-center font-bold w-1/5">ILUMINACIÓN</th>
+                    <tr class="bg-gray-50 dark:bg-gray-700">
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/5">PARÁMETROS</th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/5">TIEMPO</th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/5">TEMP. °C</th>
+                        <th class="border-r border-gray-300 dark:border-gray-600 p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/5">MÉTODO</th>
+                        <th class="p-3 text-center font-semibold text-gray-700 dark:text-gray-300 w-1/5">ILUMINACIÓN</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="param in parametrosOperacion" :key="param.key" class="border-b-2 border-gray-800">
-                        <td class="border-r-2 border-gray-800 p-2 font-bold">{{ param.label }}</td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                    <tr v-for="(param, idx) in parametrosOperacion" :key="param.key" 
+                        class="border-b border-gray-200 dark:border-gray-600 hover:bg-opacity-50 transition-colors"
+                        :class="{
+                            'hover:bg-blue-50 dark:hover:bg-gray-700': idx === 0,
+                            'hover:bg-green-50 dark:hover:bg-gray-700': idx === 1,
+                            'hover:bg-purple-50 dark:hover:bg-gray-700': idx === 2,
+                            'hover:bg-cyan-50 dark:hover:bg-gray-700': idx === 3,
+                            'hover:bg-yellow-50 dark:hover:bg-gray-700': idx === 4,
+                            'hover:bg-pink-50 dark:hover:bg-gray-700': idx === 5
+                        }">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-3 font-semibold text-gray-700 dark:text-gray-300">
+                            <i class="fa-solid fa-circle mr-2 text-xs" :class="{
+                                'text-blue-600': idx === 0,
+                                'text-green-600': idx === 1,
+                                'text-purple-600': idx === 2,
+                                'text-cyan-600': idx === 3,
+                                'text-yellow-600': idx === 4,
+                                'text-pink-600': idx === 5
+                            }"></i>{{ param.label }}
+                        </td>
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === `${param.key}_tiempo`).value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="Ej: 10 min"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === `${param.key}_temperatura`).value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="Ej: 25°C"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
-                        <td class="border-r-2 border-gray-800 p-2">
+                        <td class="border-r border-gray-300 dark:border-gray-600 p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === `${param.key}_metodo`).value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="Método"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
                         <td class="p-2">
                             <input type="text" v-model="form.inputs.find(i => i.label === `${param.key}_iluminacion`).value"
-                                class="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-blue-500" />
+                                placeholder="Tipo"
+                                class="w-full px-2 py-1.5 border-0 focus:ring-1 focus:ring-blue-500 bg-transparent dark:text-gray-200 rounded" />
                         </td>
                     </tr>
                 </tbody>
@@ -241,8 +233,11 @@
         </div>
 
         <!-- Tabla de Discontinuidades -->
-        <div class="border-2 border-gray-800 bg-white overflow-hidden">
-            <h3 class="text-lg font-bold p-3 border-b-2 border-gray-800">4. CROQUIS (Detalle ver Pág. 2)</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden">
+            <h3 class="flex items-center gap-2 text-lg font-semibold text-white bg-gradient-to-r from-orange-600 to-orange-700 dark:from-orange-700 dark:to-orange-800 p-4">
+                <i class="fa-solid fa-diagram-project text-white"></i>
+                CROQUIS - DISCONTINUIDADES (Detalle ver Pág. 2)
+            </h3>
             <table class="w-full border-collapse">
                 <thead>
                     <tr class="bg-white border-b-2 border-gray-800">
@@ -291,9 +286,12 @@
         </div>
 
         <!-- Detalle de la Pieza -->
-        <div>
-            <label class="font-bold">DETALLE DE LA PIEZA:</label>
-            <div class="rounded-lg border border-gray-300 p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-5 shadow-sm">
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                <i class="fa-solid fa-image text-blue-600 dark:text-blue-400"></i>
+                DETALLE DE LA PIEZA
+            </label>
+            <div class="rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 bg-gray-50 dark:bg-gray-700 hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors">
                 <input 
                     type="file" 
                     @change="handleImageUpload"
@@ -315,17 +313,23 @@
         </div>
 
         <!-- Observaciones -->
-        <div>
-            <label class="font-bold">OBSERVACIONES:</label>
-            <div class="rounded-lg border border-gray-300">
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-5 shadow-sm">
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                <i class="fa-solid fa-comment-dots text-blue-600 dark:text-blue-400"></i>
+                OBSERVACIONES
+            </label>
+            <div class="rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden">
                 <QuillEditor theme="snow" v-model:content="form.inputs.find(i => i.label === 'observaciones').value" contentType="html" toolbar="full" />
             </div>
         </div>
 
         <!-- Resultado Final -->
-        <div class="border-2 border-gray-400 rounded-lg p-4 bg-white">
-            <label class="font-bold block mb-3">RESULTADO FINAL DE LA PRUEBA:</label>
-            <div class="flex gap-8">
+        <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-700 border-2 border-green-300 dark:border-gray-600 rounded-xl p-6 shadow-md">
+            <label class="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-gray-100 mb-4">
+                <i class="fa-solid fa-clipboard-check text-green-600 dark:text-green-400 text-xl"></i>
+                RESULTADO FINAL DE LA PRUEBA
+            </label>
+            <div class="flex gap-6">
                 <label class="flex items-center gap-2 cursor-pointer">
                     <input type="radio" value="SATISFACTORIA" v-model="form.inputs.find(i => i.label === 'resultado_final').value"
                         class="w-5 h-5" />
@@ -350,15 +354,17 @@
         />
     </div>
 
-    <div class="flex justify-end gap-x-2 mt-2">
+    <!-- Botones de acción -->
+    <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
         <Button 
             @click="submit" 
-            label="Guardar" 
+            label="Guardar Reporte" 
             severity="success" 
             size="small" 
             icon="fa-solid fa-save"
             :loading="form.processing"
             :disabled="form.processing"
+            class="shadow-sm hover:shadow-md transition-shadow"
         />
         <Button 
             label="Cancelar" 
@@ -367,6 +373,7 @@
             icon="fa-solid fa-xmark"
             :disabled="form.processing"
             @click="$emit('cancel')"
+            class="shadow-sm hover:shadow-md transition-shadow"
         />
     </div>
 </template>
@@ -375,6 +382,7 @@
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import { watch, ref, computed } from "vue";
 import SignatureSection from "@/Components/Customs/SignatureSection.vue";
+import CheckboxMultiple from "@/Components/Customs/CheckboxMultiple.vue";
 import Button from "primevue/button";
 import Swal from "sweetalert2";
 
@@ -422,15 +430,15 @@ const form = useForm({
     inspection_id: props.inspeccion.id,
     type: "REPORTE DE INSPECCIÓN POR LÍQUIDOS PENETRANTES DETALLADO",
     inputs: [
-        { label: "informe_no", type: "text", textLabel: "INFORME No.", value: "" },
-        { label: "fecha", type: "date", textLabel: "FECHA", value: "" },
+        { label: "informe_no", type: "text", textLabel: "INFORME No.", value: props.inspeccion.code || "", disabled: true },
+        { label: "fecha", type: "date", textLabel: "FECHA", value: props.inspeccion.fecha || "", disabled: true },
         { label: "go_no", type: "text", textLabel: "G.O No.", value: "" },
         { label: "cliente", type: "text", textLabel: "CLIENTE", value: "" },
-        { label: "proyecto", type: "text", textLabel: "PROYECTO", value: "" },
+        { label: "proyecto", type: "text", textLabel: "PROYECTO", value: props.inspeccion.project?.name || "", disabled: true },
         { label: "sitio_inspeccion", type: "text", textLabel: "SITIO DE INSPECCIÓN", value: "" },
         { label: "ciudad", type: "text", textLabel: "CIUDAD", value: "" },
         { label: "especificacion", type: "text", textLabel: "ESPECIFICACIÓN (NORMA)", value: "" },
-        { label: "gerencia", type: "text", textLabel: "GERENCIA", value: "" },
+        { label: "gerencia", type: "text", textLabel: "GERENCIA", value: props.inspeccion.gerencia || "", disabled: true },
         { label: "pieza_inspeccionar", type: "text", textLabel: "PIEZA A INSPECCIONAR", value: "" },
         { label: "material", type: "text", textLabel: "MATERIAL", value: "" },
         { label: "dimensiones", type: "text", textLabel: "DIMENSIONES", value: "" },
